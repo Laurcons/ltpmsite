@@ -1,0 +1,344 @@
+* {
+
+	background-color: #E0E0E0;
+	margin: 0;
+	padding: 0;
+	cursor: default;
+
+}
+
+html, body {
+
+	height: 100%;
+
+}
+
+@font-face {
+
+ 	font-family: BoP;
+ 	src: url(/style/fonts/BoP.ttf);
+
+}
+
+#menu_div {
+
+	width: 100%;
+    height: 100%;
+    background: url(/images/coloana.png);
+    text-align: center;
+    position: fixed;
+    visibility: hidden;
+
+}
+
+.container {
+
+	display: inline-block;
+	cursor: pointer;
+	margin-left: 2.5vw;
+	margin-top: 1vw;
+	background: transparent;
+
+}
+
+.container:hover .bar1 {
+
+	background-color: white;
+
+}
+
+.container:hover .bar2 {
+
+	background-color: white;
+
+}
+
+.container:hover .bar3 {
+
+	background-color: white;
+
+}
+
+.bar1, .bar2, .bar3 {
+
+	width: 7vw;
+    height: 1vw;
+    background-color: gray;
+    margin: 1.25vw 0;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.change .bar1 {
+
+	-webkit-transform: rotate(45deg) translate(2vw, 1.75vw);
+	transform: rotate(45deg) translate(2vw, 1.75vw);
+
+}
+
+.change .bar2 {
+
+	opacity: 0;
+
+}
+
+.change .bar3 {
+
+	-webkit-transform: rotate(-45deg) translate(1.5vw, -1.35vw);
+	transform: rotate(-45deg) translate(1.5vw, -1.35vw);
+
+}
+
+#title_div {
+
+	text-align: center;
+
+}
+
+#title {
+
+    font-size: 5.5vw;
+    width: 80vw;
+    margin: auto;
+    font-family: BoP;
+    float: right;
+    margin-top: 2vw;
+    margin-right: 2.5vw;
+
+}
+
+#main_center_image_divs {
+
+	width: 100vw;
+	height: 20vw;
+	background-color: blue;
+
+}
+
+#center_image_mobile {
+
+	width: 90%;
+	height: 35vw;
+    margin-left: 0;
+    border-radius: 1vw;
+    background: url("/images/main.jpg");
+    background-position: 100% 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: auto;
+    margin-top: 8vw;
+
+}
+
+#center_image_main {
+
+	display: none;
+
+}
+
+#center_image_paragraph {
+
+    width: 90%;
+    margin-top: 2%;
+    font-family: Arial;
+    line-height: 3.2vw;
+    font-size: 3vw;
+    font-style: italic;
+    text-align: center;
+    margin: auto;
+    margin-top: 2vw;
+
+}
+
+#logo {
+
+	display: none;
+
+}
+
+#menu_bottom {
+
+	background: transparent;
+	height: 100%;
+	text-align: center;
+	position: relative;
+	margin-top: 15vw;
+
+}
+
+#menu_bottom_list {
+
+	background: transparent;
+	text-align: center;
+	margin-top: 1.5vw;
+	cursor: pointer;
+}
+
+#home_button {
+
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 11vw;
+	cursor: pointer;
+
+}
+
+#news_button {
+
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 11vw;
+	cursor: pointer;
+
+}
+
+#about_button {
+
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 11vw;
+	cursor: pointer;
+
+}
+
+#contact_button {
+
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 11vw;
+	cursor: pointer;
+
+}
+
+#portal_button {
+
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 11vw;
+	cursor: pointer;
+	margin-top: 14vw;
+
+}
+
+#menu_list {
+
+	background-color: transparent;
+    margin-top: 1%;
+    height: 40%;
+
+}
+
+.menu_links {
+
+    background-color: transparent;
+    cursor: pointer;
+    display: block;
+    width: 80%;
+    margin: auto;
+
+}
+
+.menu_button {
+
+    font-size: 8vw;
+    font-family: Arial;
+    text-decoration: none;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    display: block;
+    border: 2.5px solid transparent;
+    padding: 5vw;
+
+}
+
+.menu_button:hover {
+
+    border-radius: 1vw;
+    width: 80%;
+    margin: auto;
+    color: #FFB040;
+    text-shadow: 0.08vw 0.08vw lightgray;
+
+}
+
+.menu_line_break {
+
+	border: 0.15vw solid white;
+    width: 80vw;
+    margin: auto;
+    border-radius: 1vw;
+
+}
+
+#logo_link {
+
+	background: transparent;
+
+}
+
+#logo_mobile {
+
+	opacity: 0.5;
+    display: inline-block;
+    width: 80%;
+    background: transparent;
+    cursor: pointer;
+
+}
+
+#logo_mobile:hover {
+
+	opacity: 1;
+
+}
+
+#menu_links_list {
+
+    background: transparent;
+    height: 170%;
+    overflow: auto;
+    margin-top: 2%;
+
+}
+
+#menu_links_list::-webkit-scrollbar {
+
+	display: none;
+
+}
+
+#menu_links_list {
+
+	-ms-overflow-style: none;
+
+}
+
+#portal_menu_button {
+
+	margin-bottom: 10%;
+
+}
+
+.change {
+
+	position: fixed;
+
+}
+
+#formulare_menu_button {
+
+	width: 100%;
+
+}
+
+.extended_menu_content {
+
+	display: none;
+
+}

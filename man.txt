@@ -1,0 +1,8 @@
+NOTATII PHP
+
+SESSION
+
+autoritate : ca in db
+functie : ca in db
+logat : bool
+logatca : username
