@@ -16,7 +16,7 @@ class db_connection {
 
 	function __construct() {
 
-		$servername = "";
+		$servername = "laurcons.ddns.net";
 		$username = "ltpmdb_user";
 		$password = "m5a2Yc0ztiVkd24b";
 		$dbname = "ltpmdb";
