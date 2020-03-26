@@ -10,6 +10,13 @@
 // insert_user : function that inserts an user
 // delete_user_where_x : function that deletes users that satisfy the x condition
 
+// functie de utilitate ca sa mearga chestia cu utf-8 dracu s-o ia
+function utf8_for_xml($string) {
+    return preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u',
+                        ' ', $string);
+ }
+
+
 class db_connection {
 
 	private $conn = "";
@@ -23,12 +30,12 @@ class db_connection {
 
 		// Create connection
 		$this->conn = new mysqli($servername, $username, $password, $dbname);
-		mysqli_set_charset($this->conn, "utf8");
-		mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 		// Check connection
 		if ($this->conn->connect_error) {
 		    die("Database connection failed: " . $conn->connect_error);
 		}
+		$this->conn->set_charset("utf8");
+		mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 	}
 

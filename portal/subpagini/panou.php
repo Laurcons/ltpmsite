@@ -79,7 +79,7 @@ redirect_if_not_logged_in("/portal/");
 
 					<div class="text-muted font-italic mb-2">Citatul zilei <small><span class="text-muted">// </span><a href="?p=citate">propune un citat</a></small></div>
 
-					<p class="mb-0"><?= utf8_encode($citat["Text"]); //$citat["Text"] ?></p>
+					<p class="mb-0"><?= utf8_for_xml($citat["Text"]); //$citat["Text"] ?></p>
 					<footer class="blockquote-footer"><?= $citat["Autor"] ?></footer>
 
 				</div>
