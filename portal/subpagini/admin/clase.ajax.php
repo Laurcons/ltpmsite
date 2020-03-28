@@ -23,6 +23,11 @@ if ($request == "clase") {
 
 	}
 
+} else if ($request == "profesori-disponibili") {
+
+	header("Content-type: text/json");
+	$response_json->profesori_disponibili = $db->retrieve_profesori_where_not_diriginte("Id,Nume,Prenume")->fetch_all(MYSQLI_ASSOC);
+
 }
 
 echo json_encode($response_json);

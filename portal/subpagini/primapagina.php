@@ -23,14 +23,6 @@ redirect_if_logged_in("/portal/?p=panou&src=prima");
 
 		<div class="jumbotron">
 
-			<h1>Kanboard - Echipa IT</h1>
-
-			<a href="/team" class="btn btn-lg btn-info">Kanboard (/team)</a>
-
-		</div>
-
-		<div class="jumbotron">
-
 			<h1>Creat de elevi, pentru elevi</h1>
 
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
