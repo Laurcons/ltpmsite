@@ -6,15 +6,18 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-	<link rel="icon" type="image/png" href="images/favicon-16x16.ico" />
+	<link rel="icon" type="image/png" href="http://laurcons.ddns.net/media/favicon-16x16.ico" />
 
-	<link rel="icon" type="image/png" href="images/favicon-32x32.ico" />
+	<link rel="icon" type="image/png" href="http://laurcons.ddns.net/media/favicon-32x32.ico" />
 
 	<title>Liceul Teoretic Petru Maior - Ocna Mures</title>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 	<script src="https://unpkg.com/diapositive@latest/dist/diapositive.js"></script>
+
+	<!-- custom script, added by bub, minor modifications -->
+	<script type="text/javascript" src="media.js"></script>
 
 	<link href="style/main.css" rel="stylesheet" type="text/css" media="screen and (min-width: 769px)" />
 
@@ -50,31 +53,31 @@
 			
 			<div class="slides">
 				
-				<img src="images/poze/poza1.png" id="center_image_main" />
+				<img src="http://laurcons.ddns.net/media/poze/poza1.png" id="center_image_main" />
 
 			</div>
 
 			<div class="slides">
 				
-				<img src="images/poze/poza2.png" id="center_image_main" />
+				<img src="http://laurcons.ddns.net/media/poze/poza2.png" id="center_image_main" />
 				
 			</div>
 
 			<div class="slides">
 				
-				<img src="images/poze/poza3.png" id="center_image_main" />
+				<img src="http://laurcons.ddns.net/media/poze/poza3.png" id="center_image_main" />
 				
 			</div>
 
 			<div class="slides">
 				
-				<img src="images/poze/poza4.jpg" id="center_image_main" />
+				<img src="http://laurcons.ddns.net/media/poze/poza4.jpg" id="center_image_main" />
 				
 			</div>
 
 			<div class="slides">
 				
-				<img src="images/poze/poza5.jpg" id="center_image_main" />
+				<img src="http://laurcons.ddns.net/media/poze/poza5.jpg" id="center_image_main" />
 				
 			</div>
 
