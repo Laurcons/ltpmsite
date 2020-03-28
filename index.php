@@ -16,9 +16,6 @@
 
 	<script src="https://unpkg.com/diapositive@latest/dist/diapositive.js"></script>
 
-	<!-- custom script, added by bub, minor modifications -->
-	<script type="text/javascript" src="media.js"></script>
-
 	<link href="style/main.css" rel="stylesheet" type="text/css" media="screen and (min-width: 769px)" />
 
 	<link rel="stylesheet" type="text/css" href="style/mobile.css" media="screen and (max-width: 768px)" />
