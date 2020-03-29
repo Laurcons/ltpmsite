@@ -172,6 +172,15 @@ class db_connection {
 
 	}
 
+	public function retrieve_profesori_where_not_diriginte($columns) {
+
+		$stmt = $this->conn->prepare("SELECT * FROM utilizatori WHERE Functie='profesor' AND Id NOT IN (SELECT IdDiriginte FROM clase);");
+		$stmt->execute();
+
+		return $stmt->get_result();
+
+	}
+
 	public function retrieve_count_elevi_where_clasa($clasa_id) {
 
 		$stmt = $this->conn->prepare("SELECT COUNT(Id) FROM utilizatori WHERE Functie='elev' AND IdClasa=?;");
@@ -286,6 +295,27 @@ class db_connection {
 		$stmt->execute();
 
 		return $stmt->get_result();
+
+	}
+
+	public function insert_clasa($clasa_data) {
+
+		$stmt = $this->conn->prepare("INSERT INTO clase (Nivel, Sufix, IdDiriginte, AnScolar) VALUES (?, ?, ?, ?);");
+		$stmt->bind_param("isii",
+			$clasa_data["Nivel"],
+			$clasa_data["Sufix"],
+			$clasa_data["IdDiriginte"],
+			$clasa_data["AnScolar"]
+		);
+		$stmt->execute();
+
+	}
+
+	public function delete_clasa($clasa_id) {
+
+		$stmt = $this->conn->prepare("DELETE FROM clase WHERE Id=?");
+		$stmt->bind_param("i", $clasa_id);
+		$stmt->execute();
 
 	}
 
