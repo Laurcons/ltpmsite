@@ -8,7 +8,8 @@ if ($subpagina == "clase") {
 		include("clase.ajax.php");
 	else if ($js_redir) {
 		header("Content-type: text/javascript");
-		include("clase.js");
+		$file = $_GET["js"];
+		include("clase." . $file . ".js");
 	}
 	else include("clase.php");
 }

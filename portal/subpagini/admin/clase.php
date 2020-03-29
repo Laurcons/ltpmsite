@@ -18,17 +18,6 @@ if (isset($_GET["id"])) {
 	<title>Administrare clase - Portal LTPM</title>
  	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
 
- 	<style>
- 	.loader {
-		animation: spin 1.5s linear infinite;
-	}
-
-	@keyframes spin {
-		0% { transform: rotate(0deg); }
-		100% { transform: rotate(360deg); }
-	}
- 	</style>
-
 </head>
 
 <body>
@@ -134,9 +123,56 @@ if (isset($_GET["id"])) {
 
 		<?php
 			$clasa = $db->retrieve_clasa_where_id("*", $current_id);
+			$diriginte = $db->retrieve_utilizator_where_id("*", $clasa["IdDiriginte"]);
 		?>
 
-		<div class="h3 mb-3">Clasa <?= $clasa["Nivel"] . " " . $clasa["Sufix"] ?></div>
+		<div class="d-flex mb-3">
+
+			<div>
+				<a class="btn btn-default border-primary" href="?p=admin:clase">Inapoi la clase</a>
+			</div>
+
+			<div class="align-self-center flex-grow-1">
+				<span class="align-middle h3 ml-2">
+					Clasa <?= $clasa["Nivel"] . " " . $clasa["Sufix"] ?>
+				</span>
+			</div>
+
+		</div>
+
+		<p>
+
+			<span class="font-weight-bold">Dirigintele clasei: </span>
+
+			<?= $diriginte["Nume"] . " " . $diriginte["Prenume"] ?>
+
+		</p>
+
+		<div class="h4">Elevii clasei</div>
+
+		<div class="d-none d-md-block"> <!-- header row -->
+
+			<div class="row border">
+
+				<div class="col-md-4">
+					
+					<span class="font-weight-bold">Numele elevului</span>
+
+				</div>
+
+				<div class="col-md-6">
+
+					<span class="font-weight-bold">Detalii si optiuni</span>	
+
+				</div>
+
+			</div>
+
+		</div> <!-- header row -->
+
+		<div id="elevi-div">
+
+		</div>
 
 	<?php endif; // current_id == -1 ?>
 
@@ -144,7 +180,9 @@ if (isset($_GET["id"])) {
 
 </body>
 <footer>
-	<script src="?p=admin:clase&js"></script>
+	<?php if ($current_id == -1) : ?>
+
+	<script src="?p=admin:clase&js=list"></script>
 	<templates>
 
 		<template id="clasa-template">
@@ -309,6 +347,12 @@ if (isset($_GET["id"])) {
 		</template>
 
 	</templates>
+
+	<?php else : ?>
+
+		<script src="?p=admin:clase&js=one"></script>
+
+	<?php endif; ?>
 </footer>
 
 </html>

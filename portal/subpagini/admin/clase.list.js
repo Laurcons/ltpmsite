@@ -79,7 +79,7 @@ $(document).ready(function() {
 function ajax_updateClase() {
 
 	$("#clase-list").html('\
-			<i class="fas fa-2x fa-circle-notch loader"></i>');
+			<div class="spinner-border text-primary"></div>');
 
 	$.ajax({
 		url: "?p=admin:clase&ajax&r=clase",
@@ -132,7 +132,7 @@ function ajax_updateClase() {
 
 	});
 
-	// actualizeaza modalul
+	// actualizeaza creeaza-clasa-modal
 	$.ajax({
 
 		url: "?p=admin:clase&ajax&r=profesori-disponibili",
