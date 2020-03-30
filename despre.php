@@ -33,16 +33,22 @@
 
 	</div>
 
-		<h1 id = "titlu_despre" > Doamna Hitler Alina</h1>
+	<div class = "box">
 
-		<img src = "images\pustai.jpg" id="pustai">
+		<div class = "image">
+			
+			<img src = "https://cdn.discordapp.com/attachments/674650468319887363/693118609223843931/vrxo0yfx97p41.png">
 
-		<p id="pustai_mesaj">
-			Mi s-a întâmplat ,dar cel mult pana la începutul  orei când profa a început să vorbească singură sau cu trei,<br>
-			în zilele bune , patru elevi şi  aşa a continuat 50 de minute de educaţie.<br> Minunat ! asta fară sa ne gândim ca unii au în program ore consecutive
-			cu profesori şi materie”încântătoare.” ,<br> dar dacă nu-i putem schimba , putem sa ne schimbam pe noi sau cel puţin să ne adaptăm.
-		<p>
+		</div>
+		<div class = "mesaj">
 
+			<h1>Mesajul Doamnei Director </h1>
+			<p>
+			Mi s-a întâmplat ,dar cel mult pana la începutul  orei când profa a început să vorbească singură sau cu trei,
+			în zilele bune , patru elevi şi  aşa a continuat 50 de minute de educaţie. Minunat ! asta fară sa ne gândim ca unii au în program ore consecutive cu profesori şi materie”încântătoare.”,dar dacă nu-i putem schimba , putem sa ne schimbam pe noi sau cel puţin să ne adaptăm.
+			</p>
+
+		</div>
 </body>
 
 <script type="text/javascript">

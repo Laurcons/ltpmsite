@@ -30,39 +30,64 @@ html, body {
 	margin-top: 2%
 }
 
-
-#pustai {
-
-	height: 20vw;
-	width: 20vw;
-	margin-left: 13.5%;
-	margin-top: 3%;
+.box
+{
+	position: absolute;
+	top: 10vw;
+	left: 47vw;
+	transform: translate(-50%,-50%);
+	padding: 20px;
+	width: 600px;
+	background: #fff;
+	display: flex;
+	transition: .15s;
 }
 
-#pustai_mesaj	{
-	margin-left: 14%;
-	position:fixed;
-  	top: 8%;
-	left: 20%;
-	background-color: white;
-	font-family: RO Cabin;
+.box
+{
+	box-sizing: content-box;
+	width: 60%;
+}
+
+.box:hover
+{
+	box-shadow: 0px 15px 30px #000000;
+}
+.box .image
+{
+	width: 150px;
+	flex: 0 0 150px;
+}
+
+.box .image img
+{
+	max-width: 100%;
+	margin-left: 10px;
+	margin-top: 10px;
 }
 
 
-#petru{
-		height: 20vw;
-		width: 20vw;
-		margin-left: 76.5%;
-		margin-top: 3%;
+.box .mesaj
+{
+	padding-left: 10px;
+
 }
 
-#petru_mesaj	{
-	margin-left: 5%;
-	font-style: italic;
-	position:	fixed;
-  top: 68%;
-	left: 8.5%;
-	background-color: white;
+.box .mesaj h1
+{
+	margin: 0;
+	padding-left: 0;
+	margin-top: 4px;
+}
+
+.box .mesaj p
+{
+	margin: 0;
+	padding: 10px 0 0;
+	text-align: justify;
+	font-size: 17px;
+	margin-bottom: 5px;
+	margin-right:10px;
 }
 
 #menu_div {
