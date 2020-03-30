@@ -13,7 +13,7 @@ if (strpos($url, "/portal") !== false) { ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Eroare 404</title>
+	<title>Eroare 503</title>
 
 	<!-- Bootstrap -->
 	<meta charset="utf-8">
@@ -23,20 +23,22 @@ if (strpos($url, "/portal") !== false) { ?>
 </head>
 
 
-<body class="container" style="padding-top: 100px">
+<body class="container" style="padding-top: 100px; background-color: ">
 
 	<div class="jumbotron text-center">
 
 		<h1 class="mb-3">
 
-			<span class="badge badge-danger">HTTP 404</span>
-			Pagina nu s-a gasit!
+			<span class="badge badge-danger">HTTP 503</span>
+			Serviciu indisponibil!
 
 		</h1>
 
-		<p style="max-width: 50rem; margin: auto;" class="mb-3">
-			Resursa pe care ai cautat-o nu exista.
+		<p style="max-width: 50rem; margin: auto;">
+			Pagina a returnat codul 503: Serviciu indisponibil. De cele mai multe ori, asta inseamna ca baza de date nu este disponibila. Te rugam sa incerci mai tarziu.
 		</p>
+
+		<p><b>// pentru loserii coderi: spuneti-i lu bub sa porneasca serverul</b></p>
 
 		<a class="btn btn-primary" href="javascript:history.back()">Inapoi</a>
 
@@ -52,11 +54,13 @@ if (strpos($url, "/portal") !== false) { ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Eroare 404</title>
+	<title>Eroare 503</title>
 </head>
 <body>
 
-<h1>Eroare 404 NOT FOUND: Pagina nu s-a gasit</h1>
+<h1>Eroare 503 SERVICE UNAVAILABLE: Baza de date nu e disponibila</h1>
+
+<p><b>// pentru loserii coderi: spuneti-i lu bub sa porneasca serverul</b></p>
 
 <button onclick="history.back()">Inapoi</button>
 
