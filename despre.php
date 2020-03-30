@@ -55,6 +55,7 @@
 					 Unul dintre citatele sale cunoscute este urmatorul "Am oscilat intre Scoala militara si Scoala ardeleana", <br>
 					 vorbe din care reiese dedicarea acestuia pentru Scoala ardeleana si spiritul românesc subjugat în acea perioadă.
 			</p>
+		<!-- okay stfu-->
 
 </body>
 
