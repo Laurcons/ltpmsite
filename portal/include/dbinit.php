@@ -269,6 +269,16 @@ class db_connection {
 
 	}
 
+	public function retrieve_predari_where_clasa($columns, $id_clasa) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM predari WHERE IdClasa=?;");
+		$stmt->bind_param('i', $id_clasa);
+		$stmt->execute();
+
+		return $stmt->get_result();
+
+	}
+
 	public function retrieve_elevi_where_clasa($columns, $id_clasa) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE IdClasa=? ORDER BY Nume,Prenume DESC;");

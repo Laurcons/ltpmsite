@@ -152,7 +152,7 @@ if (isset($_GET["id"])) {
 
 		<div class="d-none d-md-block"> <!-- header row -->
 
-			<div class="row border">
+			<div class="row border p-2">
 
 				<div class="col-md-4">
 					
@@ -172,6 +172,68 @@ if (isset($_GET["id"])) {
 
 		<div id="elevi-div">
 
+			<!-- filled with js -->
+
+		</div>
+
+		<div class="row border border-top-0 p-2 mb-3">
+
+			<div class="col-md-12">
+
+				<button class="btn btn-sm btn-primary">Adauga elev</button>
+
+			</div>
+
+		</div>
+
+		<div class="h4">Predarile clasei</div>
+
+		<div class="d-none d-md-block"> <!-- header row -->
+
+			<div class="row border p-2">
+
+				<div class="col-md-1">
+					
+					<span class="font-weight-bold">Numar</span>
+
+				</div>
+
+				<div class="col-md-3">
+
+					<span class="font-weight-bold">Materia predata</span>	
+
+				</div>
+
+				<div class="col-md-3">
+
+					<span class="font-weight-bold">Profesorul care preda</span>	
+
+				</div>
+
+				<div class="col-md-5">
+
+					<span class="font-weight-bold">Optiuni</span>	
+
+				</div>
+
+			</div>
+
+		</div> <!-- header row -->
+
+		<div id="predari-div">
+
+			<!-- filled with js -->
+
+		</div>
+
+		<div class="row border border-top-0 p-2">
+
+			<div class="col-md-12">
+
+				<button class="btn btn-sm btn-primary">Adauga predare</button>
+
+			</div>
+
 		</div>
 
 	<?php endif; // current_id == -1 ?>
@@ -189,7 +251,7 @@ if (isset($_GET["id"])) {
 
 			<div class="col-md-4 mb-2">
 
-					<div class="card"> 
+					<div class="card" style="/*box-shadow: 5px 5px 5px #aaa;*/"> 
 
 						<div class="card-header">
 
@@ -351,6 +413,71 @@ if (isset($_GET["id"])) {
 	<?php else : ?>
 
 		<script src="?p=admin:clase&js=one"></script>
+		<templates>
+
+			<template id="elev-template">
+
+				<div class="row border{{^first}} border-top-0{{/first}} p-2">
+
+					<div class="col-md-4">
+
+						<div class="d-md-none font-weight-bold">
+							Elevul:
+						</div>
+
+						<span class="badge badge-primary mr-1">{{nrcrt}}</span>
+
+						{{Nume}} {{Prenume}}
+
+					</div>
+
+					<div class="col-md-6">
+
+						<div class="d-md-none font-weight-bold">
+							Optiuni:
+						</div>
+
+						<button class="btn btn-sm border-danger">Sterge din clasa</button>
+
+					</div>
+
+				</div>
+
+			</template>
+
+			<template id="predare-template">
+
+				<div class="row border p-2 {{^first}}border-top-0{{/first}}">
+
+					<div class="col-md-1">
+
+						<span class="badge badge-primary">
+							{{nrcrt}}
+						</span>
+
+					</div>
+
+					<div class="col-md-3">
+
+						{{materie.Nume}}
+
+					</div>
+
+					<div class="col-md-3">
+						{{profesor.Nume}} {{profesor.Prenume}}
+					</div>
+
+					<div class="col-md-5">
+
+						<button class="btn btn-sm border-danger">Sterge predare</button>
+
+					</div>
+
+				</div>
+
+			</template>
+
+		</templates>
 
 	<?php endif; ?>
 </footer>
