@@ -342,3 +342,71 @@ html, body {
 	display: none;
 
 }
+
+/*PAGINA DESPRE DONT KILL ME EDI PLS*/
+.box {
+
+	position: absolute;
+	top: 40%;
+	left: 50vw;
+	transform: translate(-50%,-50%);
+	padding: 20px;
+	background: #fff;
+	display: flex;
+	transition: .15s;
+	width: 70%;
+	overflow: auto;
+	height: 70%;
+
+}
+
+::-webkit-scrollbar {
+
+	display: none;
+
+}
+
+.box:hover {
+
+	box-shadow: 0px 15px 30px #000000;
+
+}
+
+#image{
+
+	display: block;
+	max-width: 100%;
+	background: inherit;;
+}
+
+.box .image {
+
+	display: none;
+
+}
+
+.box .mesaj {
+
+	padding-left: 10px;
+	background: inherit;
+
+}
+
+#h1_id {
+
+	width: 90%;
+	margin: auto;
+	font-family: arial;
+	padding: 1.5vw;
+}
+
+#mesaj_paraghraps {
+
+	margin: 0;
+	padding: 1.5vw;
+	text-align: justify;
+	font-size: 95%;
+	font-family: arial;
+	background: inherit;
+
+}

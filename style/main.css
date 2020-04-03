@@ -20,8 +20,6 @@ html, body {
 
 }
 
-/* INCEPUT PAGINA DESPRE */
-
 #titlu_despre {
 
 	color: white;
@@ -33,83 +31,6 @@ html, body {
 
 }
 
-.box {
-	/* Darius lmao te rog pune acolada pe acelasi rand -bub */
-	/* sugestie: muta toate clasele care tin strict de pagina Despre pe un fisier separat, gen despre.css,
-	     sau include-le direct in pagina Despre printr-un <style></style> -bub */
-
-	position: absolute;
-	top: 10vw;
-	left: 47vw;
-	transform: translate(-50%,-50%);
-	padding: 20px;
-	width: 600px;
-	background: #fff;
-	display: flex;
-	transition: .15s;
-
-}
-
-.box {
-
-	box-sizing: content-box;
-	width: 60%;
-
-}
-
-.box:hover {
-
-	box-shadow: 0px 15px 30px #000000;
-
-}
-
-.box .image {
-
-	width: 150px;
-	flex: 0 0 150px;
-	background: inherit;
-
-}
-
-.box .image img {
-
-	max-width: 100%;
-	margin-left: 10px;
-	margin-top: 10px;
-	background-color: inherit;
-
-}
-
-
-.box .mesaj {
-
-	padding-left: 10px;
-	background: inherit;
-
-}
-
-.box .mesaj h1 {
-
-	margin: 0;
-	padding-left: 0;
-	margin-top: 4px;
-	background: inherit;
-
-}
-
-.box .mesaj p {
-
-	margin: 0;
-	padding: 10px 0 0;
-	text-align: justify;
-	font-size: 17px;
-	margin-bottom: 5px;
-	margin-right:10px;
-	background: inherit;
-
-}
-
-/* SFARSIT PAGINA DESPRE */
 
 #menu_div {
 
@@ -353,4 +274,86 @@ html, body {
 
 	position: relative;
 
+}
+
+
+/*PAGINA DESPRE BY DARIUS, PLS DONT KILL ME EDI*/
+.box {
+
+	position: absolute;
+	top: 10%;
+	left: 15%;
+	padding: 1vw;
+	background: #fff;
+	display: flex;
+	transition: .15s;
+	box-sizing: border-box;
+	width: 70%;
+	overflow: auto;
+	height: 70%;
+
+}
+
+::-webkit-scrollbar {
+
+	display: none;
+
+}
+
+.box:hover {
+
+	box-shadow: 0px 15px 30px #000000;
+
+}
+
+.box .image {
+
+	display: block;
+	width: 150px;
+	flex: 0 0 150px;
+	background: inherit;
+
+
+}
+
+.box .image img {
+
+	max-width: 100%;
+	margin-left: 10px;
+	margin-top: 10px;
+	background-color: inherit;
+
+}
+
+
+.box .mesaj {
+
+	padding-left: 10px;
+	background: inherit;
+
+}
+
+#h1_id {
+
+	margin: 0;
+	padding-left: 0;
+	margin-top: 4px;
+	background: inherit;
+
+}
+
+#mesaj_paraghraps {
+
+	margin: 0;
+	padding: 10px 0 0;
+	text-align: justify;
+	font-size: 95%;
+	font-family: arial;
+	background: inherit;
+
+}
+
+#image{
+	
+	display: none;
 }
