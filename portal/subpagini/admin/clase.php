@@ -126,25 +126,31 @@ if (isset($_GET["id"])) {
 			$diriginte = $db->retrieve_utilizator_where_id("*", $clasa["IdDiriginte"]);
 		?>
 
-		<div class="d-flex mb-3">
+		<div class="row">
 
-			<div>
+			<div class="col-sm-4">
+
 				<a class="btn btn-default border-primary" href="?p=admin:clase">Inapoi la clase</a>
+
 			</div>
 
-			<div class="align-self-center flex-grow-1">
-				<span class="align-middle h3 ml-2">
+			<div class="col-sm-4 text-center">
+
+				<div class="h3">
 					Clasa <?= $clasa["Nivel"] . " " . $clasa["Sufix"] ?>
-				</span>
+				</div>
+
 			</div>
 
 		</div>
 
-		<p>
+		<p class="mb-3">
 
-			<span class="font-weight-bold">Dirigintele clasei: </span>
+			<div class="font-weight-bold d-inline">Dirigintele clasei: </div>
 
 			<?= $diriginte["Nume"] . " " . $diriginte["Prenume"] ?>
+
+			<a class="btn btn-sm bg-white border d-inline">Schimba</a>
 
 		</p>
 
@@ -180,7 +186,7 @@ if (isset($_GET["id"])) {
 
 			<div class="col-md-12">
 
-				<button class="btn btn-sm btn-primary">Adauga elev</button>
+				<button class="btn btn-sm border-primary">Adauga elev</button>
 
 			</div>
 
@@ -230,7 +236,7 @@ if (isset($_GET["id"])) {
 
 			<div class="col-md-12">
 
-				<button class="btn btn-sm btn-primary">Adauga predare</button>
+				<button class="btn btn-sm border-primary">Adauga predare</button>
 
 			</div>
 
