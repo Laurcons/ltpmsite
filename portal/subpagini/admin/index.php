@@ -1,5 +1,7 @@
 <?php
 
+redirect_if_not_autoritate("admin", "?");
+
 if ($subpagina == "clase") {
 
 	if ($post_redir)
