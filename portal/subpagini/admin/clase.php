@@ -136,7 +136,7 @@ if (isset($_GET["id"])) {
 
 			<div class="col-sm-4 text-center">
 
-				<div class="h3">
+				<div class="display-4">
 					Clasa <?= $clasa["Nivel"] . " " . $clasa["Sufix"] ?>
 				</div>
 
@@ -144,17 +144,18 @@ if (isset($_GET["id"])) {
 
 		</div>
 
-		<p class="mb-3">
+		<p class="text-center mb-3">
 
-			<div class="font-weight-bold d-inline">Dirigintele clasei: </div>
+			<span class="font-weight-bold">Diriginte: </span>
 
 			<?= $diriginte["Nume"] . " " . $diriginte["Prenume"] ?>
 
-			<a class="btn btn-sm bg-white border d-inline">Schimba</a>
+			<a class="btn btn-sm bg-white border">Schimba</a>
 
 		</p>
 
-		<div class="h4">Elevii clasei</div>
+		<div class="d-block d-md-none h4 text-right">Elevii clasei</div>
+		<div class="d-none d-md-block h4">Elevii clasei</div>
 
 		<div class="d-none d-md-block"> <!-- header row -->
 
@@ -192,19 +193,14 @@ if (isset($_GET["id"])) {
 
 		</div>
 
-		<div class="h4">Predarile clasei</div>
+		<div class="d-block d-md-none h4 text-right">Predarile clasei</div>
+		<div class="d-none d-md-block h4">Predarile clasei</div>
 
 		<div class="d-none d-md-block"> <!-- header row -->
 
 			<div class="row border p-2">
 
-				<div class="col-md-1">
-					
-					<span class="font-weight-bold">Numar</span>
-
-				</div>
-
-				<div class="col-md-3">
+				<div class="col-md-4">
 
 					<span class="font-weight-bold">Materia predata</span>	
 
@@ -250,237 +246,16 @@ if (isset($_GET["id"])) {
 <footer>
 	<?php if ($current_id == -1) : ?>
 
-	<script src="?p=admin:clase&js=list"></script>
-	<templates>
-
-		<template id="clasa-template">
-
-			<div class="col-md-4 mb-2">
-
-					<div class="card" style="/*box-shadow: 5px 5px 5px #aaa;*/"> 
-
-						<div class="card-header">
-
-							<div class="card-title h4">
-
-								Clasa {{Nivel}} {{Sufix}}
-
-								<button type="button" class="close" id="sterge-clasa-button-{{Id}}">
-									&times;
-								</button>
-
-							</div>
-
-						</div>
-
-						<ul class="list-group list-group-flush">
-
-							<li class="list-group-item"><b>Diriginte:</b> {{diriginte.Nume}} {{diriginte.Prenume}}</li>
-
-							<li class="list-group-item"><b>Numar elevi:</b> {{nrelevi}}</li>
-
-						</ul>
-
-						<div class="card-body">
-
-							<a class="btn btn-primary w-100" href="?p=admin:clase&id={{Id}}">Administreaza</a>
-
-						</div>
-
-					</div>
-
-				</div>
-
-		</template>
-
-		<template id="creeaza-clasa-modal-allowed-template">
-
-			<div class="modal-header">
-
-				<div class="modal-title h4">
-					Adaugare clasa
-				</div>
-
-			</div> <!-- modal-header -->
-
-			<div class="modal-body">
-
-				<p>Pentru inceput, vom avea nevoie de putine detalii despre clasa.</p>
-
-				<div class="form-group">
-
-					<label>Denumirea clasei:</label>
-
-					<div class="input-group">
-
-						<input id="creeaza-clasa-form-nivel"
-						       form="creeaza-clasa-form"
-						       name="nivel"
-						       class="form-control"
-						       type="text"
-						       placeholder="Nivelul (ex. 0, 1, 10, 12, etc.)">
-
-						<input id="creeaza-clasa-form-sufix"
-						       form="creeaza-clasa-form"
-						       name="sufix"
-						       class="form-control"
-						       oninput="this.value = this.value.toUpperCase();"
-						       type="text"
-						       placeholder="Sufixul (ex. A, B, C, etc.)">
-
-					</div>
-
-					<div class="alert alert-danger mt-1 p-1 pl-3 d-none" data-form="creeaza-clasa" data-for="denumire">
-
-						<!-- filled with javascript -->
-
-					</div>
-
-				</div>
-
-				<div class="form-group">
-
-					<label>Anul scolar:</label>
-
-					<select id="creeaza-clasa-form-an"
-							form="creeaza-clasa-form"
-							name="an"
-							class="form-control">
-
-						<?php $year = date('Y');
-							for ($i = $year-5; $i < $year+5; $i++) {
-								echo '<option value="'.$i.'"'.($i==2019?' selected':'').'>'.$i.'-'.($i+1).'</option>';
-							}
-						?>
-
-					</select>
-
-				</div>
-
-				<div class="form-group">
-
-					<label>Profesorul diriginte:</label>
-
-					<select id="creeaza-clasa-form-idprofesor"
-							form="creeaza-clasa-form"
-							name="iddiriginte"
-							class="form-control">
-
-						<!-- filled with javascript -->
-
-					</select>
-
-				</div>
-
-			</div> <!-- modal-body -->
-
-			<div class="modal-footer">
-
-				<div class="btn-group">
-
-					<button class="btn btn-default bg-white border-primary" data-dismiss="modal">Inapoi</button>
-
-					<input type="submit"
-						   form="creeaza-clasa-form"
-						   class="btn btn-primary"
-						   value="Adauga clasa">
-
-				</div>
-
-			</div>
-
-		</template>
-
-		<template id="creeaza-clasa-modal-disallowed-template">
-
-			<div class="modal-body">
-
-				<p>Nu puteti crea clase noi, deoarece nu aveti profesori disponibili care sa le fie diriginti!</p>
-
-				<p>Va rugam sa creati conturi noi pentru profesori, si incercati din nou.</p>
-
-			</div>
-
-			<div class="modal-footer">
-
-				<button class="btn btn-default bg-white border-primary" data-dismiss="modal">Inapoi</button>
-
-			</div>
-
-		</template>
-
-	</templates>
+		<script src="?p=admin:clase&js=list"></script>
 
 	<?php else : // current_id == -1 ?>
 
 		<script src="?p=admin:clase&js=one"></script>
-		<templates>
-
-			<template id="elev-template">
-
-				<div class="row border{{^first}} border-top-0{{/first}} p-2">
-
-					<div class="col-md-4">
-
-						<div class="d-md-none font-weight-bold">
-							Elevul:
-						</div>
-
-						<span class="badge badge-primary mr-1">{{nrcrt}}</span>
-
-						{{Nume}} {{Prenume}}
-
-					</div>
-
-					<div class="col-md-6">
-
-						<div class="d-md-none font-weight-bold">
-							Optiuni:
-						</div>
-
-						<button class="btn btn-sm border-danger">Sterge din clasa</button>
-
-					</div>
-
-				</div>
-
-			</template>
-
-			<template id="predare-template">
-
-				<div class="row border p-2 {{^first}}border-top-0{{/first}}">
-
-					<div class="col-md-1">
-
-						<span class="badge badge-primary">
-							{{nrcrt}}
-						</span>
-
-					</div>
-
-					<div class="col-md-3">
-
-						{{materie.Nume}}
-
-					</div>
-
-					<div class="col-md-3">
-						{{profesor.Nume}} {{profesor.Prenume}}
-					</div>
-
-					<div class="col-md-5">
-
-						<button class="btn btn-sm border-danger">Sterge predare</button>
-
-					</div>
-
-				</div>
-
-			</template>
-
-		</templates>
 
 	<?php endif; ?>
+
+	<?php include("clase.templ.php"); ?>
+
 </footer>
 
 </html>
