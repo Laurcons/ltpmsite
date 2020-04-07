@@ -11,7 +11,7 @@ if (isset($_GET["r"])) {
 
 if ($request == "materii") {
 
-	$materii = $db->retrieve_materii("*");
+	$materii = $db->retrieve_materii("Id,Nume");
 	$response->materii = array();
 
 	while ($materie = $materii->fetch_assoc()) {

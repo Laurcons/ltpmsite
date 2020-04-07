@@ -80,6 +80,19 @@ $db = new db_connection();
 
 				<div class="modal-body">
 
+					<div class="form-group">
+
+						<label>Denumirea materiei:</label>
+
+						<input id="adauga-materie-form-nume"
+							   type="text"
+							   class="form-control"
+							   form="adauga-materie-form"
+							   name="nume"
+							   placeholder="Denumirea cu diacritice">
+
+					</div>
+
 				</div>
 
 				<div class="modal-footer">
@@ -88,7 +101,49 @@ $db = new db_connection();
 
 						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
 
-						<button type="button" class="btn btn-primary">Adauga materie</button>
+						<input type="submit"
+							   class="btn btn-primary"
+							   form="adauga-materie-form"
+							   value="Adauga materie">
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="modal fade" id="sterge-materie-modal">
+
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+
+				<div class="modal-header bg-danger">
+
+					<h4 class="modal-title text-light">Sterge materie</h4>
+
+				</div>
+
+				<div class="modal-body">
+
+					Sunteti sigur ca doriti sa stergeti materia <span id="sterge-materie-modal-nume-materie"></span>?
+
+				</div>
+
+				<div class="modal-footer">
+
+					<div class="btn-group">
+
+						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+
+						<input type="submit"
+							   class="btn btn-danger"
+							   form="sterge-materie-form"
+							   value="Sterge materie">
 
 					</div>
 
@@ -103,7 +158,15 @@ $db = new db_connection();
 	<form id="adauga-materie-form">
 
 		<input type="hidden" id="adauga-materie-form-form-id" name="form-id" value="default-value">
-		<input type="hidden" name="adauga-materie-form" value=".">
+		<input type="hidden" name="adauga-materie" value=".">
+
+	</form>
+
+	<form id="sterge-materie-form">
+
+		<input type="hidden" id="sterge-materie-form-form-id" name="form-id" value="default-value">
+		<input type="hidden" id="sterge-materie-form-materie-id" name="materie-id">
+		<input type="hidden" name="sterge-materie" value=".">
 
 	</form>
 

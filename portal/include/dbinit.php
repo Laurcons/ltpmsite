@@ -191,6 +191,14 @@ class db_connection {
 
 	}
 
+	public function insert_materie($materie_data) {
+
+		$stmt = $this->conn->prepare("INSERT INTO materii (Nume) VALUES (?);");
+		$stmt->bind_param('s', $materie_data["Nume"]);
+		$stmt->execute();
+
+	}
+
 	public function retrieve_materii($columns) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM materii;");
@@ -266,6 +274,14 @@ class db_connection {
 		$stmt->execute();
 
 		return $stmt->get_result();
+
+	}
+
+	public function delete_materie($materie_id) {
+
+		$stmt = $this->conn->prepare("DELETE FROM materii WHERE Id=?;");
+		$stmt->bind_param('i', $materie_id);
+		$stmt->execute();
 
 	}
 
