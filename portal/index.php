@@ -57,7 +57,11 @@ if (isset($_GET["js"])) {
 
 if ($pagina == "" || $pagina == "prima") {
 
-	include("subpagini/primapagina.php");
+	if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("include/utility.js");
+	}
+	else include("subpagini/primapagina.php");
 
 } else if ($pagina == "logare") {
 
