@@ -38,7 +38,7 @@
 
 								<div class="dropdown-menu bg-dark">
 
-									<a class="dropdown-item bg-dark text-light" href="?p=admin&sp=clase">Clasele scolii</a>
+									<a class="dropdown-item bg-dark text-light" href="?p=admin:clase">Clasele scolii</a>
 
 								</div>
 

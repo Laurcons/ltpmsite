@@ -324,8 +324,15 @@ if (isset($_GET["id"])) {
 						       form="creeaza-clasa-form"
 						       name="sufix"
 						       class="form-control"
+						       oninput="this.value = this.value.toUpperCase();"
 						       type="text"
 						       placeholder="Sufixul (ex. A, B, C, etc.)">
+
+					</div>
+
+					<div class="alert alert-danger mt-1 p-1 pl-3 d-none" data-form="creeaza-clasa" data-for="denumire">
+
+						<!-- filled with javascript -->
 
 					</div>
 
@@ -335,28 +342,18 @@ if (isset($_GET["id"])) {
 
 					<label>Anul scolar:</label>
 
-					<div class="input-group">
+					<select id="creeaza-clasa-form-an"
+							form="creeaza-clasa-form"
+							name="an"
+							class="form-control">
 
-						<input id="creeaza-clasa-form-an"
-							   form="creeaza-clasa-form"
-							   name="an"
-							   class="form-control"
-							   type="number"
-							   min="<?= date('Y') - 10 ?>"
-							   max="<?= date('Y') + 10 ?>"
-							   placeholder="Anul de inceput">
+						<?php $year = date('Y');
+							for ($i = $year-5; $i < $year+5; $i++) {
+								echo '<option value="'.$i.'"'.($i==2019?' selected':'').'>'.$i.'-'.($i+1).'</option>';
+							}
+						?>
 
-						<div class="input-group-append">
-
-							<div class="input-group-text" id="creeaza-clasa-modal-an-extra">
-
-								An invalid
-
-							</div>
-
-						</div>
-
-					</div>
+					</select>
 
 				</div>
 
@@ -369,11 +366,7 @@ if (isset($_GET["id"])) {
 							name="iddiriginte"
 							class="form-control">
 
-						<?php while ($prof = $profesori_disponibili->fetch_assoc()) : ?>
-
-							<option value="<?= $prof['Id'] ?>"><?= $prof["Nume"] . " " . $prof["Prenume"] ?></option>
-
-						<?php endwhile; ?>
+						<!-- filled with javascript -->
 
 					</select>
 
@@ -396,6 +389,8 @@ if (isset($_GET["id"])) {
 
 			</div>
 
+		</template>
+
 		<template id="creeaza-clasa-modal-disallowed-template">
 
 			<div class="modal-body">
@@ -416,7 +411,7 @@ if (isset($_GET["id"])) {
 
 	</templates>
 
-	<?php else : ?>
+	<?php else : // current_id == -1 ?>
 
 		<script src="?p=admin:clase&js=one"></script>
 		<templates>

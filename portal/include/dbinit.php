@@ -174,7 +174,7 @@ class db_connection {
 
 	public function retrieve_profesori_where_not_diriginte($columns) {
 
-		$stmt = $this->conn->prepare("SELECT * FROM utilizatori WHERE Functie='profesor' AND Id NOT IN (SELECT IdDiriginte FROM clase);");
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE Functie='profesor' AND Id NOT IN (SELECT IdDiriginte FROM clase);");
 		$stmt->execute();
 
 		return $stmt->get_result();
