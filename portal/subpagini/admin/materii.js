@@ -1,14 +1,13 @@
 
-// https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-// copiata direct din /portal/subpagini/clase.js.php
-function generateKey(length = 10) {
-   var result           = '';
-   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-   var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
+function validate_adauga_materie() {
+
+	var nume = $("#adauga-materie-form-nume").val();
+
+	if (nume.trim() == "") {
+		showFormError("adauga-materie", "nume", "Denumirea nu poate fi goala!");
+		return false;
+	}
+
 }
 
 $(document).ready(function() {
@@ -16,6 +15,9 @@ $(document).ready(function() {
 	$("#adauga-materie-form").submit(function(e) {
 
 		e.preventDefault();
+		if (!validate_adauga_materie())
+			return false;
+		hideFormErrors();
 		var form = $(this);
 
 		$.ajax({

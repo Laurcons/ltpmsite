@@ -91,6 +91,14 @@ $db = new db_connection();
 							   name="nume"
 							   placeholder="Denumirea cu diacritice">
 
+						<div class="alert alert-danger d-none mt-1 p-1 pl-3"
+							 data-form="adauga-materie"
+							 data-for="nume">
+
+							 <!-- filled with javascript -->
+
+						</div>
+
 					</div>
 
 				</div>
