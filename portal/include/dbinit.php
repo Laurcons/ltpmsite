@@ -28,12 +28,19 @@ class db_connection {
 		$password = "m5a2Yc0ztiVkd24b";
 		$dbname = "ltpmdb";
 
+		error_reporting(0);
 		// Create connection
 		$this->conn = new mysqli($servername, $username, $password, $dbname);
 		// Check connection
-		if ($this->conn->connect_error) {
-		    die("Database connection failed: " . $conn->connect_error);
+		if ($this->conn->connect_errno) {
+
+			header($_SERVER["SERVER_PROTOCOL"] . " 503 Service Unavailable");
+			include($_SERVER["DOCUMENT_ROOT"] . "/errors/503.php");
+			echo("Could not connect to database: " . $this->conn->connect_error);
+			die();
+
 		}
+		error_reporting(5);
 		$this->conn->set_charset("utf8");
 		mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
