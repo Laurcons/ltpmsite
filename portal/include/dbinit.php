@@ -315,6 +315,16 @@ class db_connection {
 
 	}
 
+	public function retrieve_clasa_where_diriginte($columns, $diriginte_id) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM clase WHERE IdDiriginte=?;");
+		$stmt->bind_param('i', $diriginte_id);
+		$stmt->execute();
+
+		return $stmt->get_result()->fetch_assoc();
+
+	}
+
 	public function retrieve_clase($columns) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM clase ORDER BY Nivel,Sufix;");

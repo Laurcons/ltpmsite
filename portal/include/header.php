@@ -38,9 +38,11 @@
 
 								<div class="dropdown-menu bg-dark">
 
-									<a class="dropdown-item bg-dark text-light" href="?p=admin:clase">Clasele scolii</a>
+									<a class="dropdown-item bg-dark text-light" href="?p=admin:clase">Clasele liceului</a>
 
-									<a class="dropdown-item bg-dark text-light" href="?p=admin:materii">Materiile scolii</a>
+									<a class="dropdown-item bg-dark text-light" href="?p=admin:materii">Materiile liceului</a>
+
+									<a class="dropdown-item bg-dark text-light" href="?p=admin:utilizatori">Utilizatori</a>
 
 								</div>
 
