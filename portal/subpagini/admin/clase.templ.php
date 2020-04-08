@@ -194,6 +194,8 @@
 						Optiuni:
 					</div>
 
+					<a href="?p=admin:utilizatori&id={{Id}}" class="btn btn-sm border-info">Detalii elev</a>
+
 					<button class="btn btn-sm border-danger">Sterge din clasa</button>
 
 				</div>
@@ -233,6 +235,8 @@
 				</div>
 
 				<div class="col-md-5">
+
+					<a href="?p=admin:utilizatori&id={{profesor.Id}}" class="btn btn-sm border-info">Detalii profesor</a>
 
 					<button class="btn btn-sm border-danger">Sterge predare</button>
 

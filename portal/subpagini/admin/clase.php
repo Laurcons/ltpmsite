@@ -150,7 +150,9 @@ if (isset($_GET["id"])) {
 
 			<?= $diriginte["Nume"] . " " . $diriginte["Prenume"] ?>
 
-			<a class="btn btn-sm bg-white border">Schimba</a>
+			<a href="?p=admin:utilizatori&id=<?= $diriginte['Id'] ?>" class="btn btn-sm bg-white border-info">Detalii</a>
+
+			<a class="btn btn-sm bg-white border-warning">Schimba</a>
 
 		</p>
 
