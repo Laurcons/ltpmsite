@@ -4,7 +4,7 @@
 * [ ] Implementarea înregistrării prin coduri de acces
 * [ ] Implementarea super-logului global (pt administrație)
 * [ ] Implementarea unui sistem mai complex de permisiuni (probabil)
-* [ ] Implementarea unui sistem pentru a sistematiza adăugarea de Resurse
+* [ ] Implementarea unui sistem pentru adăugarea de Resurse
 * [ ] Implementarea sesiunii de utilizator extinse
 * [ ] Diferite tipuri de note (oral, scris, sau TEZĂ)
 * [ ] Abilitatea de a fi profesor suplinitor altor clase
