@@ -22,8 +22,6 @@
 
 				<ul class="navbar-nav mr-auto">
 
-					<li class="nav-item"><a class="nav-link" href="/">Inapoi la site</a></li>
-
 					<?php if (is_logged_in()) : ?>
 
 						<?php if (is_functie("elev")) : ?>
