@@ -123,6 +123,19 @@ class db_connection {
 
 	}
 
+	public function retrieve_utilizator_where_cod_inregistrare($columns, $cod) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE CodInregistrare=?;");
+		$stmt->bind_param("i", $cod);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows == 0)
+			return null;
+		else return $result->fetch_assoc();
+
+	}
+
 	public function retrieve_count_utilizatori() {
 
 		$stmt = $this->conn->prepare("SELECT count(Id) FROM utilizatori;");
@@ -159,6 +172,20 @@ class db_connection {
 		$result = $stmt->get_result();
 
 		return $result;
+
+	}
+
+	public function update_utilizator_inregistrare($user_id, $data) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET Username=?,Email=?,Nume=?,Prenume=?,Parola=?,CodInregistrare=NULL WHERE Id=?;");
+		$stmt->bind_param("sssssi",
+			$data["Username"],
+			$data["Email"],
+			$data["Nume"],
+			$data["Prenume"],
+			$data["Parola"],
+			$user_id);
+		$stmt->execute();
 
 	}
 

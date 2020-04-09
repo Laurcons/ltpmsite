@@ -69,7 +69,14 @@ if ($pagina == "" || $pagina == "prima") {
 
 } else if ($pagina == "inreg") {
 
-	include("subpagini/inregistrare.php");
+	if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("subpagini/inregistrare.js");
+	} else if ($post_redir) {
+		include("subpagini/inregistrare.post.php");
+	} else if ($ajax_redir) {
+		include("subpagini/inregistrare.ajax.php");
+	} else include("subpagini/inregistrare.php");
 
 } else if ($pagina == "panou") {
 
