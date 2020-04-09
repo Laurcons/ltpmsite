@@ -136,6 +136,14 @@ class db_connection {
 
 	}
 
+	public function update_utilizator_cod_inregistrare($user_id, $cod) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET CodInregistrare=? WHERE Id=?;");
+		$stmt->bind_param("ii", $cod, $user_id);
+		$stmt->execute();
+
+	}
+
 	public function retrieve_count_utilizatori() {
 
 		$stmt = $this->conn->prepare("SELECT count(Id) FROM utilizatori;");

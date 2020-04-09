@@ -10,7 +10,7 @@ if (isset($_GET["id"])) {
 
 if ($current_id != -1) {
 
-	$utilizator = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username,Email,Functie,Autoritate,NrMatricol,IdClasa,UltimaLogare,Creat", $current_id);
+	$utilizator = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username,Email,Functie,Autoritate,NrMatricol,IdClasa,UltimaLogare,Creat,CodInregistrare", $current_id);
 	$clasa = null;
 	if ($utilizator["Functie"] == "elev")
 		$clasa = $db->retrieve_clasa_where_id("Id,Nivel,Sufix,IdDiriginte", $utilizator["IdClasa"]);
@@ -295,6 +295,47 @@ if ($current_id != -1) {
 						 </button>
 
 					</div>
+
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="col-md-4">
+
+					<div class="d-none d-md-block h2 my-3">
+						Codul de inregistrare
+					</div>
+					<div class="d-block d-md-none text-right h2 my-3">
+						Codul de inregistrare
+					</div>
+
+					<div class="form-row">
+
+						<div class="col-6">
+
+							<input type="text"
+								   id="cod-inregistrare"
+								   class="form-control"
+								   value="<?= $utilizator['CodInregistrare'] == null ? '<inexistent>' : $utilizator['CodInregistrare'] ?>"
+								   readonly>
+
+						</div>
+
+						<div class="col-6">
+
+							<button type="button"
+									id="generate-cod-inregistrare"
+									class="btn btn-default btn-block border-dark">
+								Genereaza
+							</button>
+
+						</div>
+
+					</div>
+
+					<p>Acest cod i se va da utilizatorului pentru a se putea inregistra.</p>
 
 				</div>
 
