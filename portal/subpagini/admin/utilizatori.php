@@ -47,13 +47,13 @@ if ($current_id != -1) {
 
 		<?php if ($current_id == -1) : ?>
 
-			<div class="display-4 text-center mb-2">
+			<div class="display-4 text-center mb-4">
 				Toti utilizatorii
 			</div>
 
-			<div data-pagination="utilizatori">
+			<div data-tag="table-aux">
 
-				<!-- filled with javascript -->
+				<!-- filled with js -->
 
 			</div>
 
@@ -79,25 +79,15 @@ if ($current_id != -1) {
 
 			</div> <!-- header row -->
 
-			<div id="utilizatori-table-rows">
+			<div id="utilizatori-table-rows" class="mb-3">
 
 				<!-- filled with javascript -->
-
-				<div class="row border p-2">
-
-					<div class="col-12">
-
-						<span class="spinner-border text-primary"></span>
-
-					</div>
-
-				</div>
 
 			</div>
 
-			<div data-pagination="utilizatori">
+			<div data-tag="table-aux">
 
-				<!-- filled with javascript -->
+				<!-- filled with js -->
 
 			</div>
 

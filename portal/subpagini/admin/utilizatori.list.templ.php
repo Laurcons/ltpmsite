@@ -58,4 +58,54 @@
 
 	</template>
 
+	<template id="table-auxiliaries-template">
+
+		<div class="row mb-3">
+
+			<div class="col-md-4 d-flex">
+
+				<div class="mr-3">
+					Pagina:
+				</div>
+
+				<div class="w-100" data-pagination="utilizatori">
+
+					<!-- filled with javascript -->
+
+				</div>
+
+			</div>
+
+			<div class="col-md-4 d-flex">
+
+				<div class="mr-3 flex-shrink-0">
+					Intrari pe pagina:
+				</div>
+
+				<div class="w-100">
+
+					<input data-tag="pagination-epp"
+						   type="number"
+						   class="form-control form-control-sm"
+						   min="3"
+						   max="200">
+
+				</div>
+
+			</div>
+
+			<div class="col-md-4 d-flex">
+
+				<div class="flex-shrink-0">
+
+					<span class="d-none spinner-border spinner-border-sm text-primary" data-tag="data-loading"></span>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</template>
+
 </templates>

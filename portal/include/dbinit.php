@@ -156,7 +156,7 @@ class db_connection {
 
 	public function retrieve_paged_utilizatori($columns, $entriesPerPage, $page) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori ORDER BY Id ASC LIMIT ? OFFSET ?;");
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori ORDER BY Nume,Prenume ASC LIMIT ? OFFSET ?;");
 		$offset = $page * $entriesPerPage;
 		$stmt->bind_param('ii',
 			$entriesPerPage,
@@ -165,6 +165,36 @@ class db_connection {
 		$result = $stmt->get_result();
 
 		return $result;
+
+	}
+
+	public function retrieve_utilizatori_pagination_titles($entriesPerPage) {
+
+		$count = $this->retrieve_count_utilizatori();
+		$remaining = $count;
+		$return = array();
+
+		while ($remaining > 0) {
+
+			$pag = ($count - $remaining) / $entriesPerPage;
+			$utiliz = $this->retrieve_paged_utilizatori("Nume,Prenume", $entriesPerPage, $pag);
+
+			$first = $utiliz->fetch_assoc();
+			$utiliz->data_seek($utiliz->num_rows - 1);
+			$last = $utiliz->fetch_assoc();
+
+			$return[] = array(
+				"page" => $pag,
+				"count" => $utiliz->num_rows,
+				"first" => $first["Nume"] . " " . $first["Prenume"],
+				"last" => $last["Nume"] . " " . $last["Prenume"]
+			);
+
+			$remaining -= $entriesPerPage;
+
+		}
+
+		return $return;
 
 	}
 

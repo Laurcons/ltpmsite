@@ -31,6 +31,14 @@ if ($request == "utilizatori") {
 
 	}
 
+} else if ($request == "utilizatori-pages") {
+
+	$epp = $_GET["epp"];
+
+	$result = $db->retrieve_utilizatori_pagination_titles($epp);
+
+	$response->pages = $result;
+
 }
 
 header("Content-type: text/json");
