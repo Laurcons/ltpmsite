@@ -15,4 +15,4 @@
 * [ ] Crearea unui API (Portal API) pentru uz din afară (ar facilita crearea de aplicații de către elevi, sau idk)
 * [ ] Sistem pentru a raporta probleme și bugs
 ### Site principal
-@edwardinio18 te rog completează
+@edwardinio18 te rog completează 
