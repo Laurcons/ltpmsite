@@ -10,7 +10,7 @@ if (isset($_GET["id"])) {
 
 if ($current_id != -1) {
 
-	$utilizator = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username,Email,Functie,Autoritate,NrMatricol,IdClasa,UltimaLogare,Creat,CodInregistrare", $current_id);
+	$utilizator = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username,Email,Functie,Autoritate,NrMatricol,IdClasa,UltimaLogare,Creat,Activat,CodInregistrare", $current_id);
 	$clasa = null;
 	if ($utilizator["Functie"] == "elev")
 		$clasa = $db->retrieve_clasa_where_id("Id,Nivel,Sufix,IdDiriginte", $utilizator["IdClasa"]);
@@ -143,7 +143,7 @@ if ($current_id != -1) {
 							<select id="update-general-form-functie"
 								   class="form-control form-control-sm"
 								   form="update-general-form"
-								   data-unsave="update-general"
+								   data-unsave="general"
 								   name="functie">
 
 								<?php 
@@ -181,7 +181,7 @@ if ($current_id != -1) {
 
 							<select id="update-general-form-autoritate"
 								   class="form-control form-control-sm"
-								   data-unsave="update-general"
+								   data-unsave="general"
 								   form="update-general-form"
 								   name="autoritate">
 
@@ -262,13 +262,17 @@ if ($current_id != -1) {
 
 					<br>
 
+					<b>Activat la:</b> <?= $utilizator["Activat"] ?? "neactivat" ?>
+
+					<br>
+
 					<b>Ultima autentificare:</b> <?= $utilizator["UltimaLogare"] ?>
 
 				</div>
 
 			</div>
 
-			<div class="collapse" id="update-general-unsaved-alert">
+			<div class="collapse" data-unsave-alert="general">
 
 				<div class="alert alert-danger">
 
@@ -294,10 +298,10 @@ if ($current_id != -1) {
 
 				<div class="col-md-4">
 
-					<div class="d-none d-md-block h2 my-3">
+					<div class="d-none d-md-block h2 mt-3">
 						Codul de inregistrare
 					</div>
-					<div class="d-block d-md-none text-right h2 my-3">
+					<div class="d-block d-md-none text-right h2 mt-3">
 						Codul de inregistrare
 					</div>
 
@@ -329,6 +333,163 @@ if ($current_id != -1) {
 
 				</div>
 
+				<div class="col-md-8">
+
+					<div class="row col">
+
+						<div class="d-none d-md-block h2 mt-3">
+							Altele
+						</div>
+						<div class="d-block d-md-none text-right h2 mt-3">
+							Altele
+						</div>
+
+					</div>
+
+					<div class="row">
+
+						<div class="col-md-6">
+
+							<div class="form-row">
+
+								<div class="col-6">
+
+									<label class="font-weight-bold mt-2">Numele complet:</label>
+
+								</div>
+
+								<div class="col-6">
+
+									<input type="text"
+										   class="form-control"
+										   form="update-altele-form"
+										   data-unsave="altele"
+										   name="nume"
+										   placeholder="Numele"
+										   value="<?= $utilizator['Nume'] ?>"
+										   required>
+
+								</div>
+
+							</div>
+
+							<div class="form-row">
+
+								<div class="col">
+
+									<input type="text"
+										   class="form-control"
+										   form="update-altele-form"
+										   data-unsave="altele"
+										   name="prenume"
+										   value="<?= $utilizator['Prenume'] ?>"
+										   placeholder="Prenumele complet"
+										   required>
+
+								</div>
+
+							</div>
+
+							<div class="form-row mt-1">
+
+								<div class="col-3">
+
+									<label class="font-weight-bold mt-2">Username:</label>
+
+								</div>
+
+								<div class="col-9">
+
+									<input type="text"
+										   class="form-control"
+										   form="update-altele-form"
+										   data-unsave="altele"
+										   name="username"
+										   value="<?= $utilizator['Username'] ?>"
+										   placeholder="Numele de utilizator"
+										   required>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<div class="col-md-6 mt-1 mt-md-0">
+
+							<div class="form-row">
+
+								<div class="col-4">
+
+									<label class="font-weight-bold mt-2">E-mail:</label>
+
+								</div>
+
+								<div class="col-8">
+
+									<input type="email"
+										   form="update-altele-form"
+										   data-unsave="altele"
+										   class="form-control"
+										   name="email"
+										   value="<?= $utilizator['Email'] ?>"
+										   required>
+
+								</div>
+
+							</div>
+
+							<div class="form-row">
+
+								<div class="col-4">
+
+									<label class="font-weight-bold mt-2">Nr. matricol:</label>
+
+								</div>
+
+								<div class="col-8">
+
+									<input type="text"
+										   form="update-altele-form"
+										   data-unsave="altele"
+										   class="form-control"
+										   name="nr-matricol"
+										   value="<?= $utilizator['NrMatricol'] ?? "<niciunul>" ?>"
+										   <?= ($utilizator["Functie"] != "elev") ? "readonly" : "" ?>
+										   required>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="collapse" data-unsave-alert="altele">
+
+				<div class="alert alert-danger">
+
+					<div class="d-flex align-items-center">
+
+						<div class="flex-grow-1">
+							Aveti modificari nesalvate!
+						</div>
+
+						<button type="submit"
+								form="update-altele-form"
+						 		class="btn btn-primary">
+						 	Salvati modificarile
+						</button>
+
+					</div>
+
+				</div>
+
 			</div>
 
 		<?php endif; ?>
@@ -342,7 +503,16 @@ if ($current_id != -1) {
 		<form id="update-general-form">
 
 			<input type="hidden" id="update-general-form-form-id" name="form-id" value="initial">
-			<input type="hidden" name="update-general-form" value="trash">
+			<input type="hidden" name="user-id" value="<?= $current_id ?>">
+			<input type="hidden" name="update-general" value="trash">
+
+		</form>
+
+		<form id="update-altele-form">
+
+			<input type="hidden" id="update-altele-form-form-id" name="form-id" value="initial">
+			<input type="hidden" name="user-id" value="<?= $current_id ?>">
+			<input type="hidden" name="update-altele" value="trash">
 
 		</form>
 

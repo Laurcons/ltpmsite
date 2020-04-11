@@ -215,13 +215,28 @@ class db_connection {
 
 	public function update_utilizator_inregistrare($user_id, $data) {
 
-		$stmt = $this->conn->prepare("UPDATE utilizatori SET Username=?,Email=?,Nume=?,Prenume=?,Parola=?,CodInregistrare=NULL WHERE Id=?;");
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET Username=?,Email=?,Nume=?,Prenume=?,Parola=?,CodInregistrare=NULL,Activat=current_timestamp() WHERE Id=?;");
 		$stmt->bind_param("sssssi",
 			$data["Username"],
 			$data["Email"],
 			$data["Nume"],
 			$data["Prenume"],
 			$data["Parola"],
+			$user_id);
+		$stmt->execute();
+
+	}
+
+	public function update_utilizator_general_settings($user_id, $data) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET Username=?,Email=?,Nume=?,Prenume=?,Functie=?,Autoritate=? WHERE Id=?;");
+		$stmt->bind_param("ssssssi",
+			$data["Username"],
+			$data["Email"],
+			$data["Nume"],
+			$data["Prenume"],
+			$data["Functie"],
+			$data["Autoritate"],
 			$user_id);
 		$stmt->execute();
 

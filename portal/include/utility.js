@@ -23,3 +23,12 @@ function showFormError(form, field, text) {
 	$(selector).removeClass("d-none");
 
 }
+
+function updateFormIds(selector = "[name='form-id']") {
+
+   // form ids
+   $(selector).each(function() {
+      $(this).val(generateKey());
+   });
+
+}

@@ -15,15 +15,47 @@ if (isset($_POST["form-id"])) {
 
 		    $newCod = '';
 
-		    for($i = 0; $i < 6; $i++) {
-		        $newCod .= mt_rand(0, 9);
-		    }
+		    // tot genereaza pana e unic
+		    do {
+			    for($i = 0; $i < 6; $i++) {
+			        $newCod .= mt_rand(($i == 0) ? 1 : 0, 9);
+			    }
+			} while ($db->retrieve_utilizator_where_cod_inregistrare("Id", $newCod) != null);
 
 		    $db->update_utilizator_cod_inregistrare($_POST["user-id"], $newCod);
 
 		    $response->status = "success";
 		    $response->newCod = $newCod;
 
+		} else
+		if (isset($_POST["update-general"])) {
+
+			$utiliz = $db->retrieve_utilizator_where_id("Functie,Autoritate,Nume,Prenume,Email,NrMatricol,Username", $_POST["user-id"]);
+
+			$utiliz["Functie"] = $_POST["functie"];
+			$utiliz["Autoritate"] = $_POST["autoritate"];
+
+			$db->update_utilizator_general_settings($_POST["user-id"], $utiliz);
+
+		    $response->status = "success";
+
+		} else
+		if (isset($_POST["update-altele"])) {
+
+			$utiliz = $db->retrieve_utilizator_where_id("Functie,Autoritate,Nume,Prenume,Email,NrMatricol,Username", $_POST["user-id"]);
+
+			$utiliz["Nume"] = $_POST["nume"];
+			$utiliz["Prenume"] = $_POST["prenume"];
+			$utiliz["Email"] = $_POST["email"];
+			$utiliz["NrMatricol"] = $_POST["nr-matricol"];
+			$utiliz["Username"] = $_POST["username"];
+
+			$db->update_utilizator_general_settings($_POST["user-id"], $utiliz);
+
+		    $response->status = "success";
+
+		} else {
+			$response->status = "no-action-specified";
 		}
 
 	} else {
