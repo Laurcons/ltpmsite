@@ -1,15 +1,5 @@
 <?php
 
-// WRITTEN AND MAINTAINED BY BUBU
-
-// NAMING SCHEMES
-//
-// using_this_style_of_naming
-//
-// is_x_y : checks whether x is y
-// insert_user : function that inserts an user
-// delete_user_where_x : function that deletes users that satisfy the x condition
-
 // functie de utilitate ca sa mearga chestia cu utf-8 dracu s-o ia
 function utf8_for_xml($string) {
     return preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u',
@@ -23,17 +13,26 @@ class db_connection {
 
 	function __construct() {
 
-		$servername = "laurcons.ddns.net";
-		$username = "ltpmdb_user";
-		$password = "m5a2Yc0ztiVkd24b";
-		$dbname = "ltpmdb";
+		$conf = require("dbconfig.php"); // file is gitignored, you need to provide it for yourself
 
+		$servername = $conf["hostname"];
+		$username = $conf["username"];
+		$password = $conf["password"];
+		$dbname = $conf["database"];
+
+		error_reporting(0);
 		// Create connection
 		$this->conn = new mysqli($servername, $username, $password, $dbname);
 		// Check connection
-		if ($this->conn->connect_error) {
-		    die("Database connection failed: " . $conn->connect_error);
+		if ($this->conn->connect_errno) {
+
+			header($_SERVER["SERVER_PROTOCOL"] . " 503 Service Unavailable");
+			include($_SERVER["DOCUMENT_ROOT"] . "/errors/503.php");
+			echo("Could not connect to database: " . $this->conn->connect_error);
+			die();
+
 		}
+		error_reporting(5);
 		$this->conn->set_charset("utf8");
 		mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
