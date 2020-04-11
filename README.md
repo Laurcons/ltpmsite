@@ -1,7 +1,7 @@
 # LTPM -> Site + Portal
 ## FUNCȚIONALITĂȚI PLANIFICATE
 ### Portal LTPM
-* [ ] (ÎNCEPUT) Implementarea înregistrării prin coduri de acces
+* [ ] (FINALIZAT) Implementarea înregistrării prin coduri de acces
 * [ ] Implementarea super-logului global (pt administrație)
 * [ ] Implementarea unui sistem mai complex de permisiuni (probabil)
 * [ ] Implementarea unui sistem pentru adăugarea de Resurse
