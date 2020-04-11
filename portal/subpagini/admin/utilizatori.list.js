@@ -52,12 +52,14 @@ $(document).ready(function() {
 
 		e.preventDefault();
 
+		hideFormErrors("adauga-utilizator");
+		if (!validate_adaugaUtilizator())
+			return;
+
 		$("[type='submit'][form='adauga-utilizator-form']")
 			.append(
 				$("<span>")
 					.addClass("spinner-border spinner-border-sm"));
-
-		hideFormErrors("adauga-utilizator");
 
 		$.ajax({
 			url: "?p=admin:utilizatori&post",
@@ -71,11 +73,17 @@ $(document).ready(function() {
 					ajax_updateUtilizatori(true);
 					$("#adauga-utilizator-modal").modal("hide");
 
-				} else alert("AJAX status: " + result.status);
+				} else if (result.status == "username-taken") {
+
+					showFormError("adauga-utilizator", "username", "Numele de utilizator dat exista deja! Alegeti altul!");
+
+				} else {
+					showFormError("adauga-utilizator", "submit", "A aparut o eroare necunoscuta. Va rugam incercati din nou.<br>Cod: status: " + result.status);
+				}
 
 			},
 			error: function(req, err) {
-				alert("AJAX error: " + err);
+				showFormError("adauga-utilizator", "submit", "A aparut o eroare necunoscuta. Va rugam incercati din nou.<br>Cod: ajax_error: " + err);
 			},
 			complete: function() {
 				updateFormIds();
@@ -91,6 +99,37 @@ $(document).ready(function() {
 	ajax_updateUtilizatori();
 
 });
+
+function validate_adaugaUtilizator() {
+
+	var nume = $("[form='adauga-utilizator-form'][name='nume']").val().trim();
+	var prenume = $("[form='adauga-utilizator-form'][name='prenume']").val().trim();
+	var username = $("[form='adauga-utilizator-form'][name='username']").val().trim();
+	var email = $("[form='adauga-utilizator-form'][name='email']").val().trim();
+	var usernameRegex = /^[a-zA-Z0-9_]+$/;
+
+	if (nume == "" || prenume == "") {
+
+		showFormError("adauga-utilizator", "nume", "Numele si prenumele nu pot fi goale!");
+		return false;
+
+	}
+	if (username == "") {
+		showFormError("adauga-utilizator", "username", "Numele de utilizator nu poate fi gol!");
+		return false;
+	}
+	if (!usernameRegex.test(username)) {
+		showFormError("adauga-utilizator", "username", "Numele de utilizator poate contine doar litere ale alfabetului englez, numere si caracterul <kbd>_</kbd>!");
+		return false;
+	}
+	if (email == "") {
+		showFormError("adauga-utilizator", "email", "Adresa de e-mail nu poate fi goala!");
+		return false;
+	}
+
+	return true;
+
+}
 
 function ajax_updatePagination(updateList = false) {
 

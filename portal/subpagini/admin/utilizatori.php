@@ -524,16 +524,18 @@ $autoritati[] = "admin";
 									   class="form-control"
 									   form="adauga-utilizator-form"
 									   name="nume"
-									   placeholder="Numele de familie"
-									   value="Test">
+									   placeholder="Numele de familie">
 
 								<input type="text"
 									   class="form-control"
 									   form="adauga-utilizator-form"
 									   name="prenume"
-									   placeholder="Toate prenumele"
-									   value="User">
+									   placeholder="Toate prenumele">
 
+							</div>
+
+							<div class="alert alert-danger py-1 px-3 d-none" data-form="adauga-utilizator" data-for="nume">
+								error
 							</div>
 
 						</div>
@@ -546,8 +548,11 @@ $autoritati[] = "admin";
 								   class="form-control"
 								   form="adauga-utilizator-form"
 								   name="username"
-								   placeholder="Doar litere, numere si '_'"
-								   value="test_">
+								   placeholder="Doar litere, numere si '_'">
+
+							<div class="alert alert-danger py-1 px-3 d-none" data-form="adauga-utilizator" data-for="username">
+								error
+							</div>
 
 						</div>
 
@@ -558,8 +563,11 @@ $autoritati[] = "admin";
 							<input type="email"
 								   class="form-control"
 								   form="adauga-utilizator-form"
-								   name="email"
-								   value="test@test.test">
+								   name="email">
+
+							<div class="alert alert-danger py-1 px-3 d-none" data-form="adauga-utilizator" data-for="email">
+								error
+							</div>
 
 						</div>
 
@@ -634,6 +642,10 @@ $autoritati[] = "admin";
 					</div>
 
 					<div class="modal-footer">
+
+						<div class="alert alert-danger px-3 py-1 d-none" data-form="adauga-utilizator" data-for="submit">
+
+						</div>
 
 						<div class="btn-group">
 
