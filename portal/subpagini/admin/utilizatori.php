@@ -17,15 +17,15 @@ if ($current_id != -1) {
 	else if ($utilizator["Functie"] == "profesor")
 		$clasa = $db->retrieve_clasa_where_diriginte("Id,Nivel,Sufix,IdDiriginte", $utilizator["Id"]);
 
-	$functii = array();
-	$functii[] = "elev";
-	$functii[] = "profesor";
-	$functii[] = "neatribuit";
-	$autoritati = array();
-	$autoritati[] = "normal";
-	$autoritati[] = "admin";
-
 }
+
+$functii = array();
+$functii[] = "elev";
+$functii[] = "profesor";
+$functii[] = "neatribuit";
+$autoritati = array();
+$autoritati[] = "normal";
+$autoritati[] = "admin";
 
 ?>
 
@@ -497,6 +497,172 @@ if ($current_id != -1) {
 	</div> <!-- container -->
 
 	<?php if ($current_id == -1) : ?>
+
+		<div class="modal fade" id="adauga-utilizator-modal">
+
+			<div class="modal-dialog">
+
+				<div class="modal-content">
+
+					<div class="modal-header">
+
+						<h4 class="modal-title">Adauga utilizator</h4>
+
+					</div>
+
+					<div class="modal-body">
+
+						<p>Va rugam sa configurati utilizatorul. Toate aceste optiuni pot fi modificate mai tarziu.</p>
+
+						<div class="form-group">
+
+							<label class="font-weight-bold">Nume si prenume:</label>
+
+							<div class="input-group">
+
+								<input type="text"
+									   class="form-control"
+									   form="adauga-utilizator-form"
+									   name="nume"
+									   placeholder="Numele de familie"
+									   value="Test">
+
+								<input type="text"
+									   class="form-control"
+									   form="adauga-utilizator-form"
+									   name="prenume"
+									   placeholder="Toate prenumele"
+									   value="User">
+
+							</div>
+
+						</div>
+
+						<div class="form-group">
+
+							<label class="font-weight-bold">Numele de utilizator:</label>
+
+							<input type="text"
+								   class="form-control"
+								   form="adauga-utilizator-form"
+								   name="username"
+								   placeholder="Doar litere, numere si '_'"
+								   value="test_">
+
+						</div>
+
+						<div class="form-group">
+
+							<label class="font-weight-bold">Adresa de e-mail:</label>
+
+							<input type="email"
+								   class="form-control"
+								   form="adauga-utilizator-form"
+								   name="email"
+								   value="test@test.test">
+
+						</div>
+
+						<div class="form-group">
+
+							<label class="font-weight-bold">Functia si autoritatea:</label>
+
+							<div class="input-group">
+
+								<select class="form-control"
+										form="adauga-utilizator-form"
+										name="functie">
+
+									<?php foreach ($functii as $functie) : ?>
+
+										<?= "<option " . (($functie == "elev") ? "selected>" : ">") ?>
+										<?= $functie ?>
+										<?= "</option>" ?>
+
+									<?php endforeach; ?>
+
+								</select>
+
+								<select class="form-control"
+										form="adauga-utilizator-form"
+										name="autoritate">
+
+									<?php foreach ($autoritati as $autorit) : ?>
+
+										<?= "<option " . (($autorit == "normal") ? "selected>" : ">") ?>
+										<?= $autorit ?>
+										<?= "</option>" ?>
+
+									<?php endforeach; ?>
+
+								</select>
+
+							</div>
+
+						</div>
+
+						<div class="form-group">
+
+							<div class="form-check">
+
+								<input type="checkbox"
+									   class="form-check-input"
+									   form="adauga-utilizator-form"
+									   id="adauga-utilizator-form-is-inserted-into-class"
+									   name="is-inserted-into-class"
+									   checked>
+
+								<label class="font-weight-bold font-check-label" for="adauga-utilizator-form-is-inserted-into-class">
+									Insereaza in clasa:
+
+									<span class="spinner-border spinner-border-sm text-primary mx-2 d-none"
+										  id="adauga-utilizator-modal-clase-spinner">
+									</span>
+
+								</label>
+
+							</div>
+
+							<select class="form-control"
+									form="adauga-utilizator-form"
+									name="insert-into-class">
+
+							</select>
+
+						</div>
+
+					</div>
+
+					<div class="modal-footer">
+
+						<div class="btn-group">
+
+							<button type="button" data-dismiss="modal" class="btn btn-default border-primary">
+								Inapoi
+							</button>
+
+							<button type="submit"
+									form="adauga-utilizator-form"
+									class="btn btn-primary">
+								Adauga utilizator
+							</button>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<form id="adauga-utilizator-form">
+
+			<input type="hidden" name="form-id">
+			<input type="hidden" name="adauga-utilizator">
+
+		</form>
 
 	<?php else : // current_id == -1 ?>
 

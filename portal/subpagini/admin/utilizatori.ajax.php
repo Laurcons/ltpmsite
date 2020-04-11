@@ -31,6 +31,8 @@ if ($request == "utilizatori") {
 
 	}
 
+	$response->status = "success";
+
 } else if ($request == "utilizatori-pages") {
 
 	$epp = $_GET["epp"];
@@ -38,10 +40,32 @@ if ($request == "utilizatori") {
 	$result = $db->retrieve_utilizatori_pagination_titles($epp);
 
 	$response->pages = $result;
+	$response->status = "success";
+
+} else if ($request == "clase-list") {
+
+	$clase = $db->retrieve_clase("*");
+	$response->clase = array();
+
+	// ia detalii aditionale pentru fiecare
+	while ($clasa = $clase->fetch_assoc()) {
+
+		$newobj = $clasa;
+		$newobj["diriginte"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
+		$newobj["nr_elevi"] = $db->retrieve_count_elevi_where_clasa($clasa["Id"]);
+		$response->clase[] = $newobj;
+
+	}
+
+	$response->status = "success";
+
+} else {
+
+	$response->status = "request-not-found";
 
 }
 
-header("Content-type: text/json");
+header("Content-type: application/json");
 echo(json_encode($response));
 
 ?>

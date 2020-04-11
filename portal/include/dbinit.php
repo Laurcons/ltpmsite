@@ -62,16 +62,15 @@ class db_connection {
 
 	public function insert_utilizator($utilizator_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO utilizatori (Username, Parola, Email, Autoritate, Functie, NrMatricol, Nume, Prenume) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param('ssssssss',
+		$stmt = $this->conn->prepare("INSERT INTO utilizatori (Parola, Username, Email, Autoritate, Functie, Nume, Prenume, IdClasa) VALUES ('notset', ?, ?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param('ssssssi',
 			$utilizator_data["Username"],
-			$utilizator_data["Parola"],
 			$utilizator_data["Email"],
 			$utilizator_data["Autoritate"],
 			$utilizator_data["Functie"],
-			$utilizator_data["NrMatricol"],
 			$utilizator_data["Nume"],
-			$utilizator_data["Prenume"]);
+			$utilizator_data["Prenume"],
+			$utilizator_data["IdClasa"]);
 		$stmt->execute();
 
 	}

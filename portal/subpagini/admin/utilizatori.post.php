@@ -54,6 +54,26 @@ if (isset($_POST["form-id"])) {
 
 		    $response->status = "success";
 
+		} else if (isset($_POST["adauga-utilizator"])) {
+
+			$avail = $db->is_username_available($_POST["username"]);
+
+			if ($avail) {
+
+				$db->insert_utilizator([
+					"Nume" => $_POST["nume"],
+					"Prenume" => $_POST["prenume"],
+					"Username" => $_POST["username"],
+					"Email" => $_POST["email"],
+					"Autoritate" => $_POST["autoritate"],
+					"Functie" => $_POST["functie"],
+					"IdClasa" => (isset($_POST["is-inserted-into-class"])) ? $_POST["insert-into-class"] : "-1"
+				]);
+
+			    $response->status = "success";
+
+			} else $response->status = "username-taken";
+
 		} else {
 			$response->status = "no-action-specified";
 		}
