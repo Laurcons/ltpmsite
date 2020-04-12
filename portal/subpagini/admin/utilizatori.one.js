@@ -2,14 +2,16 @@
 
 function getId() {
 
-	var searchParams = new URLSearchParams(window.location.search);
-	return searchParams.get("id");
+	return urlGet("id");
 
 }
 
 $(document).ready(function() {
 
 	updateFormIds();
+
+	if (utilizator_functie == "profesor")
+		ajax_updatePredari();
 
 	// alea de "modificari nesalvate"
 	$("[data-unsave]").change(function() {
@@ -132,4 +134,79 @@ $(document).ready(function() {
 
 	});
 
+	$("#delete-utilizator-button").click(function () {
+
+		alert("Not Implemented");
+
+	});
+
 });
+
+function ajax_updatePredari() {
+
+	$("#predari-rows")
+		.html(
+			$("<div>")
+				.addClass("row border border-bottom-0 p-3")
+				.html(
+					$("<span>")
+						.addClass("spinner-border text-primary")));
+
+	$.ajax({
+		url: "?p=admin:utilizatori&ajax&r=predari&id=" + getId(),
+		method: "GET",
+		dataType: "json",
+		//data: ,
+		success: function(result) {
+	
+			if (result.status == "success") {
+
+				// creeaza obiectul cu mustache
+				var template = $("#predare-row-template").html();
+				var output = "";
+				var rowCounter = 0;
+
+				result.materii.forEach(function(materie, i_materie) {
+
+					materie.clase.forEach(function(clasa, i_clasa) {
+
+						var row = {};
+
+						row.nrcrt = ++rowCounter;
+
+						if (i_clasa == 0) {
+							row.hasMaterie = true;
+							row.materie = materie;
+						} else row.hasMaterie = false;
+						row.clasa = clasa;
+
+						output += Mustache.render(template, row);
+
+					});
+
+				});
+
+				if (result.materii.length == 0) {
+					$("#predari-rows")
+						.html(
+							$("<div>")
+								.addClass("row border border-bottom-0 p-2 px-3")
+								.html("Profesorul nu preda la nicio clasa."));
+				} 
+				else $("#predari-rows").html(output);
+	
+			} else {
+				console.error("AJAX status: " + result.status);
+			}
+	
+		},
+		error: function(req, err) {
+			console.error("AJAX error: " + err);
+		},
+		complete: function() {
+	
+		}
+	
+	});
+
+}

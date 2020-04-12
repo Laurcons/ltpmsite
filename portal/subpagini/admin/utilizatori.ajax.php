@@ -59,6 +59,56 @@ if ($request == "utilizatori") {
 
 	$response->status = "success";
 
+} else if ($request == "predari") {
+
+	$predari = $db->retrieve_predari_where_profesor("*", $_GET["id"])->fetch_all(MYSQLI_ASSOC);
+
+	$materii_ids = 
+		array_unique(
+			array_map(
+				function($item) {
+					return $item["IdMaterie"];
+				},
+				$predari));
+
+	$response->materii = array();
+
+	foreach ($materii_ids as $materie_id) {
+
+		$materie = $db->retrieve_materie_where_id("*", $materie_id);
+
+		$func = function($item) use ($materie_id) {
+					//echo ($item["IdMaterie"] . " " . $materie_id . " " . (($item["IdMaterie"] == $materie_id)?"true":"false") . "\n");
+					return ($item["IdMaterie"] == $materie_id);
+				};
+
+		// obtine toate predarile cu materia data
+		$filtered_predari = 
+			array_filter($predari,
+				$func);
+
+		// pune toate clasele predarilor alora
+		$materie["clase"] = array();
+		foreach ($filtered_predari as $predare) {
+
+			$clasa = $db->retrieve_clasa_where_id("*", $predare["IdClasa"]);
+			$clasa["diriginte"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
+
+			$materie["clase"][] = $clasa;
+
+		}
+
+		$response->materii[] = $materie;
+
+	}
+
+	usort($response->materii,
+		function($a, $b) {
+			return strcmp($a["Nume"], $b["Nume"]);
+		});
+
+	$response->status = "success";
+
 } else {
 
 	$response->status = "request-not-found";

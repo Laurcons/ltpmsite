@@ -32,3 +32,10 @@ function updateFormIds(selector = "[name='form-id']") {
    });
 
 }
+
+function urlGet(param) {
+
+   var searchParams = new URLSearchParams(window.location.search);
+   return searchParams.get(param);
+
+}

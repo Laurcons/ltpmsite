@@ -330,13 +330,17 @@ $autoritati = $CONFIG["autoritati"];
 
 				<div class="col-md-8">
 
-					<div class="row col">
+					<div class="row">
 
-						<div class="d-none d-md-block h2 mt-3">
-							Altele
-						</div>
-						<div class="d-block d-md-none text-right h2 mt-3">
-							Altele
+						<div class="col">
+
+							<div class="d-none d-md-block h2 mt-3">
+								Altele
+							</div>
+							<div class="d-block d-md-none text-right h2 mt-3">
+								Altele
+							</div>
+
 						</div>
 
 					</div>
@@ -487,13 +491,77 @@ $autoritati = $CONFIG["autoritati"];
 
 			</div>
 
-			<div class="row">
+			<?php if ($utilizator["Functie"] == "profesor") : ?>
 
 				<div class="d-none d-md-block h2 mt-3">
-					Actiuni
+					Predari profesor
 				</div>
 				<div class="d-block d-md-none text-right h2 mt-3">
-					Actiuni
+					Predari profesor
+				</div>
+
+				<div class="d-none d-md-block"> <!-- header row -->
+
+					<div class="row border p-2">
+
+						<div class="col-md-3">
+
+							<div class="font-weight-bold">Materia predata</div>
+
+						</div>
+
+						<div class="col-md-3">
+
+							<div class="font-weight-bold">Clasele la care preda</div>
+
+						</div>
+
+						<div class="col-md-6">
+
+							<div class="font-weight-bold">Optiuni</div>
+
+						</div>
+
+					</div>
+
+				</div> <!-- header row -->
+
+				<div id="predari-rows">
+
+					<!-- filled with javascript -->
+
+				</div>
+
+				<div class="row border p-2">
+
+					<div class="col">
+
+						<button class="btn btn-default border-primary btn-sm">
+							Adauga predare
+						</button>
+
+					</div>
+
+				</div>
+
+			<?php endif; ?>
+
+			<div class="d-none d-md-block h2 mt-3">
+				Actiuni
+			</div>
+			<div class="d-block d-md-none text-right h2 mt-3">
+				Actiuni
+			</div>
+
+			<div class="row">
+
+				<div class="col">
+
+					<button id="delete-utilizator-button"
+							class="btn btn-default border-danger">
+						Sterge utilizator
+					</button>
+
 				</div>
 
 			</div>
@@ -684,6 +752,16 @@ $autoritati = $CONFIG["autoritati"];
 
 	<?php else : // current_id == -1 ?>
 
+		<div class="modal fade">
+
+			<div class="modal-dialog">
+
+				<!-- imma continue this -->
+
+			</div>
+
+		</div>
+
 		<form id="update-general-form">
 
 			<input type="hidden" id="update-general-form-form-id" name="form-id" value="initial">
@@ -711,21 +789,28 @@ $autoritati = $CONFIG["autoritati"];
 		<script src="?p=admin:utilizatori&js=list"></script>
 		<?php require_once("utilizatori.list.templ.php"); ?>
 
-		<style>
-
-			.table-row:hover {
-
-				background-color: #ddd;
-
-			}
-
-		</style>
-
 	<?php else : // current_id == -1 ?>
 
 		<script src="?p=admin:utilizatori&js=one"></script>
+		<?php require_once("utilizatori.one.templ.php"); ?>
+
+		<script>
+
+			var utilizator_functie = "<?= $utilizator['Functie'] ?>";
+
+		</script>
 
 	<?php endif; ?>
+
+	<style>
+
+		.table-row:hover {
+
+			background-color: #ddd;
+
+		}
+
+	</style>
 
 </footer>
 
