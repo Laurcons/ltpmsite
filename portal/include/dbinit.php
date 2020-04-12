@@ -373,6 +373,17 @@ class db_connection {
 
 	}
 
+	public function insert_predare($predare_data) {
+
+		$stmt = $this->conn->prepare("INSERT INTO predari (IdClasa, IdMaterie, IdProfesor) VALUES (?, ?, ?);");
+		$stmt->bind_param('iii',
+			$predare_data["IdClasa"],
+			$predare_data["IdMaterie"],
+			$predare_data["IdProfesor"]);
+		$stmt->execute();
+
+	}
+
 	public function retrieve_elevi_where_clasa($columns, $id_clasa) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE IdClasa=? ORDER BY Nume,Prenume DESC;");

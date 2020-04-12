@@ -109,6 +109,27 @@ if ($request == "utilizatori") {
 
 	$response->status = "success";
 
+} else if ($request == "adauga-predare-data") {
+
+	$materii = $db->retrieve_materii("*");
+
+	$response->materii = $materii->fetch_all(MYSQLI_ASSOC);
+
+	$clase = $db->retrieve_clase("*");
+	$response->clase = array();
+
+	// ia detalii aditionale pentru fiecare
+	while ($clasa = $clase->fetch_assoc()) {
+
+		$newobj = $clasa;
+		$newobj["diriginte"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
+		$newobj["nr_elevi"] = $db->retrieve_count_elevi_where_clasa($clasa["Id"]);
+		$response->clase[] = $newobj;
+
+	}
+
+	$response->status = "success";
+
 } else {
 
 	$response->status = "request-not-found";

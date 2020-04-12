@@ -74,6 +74,16 @@ if (isset($_POST["form-id"])) {
 
 			} else $response->status = "username-taken";
 
+		} else if (isset($_POST["adauga-predare"])) {
+
+			$db->insert_predare(array(
+				"IdProfesor" => $_POST["user-id"],
+				"IdClasa" => $_POST["clasa"],
+				"IdMaterie" => $_POST["materie"]
+			));
+
+			$response->status = "success";
+
 		} else {
 			$response->status = "no-action-specified";
 		}

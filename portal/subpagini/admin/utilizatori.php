@@ -536,9 +536,16 @@ $autoritati = $CONFIG["autoritati"];
 
 					<div class="col">
 
-						<button class="btn btn-default border-primary btn-sm">
+						<button class="btn btn-default border-primary btn-sm"
+								data-toggle="modal"
+								data-target="#adauga-predare-modal">
 							Adauga predare
 						</button>
+
+						<a class="btn btn-default border-dark btn-sm"
+						   href="?p=admin:materii">
+						   Gestionare materii
+						</a>
 
 					</div>
 
@@ -752,14 +759,120 @@ $autoritati = $CONFIG["autoritati"];
 
 	<?php else : // current_id == -1 ?>
 
-		<div class="modal fade">
+		<div class="modal fade" id="adauga-predare-modal">
 
 			<div class="modal-dialog">
 
-				<!-- imma continue this -->
+				<div class="modal-content">
+
+					<div class="modal-header">
+
+						<h4 class="modal-title">
+							Adauga predare
+						</h4>
+
+					</div>
+
+					<div class="modal-body">
+
+						<p>Selecteaza materia ce se va preda, si clasa.</p>
+
+						<div class="form-group">
+
+							<label class="font-weight-bold">Materia predata:</label>
+
+							<select class="form-control"
+									name="materie"
+									form="adauga-predare-form">
+
+								<!-- filled with javascript -->
+
+							</select>
+
+						</div>
+
+						<div class="form-group">
+
+							<label class="font-weight-bold">Clasa la care se preda:</label>
+
+							<select class="form-control"
+									name="clasa"
+									form="adauga-predare-form">
+
+								<!-- filled with javascript -->
+
+							</select>
+
+						</div>
+
+					</div>
+
+					<div class="modal-footer">
+
+						<span class="spinner-border spinner-border-sm text-primary" id="adauga-predare-modal-spinner"></span>
+
+						<div class="btn-group">
+
+							<button class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+
+							<button type="submit"
+									form="adauga-predare-form"
+									class="btn btn-primary">
+								Adauga predare
+							</button>
+
+						</div>
+
+					</div>
+
+				</div>
 
 			</div>
 
+		</div>
+
+		<div class="modal fade" id="sterge-predare-modal">
+		
+			<div class="modal-dialog">
+		
+				<div class="modal-content">
+		
+					<div class="modal-header bg-danger text-white">
+		
+						<h4 class="modal-title">
+							Sterge predare
+						</h4>
+		
+					</div>
+		
+					<div class="modal-body">
+		
+						<p>Sunteti sigur ca doriti sa stergeti predarea?</p>
+
+						<p>Nimic altceva, in afara de predare, nu va fi afectat!</p>
+		
+					</div>
+		
+					<div class="modal-footer">
+		
+						<div class="btn-group">
+		
+							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+		
+							<button type="submit"
+									form=""
+									class="btn btn-danger">
+								Sterge predare
+							</button>
+		
+						</div>
+		
+					</div>
+		
+				</div>
+		
+			</div>
+		
 		</div>
 
 		<form id="update-general-form">
@@ -775,6 +888,14 @@ $autoritati = $CONFIG["autoritati"];
 			<input type="hidden" id="update-altele-form-form-id" name="form-id" value="initial">
 			<input type="hidden" name="user-id" value="<?= $current_id ?>">
 			<input type="hidden" name="update-altele" value="trash">
+
+		</form>
+
+		<form id="adauga-predare-form">
+
+			<input type="hidden" name="form-id" value="initial">
+			<input type="hidden" name="user-id" value="<?= $current_id ?>">
+			<input type="hidden" name="adauga-predare" value="trash">
 
 		</form>
 

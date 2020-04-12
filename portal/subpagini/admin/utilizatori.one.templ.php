@@ -10,6 +10,9 @@
 				{{#hasMaterie}}
 					{{materie.Nume}}
 				{{/hasMaterie}}
+				{{^hasMaterie}}
+					<span class="d-md-none">{{materie.Nume}}</span>
+				{{/hasMaterie}}
 
 			</div>
 
@@ -23,6 +26,12 @@
 			<div class="col-md-6">
 
 				<a href="?p=admin:clase&id={{clasa.Id}}" class="btn btn-default border-dark btn-sm">Gestionare {{clasa.Nivel}}-{{clasa.Sufix}}</a>
+
+				<button class="btn btn-sm btn-default border-danger"
+						data-toggle="modal"
+						data-target="#sterge-predare-modal">
+					Sterge predare
+				</button>
 
 			</div>
 

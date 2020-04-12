@@ -140,6 +140,50 @@ $(document).ready(function() {
 
 	});
 
+	$("#adauga-predare-modal").on("show.bs.modal", function() {
+
+		ajax_updatePredareModal();
+
+	});
+
+	$("#adauga-predare-form").submit(function(e) {
+
+		e.preventDefault();
+
+		// loading indicator
+		$("[type='submit'][form='adauga-predare-form']")
+			.append(
+				$("<span>")
+					.addClass("spinner-border spinner-border-sm"));
+
+		$.ajax({
+			url: "?p=admin:utilizatori&post",
+			method: "POST",
+			dataType: "json",
+			data: $(this).serialize(),
+			success: function(result) {
+		
+				if (result.status == "success") {
+		
+					$("#adauga-predare-modal").modal("hide");
+					ajax_updatePredari();
+		
+				} else {
+					console.error("AJAX status: " + result.status);
+				}
+		
+			},
+			error: function(req, err) {
+				console.error("AJAX error: " + err);
+			},
+			complete: function() {
+				updateFormIds();
+			}
+		
+		});
+
+	});
+
 });
 
 function ajax_updatePredari() {
@@ -148,6 +192,7 @@ function ajax_updatePredari() {
 		.html(
 			$("<div>")
 				.addClass("row border border-bottom-0 p-3")
+				.css("height", ($("#predari-rows").height() > 0) ? $("#predari-rows").height() : "auto")
 				.html(
 					$("<span>")
 						.addClass("spinner-border text-primary")));
@@ -174,10 +219,8 @@ function ajax_updatePredari() {
 
 						row.nrcrt = ++rowCounter;
 
-						if (i_clasa == 0) {
-							row.hasMaterie = true;
-							row.materie = materie;
-						} else row.hasMaterie = false;
+						row.hasMaterie = i_clasa == 0;
+						row.materie = materie;
 						row.clasa = clasa;
 
 						output += Mustache.render(template, row);
@@ -205,6 +248,69 @@ function ajax_updatePredari() {
 		},
 		complete: function() {
 	
+		}
+	
+	});
+
+}
+
+function ajax_updatePredareModal() {
+
+	$("#adauga-predare-modal-spinner").removeClass("d-none");
+
+	// memoreaza pozitiile curente din selecturi
+	var selectedMaterie = $("[form='adauga-predare-form'][name='materie'] option:selected").val();
+	var selectedClasa = $("[form='adauga-predare-form'][name='clasa'] option:selected").val();
+
+	// sterge toate intrarile
+	$("[form='adauga-predare-form'][name='materie']").empty();
+	$("[form='adauga-predare-form'][name='clasa']").empty();
+
+	$.ajax({
+		url: "?p=admin:utilizatori&ajax&r=adauga-predare-data",
+		dataType: "json",
+		success: function(result) {
+	
+			if (result.status == "success") {
+	
+				// populeaza materiile
+				result.materii.forEach(function(item, index) {
+
+					$("[form='adauga-predare-form'][name='materie']")
+						.append(
+							$("<option>")
+								.attr("value", item.Id)
+								.html(item.Nume));
+
+				});
+
+				// populeaza clasele
+				result.clase.forEach(function(item, index) {
+
+					$("[form='adauga-predare-form'][name='clasa']")
+						.append(
+							$("<option>")
+								.attr("value", item.Id)
+								.html("Clasa " + item.Nivel + "-" + item.Sufix + ", diriginte " + item.diriginte.Nume + " " + item.diriginte.Prenume));
+
+				});
+
+				// pune selectiile de dinainte de request
+				$("[form='adauga-predare-form'][name='materie']")
+					.val(selectedMaterie);
+				$("[form='adauga-predare-form'][name='clasa']")
+					.val(selectedClasa);
+	
+			} else {
+				console.error("AJAX status: " + result.status);
+			}
+	
+		},
+		error: function(req, err) {
+			console.error("AJAX error: " + err);
+		},
+		complete: function() {
+			$("#adauga-predare-modal-spinner").addClass("d-none");
 		}
 	
 	});
