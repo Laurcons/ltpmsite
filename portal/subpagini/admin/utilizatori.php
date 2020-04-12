@@ -19,13 +19,8 @@ if ($current_id != -1) {
 
 }
 
-$functii = array();
-$functii[] = "elev";
-$functii[] = "profesor";
-$functii[] = "neatribuit";
-$autoritati = array();
-$autoritati[] = "normal";
-$autoritati[] = "admin";
+$functii = $CONFIG["functii"];
+$autoritati = $CONFIG["autoritati"];
 
 ?>
 
@@ -103,7 +98,7 @@ $autoritati[] = "admin";
 
 				<div class="col-sm-6 text-center">
 
-					<div class="display-4">
+					<div class="h1">
 						Detalii utilizator
 					</div>
 
@@ -488,6 +483,17 @@ $autoritati[] = "admin";
 
 					</div>
 
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="d-none d-md-block h2 mt-3">
+					Actiuni
+				</div>
+				<div class="d-block d-md-none text-right h2 mt-3">
+					Actiuni
 				</div>
 
 			</div>

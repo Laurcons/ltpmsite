@@ -1,0 +1,11 @@
+{
+	"functii": [
+		"elev",
+		"profesor",
+		"neatribuit"
+	],
+	"autoritati": [
+		"normal",
+		"admin"
+	]
+}

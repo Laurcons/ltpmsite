@@ -7,6 +7,8 @@ include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/dbinit.php");
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/note-style.php");
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/security.php");
 
+$CONFIG = include("include/config.php");
+
 $pagina = "";
 $subpagina = "";
 $post_redir = false;
