@@ -384,6 +384,14 @@ class db_connection {
 
 	}
 
+	public function delete_predare($predare_id) {
+
+		$stmt = $this->conn->prepare("DELETE FROM predari WHERE Id=?;");
+		$stmt->bind_param('i', $predare_id);
+		$stmt->execute();
+
+	}
+
 	public function retrieve_elevi_where_clasa($columns, $id_clasa) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE IdClasa=? ORDER BY Nume,Prenume DESC;");

@@ -849,7 +849,7 @@ $autoritati = $CONFIG["autoritati"];
 		
 						<p>Sunteti sigur ca doriti sa stergeti predarea?</p>
 
-						<p>Nimic altceva, in afara de predare, nu va fi afectat!</p>
+						<p>In afara de predare, nimic altceva nu va fi afectat!</p>
 		
 					</div>
 		
@@ -860,7 +860,7 @@ $autoritati = $CONFIG["autoritati"];
 							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
 		
 							<button type="submit"
-									form=""
+									form="sterge-predare-form"
 									class="btn btn-danger">
 								Sterge predare
 							</button>
@@ -896,6 +896,14 @@ $autoritati = $CONFIG["autoritati"];
 			<input type="hidden" name="form-id" value="initial">
 			<input type="hidden" name="user-id" value="<?= $current_id ?>">
 			<input type="hidden" name="adauga-predare" value="trash">
+
+		</form>
+
+		<form id="sterge-predare-form">
+
+			<input type="hidden" name="form-id" value="initial">
+			<input type="hidden" name="predare-id">
+			<input type="hidden" name="sterge-predare" value="trash">
 
 		</form>
 

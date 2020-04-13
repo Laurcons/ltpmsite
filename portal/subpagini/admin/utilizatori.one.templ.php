@@ -6,7 +6,8 @@
 
 			<div class="col-md-3">
 
-				<span class="badge badge-primary mr-2">{{nrcrt}}</span>
+				<span class="badge badge-primary">{{nrcrt}}</span>
+				<span class="badge badge-danger mr-2">{{clasa.predare.Id}}</span>
 				{{#hasMaterie}}
 					{{materie.Nume}}
 				{{/hasMaterie}}
@@ -29,7 +30,8 @@
 
 				<button class="btn btn-sm btn-default border-danger"
 						data-toggle="modal"
-						data-target="#sterge-predare-modal">
+						data-target="#sterge-predare-modal"
+						data-predare-id="{{clasa.predare.Id}}">
 					Sterge predare
 				</button>
 

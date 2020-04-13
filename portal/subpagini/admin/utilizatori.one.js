@@ -178,6 +178,61 @@ $(document).ready(function() {
 			},
 			complete: function() {
 				updateFormIds();
+				$("[type='submit'][form='adauga-predare-form']")
+					.children("span")
+						.remove();
+			}
+		
+		});
+
+	});
+
+	$("#sterge-predare-modal").on("show.bs.modal", function(e) {
+
+		var button = $(e.relatedTarget);
+		var predareid = button.data("predare-id");
+		$("#sterge-predare-form")
+			.children("[name='predare-id']")
+				.val(predareid);
+
+	});
+
+	$("#sterge-predare-form").submit(function(e) {
+
+		e.preventDefault();
+
+		// loading indicator
+		$("[type='submit'][form='sterge-predare-form']")
+			.append(
+				$("<span>")
+					.addClass("spinner-border spinner-border-sm"));
+
+		$.ajax({
+			url: "?p=admin:utilizatori&post",
+			method: "POST",
+			dataType: "json",
+			data: $(this).serialize(),
+			success: function(result) {
+		
+				if (result.status == "success") {
+		
+					$("#sterge-predare-modal").modal("hide");
+					ajax_updatePredari();
+
+				} else {
+					console.error("AJAX status: " + result.status);
+				}
+		
+			},
+			error: function(req, err) {
+				console.error("AJAX error: " + err);
+			},
+			complete: function() {
+				updateFormIds();
+				// sterge loading indicatoru
+				$("[type='submit'][form='sterge-predare-form']")
+					.children("span")
+						.remove();
 			}
 		
 		});

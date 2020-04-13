@@ -92,11 +92,21 @@ if ($request == "utilizatori") {
 		foreach ($filtered_predari as $predare) {
 
 			$clasa = $db->retrieve_clasa_where_id("*", $predare["IdClasa"]);
+
 			$clasa["diriginte"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
+			$clasa["predare"]["Id"] = $predare["Id"];
 
 			$materie["clase"][] = $clasa;
 
 		}
+
+		// sorteaza clasele
+		usort($materie["clase"],
+			function($a, $b) {
+				if ($a["Nivel"] == $b["Nivel"])
+					return strcmp($a["Sufix"], $b["Sufix"]);
+				else return $a["Nivel"] - $b["Nivel"];
+			});
 
 		$response->materii[] = $materie;
 
