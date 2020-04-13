@@ -189,7 +189,7 @@ if (isset($_GET["id"])) {
 
 			<div class="col-md-12">
 
-				<button class="btn btn-sm border-primary">Adauga elev</button>
+				<button class="btn btn-sm border-primary" data-toggle="modal" data-target="#atribuie-utilizator-modal">Atribuie elev</button>
 
 			</div>
 
@@ -243,6 +243,146 @@ if (isset($_GET["id"])) {
 	<?php endif; // current_id == -1 ?>
 
 </div>
+
+<?php if ($current_id == -1) : ?>
+
+<?php else : ?>
+
+	<div class="modal fade" id="atribuie-utilizator-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header">
+	
+					<h4 class="modal-title">
+						Atribuie elev
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+
+					<div class="alert alert-info">
+
+						Din acest panou puteti selecta un utilizator si sa il atribuiti clasei.<br>
+						Daca utilizatorul pe care doriti sa il atribuiti nu exista si doriti sa il creati, va rugam sa accesati pagina de <a href="?p=admin:utilizatori" class="alert-link">administrare a utilizatorilor</a> si sa creati si sa atribuiti un nou utilizator de acolo.
+
+					</div>
+
+					<div class="alert alert-info">
+
+						In lista de mai jos apar doar utilizatorii care nu sunt atribuiti deja unor clase. Pentru a-i putea atribui aici, trebuie mai intai sa ii stergeti din clasele din care fac parte. Notele si absentele nu vor fi transferate.
+
+					</div>
+
+					<div class="form-group">
+
+						<label class="font-weight-bold">Alegeti utilizatorul:</label>
+
+						<select class="form-control"
+								name="user-id"
+								form="atribuie-utilizator-form">
+
+						</select>
+
+					</div>
+
+					<div class="alert alert-danger d-none" id="atribuie-utilizator-modal-unavailable">
+
+						Nu exista utilizatori disponibili! Va rugam sa creati utilizatori noi din pagina de administrare a utilizatorilor!
+
+					</div>
+	
+				</div>
+	
+				<div class="modal-footer">
+
+					<span class="spinner-border spinner-border-sm text-primary d-none" id="atribuie-utilizator-modal-spinner"></span>
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="atribuie-utilizator-form"
+								class="btn btn-primary">
+							Atribuie elev
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
+	<div class="modal fade" id="deatribuie-utilizator-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header bg-danger">
+	
+					<h4 class="modal-title text-white">
+						Sterge din clasa
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+	
+					<p>Sunteti sigur ca doriti sa stergeti elevul din clasa?</p>
+
+					<p>Retineti ca aceasta actiune nu are ca efect stergerea completa a utilizatorului, ci doar <strong>deatribuirea</strong> lui din cadrul clasei. Il puteti re-atribui oricand in cursul anului scolar curent, si isi va pastra toate notele si absentele.</p>
+	
+				</div>
+	
+				<div class="modal-footer">
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="deatribuie-utilizator-form"
+								class="btn btn-danger">
+							Sterge din clasa
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
+	<form id="atribuie-utilizator-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="atribuie-utilizator">
+		<input type="hidden" name="clasa-id" value="<?= $current_id ?>">
+
+	</form>
+
+	<form id="deatribuie-utilizator-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="deatribuie-utilizator">
+		<input type="hidden" name="user-id">
+
+	</form>
+
+
+<?php endif; // current_id == -1 ?>
 
 </body>
 <footer>

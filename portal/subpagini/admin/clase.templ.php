@@ -173,14 +173,16 @@
 
 					<div class="d-none d-md-block">
 
-						<span class="badge badge-primary mr-1">{{nrcrt}}</span>
+						<span class="badge badge-primary">{{nrcrt}}</span>
+						<span class="badge badge-danger mr-1">{{Id}}</span>
 
 						{{Nume}} {{Prenume}}
 
 					</div>
 					<div class="d-block d-md-none h5">
 
-						<span class="badge badge-primary mr-1">{{nrcrt}}</span>
+						<span class="badge badge-primary">{{nrcrt}}</span>
+						<span class="badge badge-danger mr-1">{{Id}}</span>
 
 						{{Nume}} {{Prenume}}
 
@@ -196,7 +198,12 @@
 
 					<a href="?p=admin:utilizatori&id={{Id}}" class="btn btn-sm border-info">Detalii elev</a>
 
-					<button class="btn btn-sm border-danger">Sterge din clasa</button>
+					<button class="btn btn-sm border-danger"
+							data-toggle="modal"
+							data-target="#deatribuie-utilizator-modal"
+							data-user-id="{{Id}}">
+						Sterge din clasa
+					</button>
 
 				</div>
 
@@ -212,14 +219,16 @@
 
 					<div class="d-none d-md-block">
 
-						<span class="badge badge-primary mr-1">{{nrcrt}}</span>
+						<span class="badge badge-primary">{{nrcrt}}</span>
+						<span class="badge badge-danger mr-1">{{Id}}</span>
 
 						{{materie.Nume}}
 
 					</div>
 					<div class="d-block d-md-none h5">
 
-						<span class="badge badge-primary mr-1">{{nrcrt}}</span>
+						<span class="badge badge-primary">{{nrcrt}}</span>
+						<span class="badge badge-danger mr-1">{{Id}}</span>
 
 						{{materie.Nume}}
 

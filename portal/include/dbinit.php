@@ -240,6 +240,16 @@ class db_connection {
 
 	}
 
+	public function update_utilizator_set_clasa($user_id, $clasa_id) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET IdClasa=? WHERE Id=?;");
+		$stmt->bind_param("ii",
+			$clasa_id,
+			$user_id);
+		$stmt->execute();
+
+	}
+
 	public function retrieve_profesori($columns) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE Functie='profesor';");
@@ -392,10 +402,19 @@ class db_connection {
 
 	}
 
+	// $id_clasa poate fi NULL
 	public function retrieve_elevi_where_clasa($columns, $id_clasa) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE IdClasa=? ORDER BY Nume,Prenume DESC;");
-		$stmt->bind_param('i', $id_clasa);
+		$clasaSql = "";
+		if ($id_clasa == NULL) {
+			$clasaSql = "IdClasa IS NULL";
+		} else {
+			$clasaSql = "IdClasa=?";
+		}
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE $clasaSql AND Functie='elev' ORDER BY Nume,Prenume DESC;");
+		if ($id_clasa != NULL)
+			$stmt->bind_param('i', $id_clasa);
 		$stmt->execute();
 
 		return $stmt->get_result();

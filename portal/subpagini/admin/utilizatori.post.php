@@ -27,8 +27,7 @@ if (isset($_POST["form-id"])) {
 		    $response->status = "success";
 		    $response->newCod = $newCod;
 
-		} else
-		if (isset($_POST["update-general"])) {
+		} else if (isset($_POST["update-general"])) {
 
 			$utiliz = $db->retrieve_utilizator_where_id("Functie,Autoritate,Nume,Prenume,Email,NrMatricol,Username", $_POST["user-id"]);
 
@@ -39,8 +38,7 @@ if (isset($_POST["form-id"])) {
 
 		    $response->status = "success";
 
-		} else
-		if (isset($_POST["update-altele"])) {
+		} else if (isset($_POST["update-altele"])) {
 
 			$utiliz = $db->retrieve_utilizator_where_id("Functie,Autoritate,Nume,Prenume,Email,NrMatricol,Username", $_POST["user-id"]);
 
@@ -67,7 +65,7 @@ if (isset($_POST["form-id"])) {
 					"Email" => $_POST["email"],
 					"Autoritate" => $_POST["autoritate"],
 					"Functie" => $_POST["functie"],
-					"IdClasa" => (isset($_POST["is-inserted-into-class"])) ? $_POST["insert-into-class"] : "-1"
+					"IdClasa" => (isset($_POST["is-inserted-into-class"])) ? $_POST["insert-into-class"] : NULL
 				]);
 
 			    $response->status = "success";
