@@ -8,16 +8,26 @@ function validate_adauga_materie() {
 		return false;
 	}
 
+	return true;
+
 }
 
 $(document).ready(function() {
+
+	updateFormIds();
+
+	$("#adauga-materie-modal").on("show.bs.modal", function() {
+
+		hideFormErrors("adauga-materie");
+
+	});
 
 	$("#adauga-materie-form").submit(function(e) {
 
 		e.preventDefault();
 		if (!validate_adauga_materie())
 			return false;
-		hideFormErrors();
+		hideFormErrors("adauga-materie");
 		var form = $(this);
 
 		$.ajax({
@@ -31,9 +41,7 @@ $(document).ready(function() {
 
 			},
 			complete: function() {
-
-				$("#adauga-materie-form-form-id").val(generateKey());
-
+				updateFormIds();
 			}
 
 		})
@@ -44,19 +52,30 @@ $(document).ready(function() {
 
 		e.preventDefault();
 
+		hideFormErrors("sterge-materie");
+
 		$.ajax({
 			url: "?p=admin:materii&post",
 			method: "POST",
 			data: $(this).serialize(),
-			success: function() {
+			dataType: "json",
+			success: function(result) {
 
-				ajax_updateMaterii();
-				$("#sterge-materie-modal").modal("hide");
+				if (result.status == "success") {
+
+					ajax_updateMaterii();
+					$("#sterge-materie-modal").modal("hide");
+
+				} else if (result.status == "password-failed") {
+
+					showFormError("sterge-materie", "password", "Parola este incorecta!");
+
+				}
 
 			},
 			complete: function() {
 
-				$("#sterge-materie-form-form-id").val(generateKey());
+				updateFormIds();
 
 			}
 

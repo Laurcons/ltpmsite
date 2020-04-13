@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 			$success = false;
 
-			if ($username == "root") {
+			if (false/*$username == "root"*/) {
 				// pass is in text
 				if ($parola == $user["Parola"]) 
 					$success = true;
