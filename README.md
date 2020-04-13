@@ -10,6 +10,7 @@ Poveste lungă... dar pe scurt, ne plictisim. Programatorii trebuie să scrie co
 * Duca Cosmin (XI-A)(Unity și C#)
 * Rad Antonio (XI-A)(designer grafic)
 * Vlad Grozav (XI-B)(relații sociale, viziunea noastră)
+
 Ne-am bucura de orice fel de ajutor pe partea de programare! Dacă ești un entuziast elev al LTPM care e interesat de programare, ne poți contacta! Singura noastră cerință e să fii confortabil cu stilul de cod practicat de noi, pe care-l poți explora.
 ## Pot contribui în afara echipei?
 Vei putea, dar nu încă. Doresc să pun la punct modul în care se poate contribui, contribute.md și alte chichițe. Dar poți face orice vrei tu cu acest proiect (în limita licenței), îl poți fork-ui, să lași issues, și le vom lua în considerare!
