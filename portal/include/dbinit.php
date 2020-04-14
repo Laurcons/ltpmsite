@@ -74,6 +74,14 @@ class db_connection {
 
 	}
 
+	public function delete_utilizator($utilizator_id) {
+
+		$stmt = $this->conn->prepare("DELETE FROM utilizatori WHERE Id=?;");
+		$stmt->bind_param("i", $utilizator_id);
+		$stmt->execute();
+
+	}
+
 	public function retrieve_utilizator_ultima_logare($username) {
 
 		$stmt = $this->conn->prepare("SELECT UltimaLogare FROM utilizatori WHERE Username=?;");

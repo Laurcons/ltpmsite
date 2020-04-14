@@ -42,7 +42,7 @@ $autoritati = $CONFIG["autoritati"];
 
 		<?php if ($current_id == -1) : ?>
 
-			<div class="display-4 text-center mb-4">
+			<div class="h1 text-center mb-4">
 				Toti utilizatorii
 			</div>
 
@@ -565,7 +565,9 @@ $autoritati = $CONFIG["autoritati"];
 				<div class="col">
 
 					<button id="delete-utilizator-button"
-							class="btn btn-default border-danger">
+							class="btn btn-default border-danger"
+							data-toggle="modal"
+							data-target="#sterge-utilizator-modal">
 						Sterge utilizator
 					</button>
 
@@ -875,6 +877,98 @@ $autoritati = $CONFIG["autoritati"];
 		
 		</div>
 
+		<div class="modal fade" id="sterge-utilizator-modal">
+		
+			<div class="modal-dialog">
+		
+				<div class="modal-content">
+		
+					<div class="modal-header bg-danger">
+		
+						<h4 class="modal-title text-white">
+							Sterge utilizator
+						</h4>
+		
+					</div>
+		
+					<div class="modal-body">
+
+						<div class="alert alert-warning">
+
+							<strong>Atentie!</strong> Aceasta actiune este inalt destructiva! <strong>Toate datele care tin de acest utilizator,</strong> precum toate notele, absentele, sau activitatea elevului sau ale profesorului, <strong>vor fi sterse complet</strong>!
+
+						</div>
+
+						<span class="spinner-border text-primary mx-2"
+							  data-variant="loading">
+						</span>
+
+						<div class="d-none" data-variant="available">
+
+							<p>Pentru a continua, va rugam sa va confirmati parola si sa rescrieti numele de utilizator al utilizatorului.</p>
+
+							<div class="form-group">
+
+								<label class="font-weight-bold">Confirmati parola dvs:</label>
+
+								<input type="password"
+									   class="form-control"
+									   form="sterge-utilizator-form"
+									   name="password">
+
+							</div>
+
+							<div class="form-group">
+
+								<label class="font-weight-bold">Scrieti numele de utilizator (<code><?= $utilizator["Username"] ?></code>) mai jos:</label>
+
+								<input type="text"
+									   class="form-control"
+									   id="sterge-utilizator-username">
+
+							</div>
+
+							<div class="alert alert-danger p-1 px-2 d-none" data-form="sterge-utilizator" data-for="form">
+
+							</div>
+
+						</div>
+
+						<div class="d-none" data-variant="unavailable">
+
+							<div class="alert alert-danger">
+
+								Acest utilizator <strong>nu poate fi sters</strong> deoarece este dirigintele unei clase. Pentru a putea sterge utilizatorul, schimbati dirigintele clasei sau stergeti clasa, si incercati din nou.
+
+							</div>
+
+						</div>
+		
+					</div>
+		
+					<div class="modal-footer">
+		
+						<div class="btn-group">
+		
+							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+		
+							<button type="submit"
+									form="sterge-utilizator-form"
+									class="btn btn-danger"
+									disabled>
+								Sterge utilizator
+							</button>
+		
+						</div>
+		
+					</div>
+		
+				</div>
+		
+			</div>
+		
+		</div>
+
 		<form id="update-general-form">
 
 			<input type="hidden" id="update-general-form-form-id" name="form-id" value="initial">
@@ -907,6 +1001,14 @@ $autoritati = $CONFIG["autoritati"];
 
 		</form>
 
+		<form id="sterge-utilizator-form">
+
+			<input type="hidden" name="form-id" value="initial">
+			<input type="hidden" name="user-id" value="<?= $current_id ?>">
+			<input type="hidden" name="sterge-utilizator">
+
+		</form>
+
 	<?php endif; ?>
 
 </body>
@@ -926,6 +1028,7 @@ $autoritati = $CONFIG["autoritati"];
 		<script>
 
 			var utilizator_functie = "<?= $utilizator['Functie'] ?>";
+			var utilizator_username = "<?= $utilizator['Username'] ?>";
 
 		</script>
 

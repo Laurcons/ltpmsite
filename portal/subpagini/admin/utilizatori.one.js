@@ -134,12 +134,6 @@ $(document).ready(function() {
 
 	});
 
-	$("#delete-utilizator-button").click(function () {
-
-		alert("Not Implemented");
-
-	});
-
 	$("#adauga-predare-modal").on("show.bs.modal", function() {
 
 		ajax_updatePredareModal();
@@ -231,6 +225,68 @@ $(document).ready(function() {
 				updateFormIds();
 				// sterge loading indicatoru
 				$("[type='submit'][form='sterge-predare-form']")
+					.children("span")
+						.remove();
+			}
+		
+		});
+
+	});
+
+	$("#sterge-utilizator-modal").on("show.bs.modal", function(e) {
+
+		ajax_updateStergeUtilizatorModal();
+
+	});
+
+	$("#sterge-utilizator-username").on("input", function(e) {
+
+		// verifica daca e acelasi cu numele de utilizator
+		var val = $(this).val().trim();
+		if (val == utilizator_username) {
+			$("[form='sterge-utilizator-form'][type='submit']").prop("disabled", false);
+		} else {
+			$("[form='sterge-utilizator-form'][type='submit']").prop("disabled", true);
+		}
+
+	});
+
+	$("#sterge-utilizator-form").submit(function(e) {
+
+		e.preventDefault();
+
+		appendLoadingIndicator("[form='sterge-utilizator-form'][type='submit']");
+		hideFormErrors("sterge-utilizator");
+
+		$.ajax({
+			url: "?p=admin:utilizatori&post",
+			method: "POST",
+			dataType: "json",
+			data: $(this).serialize(),
+			success: function(result) {
+		
+				if (result.status == "success") {
+
+					$("[form='sterge-utilizator-form'][type='submit']")
+						.html("Asteptati...")
+						.prop("disabled", true);
+					window.location = "?p=admin:utilizatori";
+					
+				} else if (result.status == "password-failed") {
+
+					showFormError("sterge-utilizator", "form", "Parola este incorecta!");
+		
+				} else {
+					console.error("AJAX status: " + result.status);
+				}
+		
+			},
+			error: function(req, err) {
+				console.error("AJAX error: " + err);
+			},
+			complete: function() {
+				updateFormIds();
+				$("[form='sterge-utilizator-form'][type='submit']")
 					.children("span")
 						.remove();
 			}
@@ -366,6 +422,49 @@ function ajax_updatePredareModal() {
 		},
 		complete: function() {
 			$("#adauga-predare-modal-spinner").addClass("d-none");
+		}
+	
+	});
+
+}
+
+function ajax_updateStergeUtilizatorModal() {
+
+	// loading indicator
+	$("div[data-variant]").addClass("d-none");
+	$("[data-variant='loading']").removeClass("d-none");
+	$("[form='sterge-utilizator-form'][type='submit']").prop("disabled", true);
+
+	$.ajax({
+		url: "?p=admin:utilizatori&ajax&r=is-diriginte&id=" + getId(),
+		method: "GET",
+		dataType: "json",
+		success: function(result) {
+	
+			if (result.status == "success") {
+	
+				if (result.is_diriginte) {
+
+					$("[data-variant]").addClass("d-none");
+					$("div[data-variant='unavailable']").removeClass("d-none");
+
+				} else {
+
+					$("[data-variant]").addClass("d-none");
+					$("div[data-variant='available']").removeClass("d-none");
+
+				}
+	
+			} else {
+				console.error("AJAX status: " + result.status);
+			}
+	
+		},
+		error: function(req, err) {
+			console.error("AJAX error: " + err);
+		},
+		complete: function() {
+	
 		}
 	
 	});

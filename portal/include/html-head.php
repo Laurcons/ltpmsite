@@ -8,7 +8,7 @@
 <!-- custom utilities file -->
 <script src="/portal/?js"></script>
 <!-- Font Awesome; edward te rog taci -->
-<script src="https://kit.fontawesome.com/4288ed77ca.js" crossorigin="anonymous"></script>
+<!--<script src="https://kit.fontawesome.com/4288ed77ca.js" crossorigin="anonymous"></script>-->
 <!-- mustache -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.min.js"></script>
 

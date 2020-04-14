@@ -39,3 +39,12 @@ function urlGet(param) {
    return searchParams.get(param);
 
 }
+
+function appendLoadingIndicator(selector) {
+
+   $(selector)
+      .append(
+         $("<span>")
+            .addClass("spinner-border spinner-border-sm"));
+
+}

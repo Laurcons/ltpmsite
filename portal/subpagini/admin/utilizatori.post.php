@@ -88,8 +88,25 @@ if (isset($_POST["form-id"])) {
 
 			$response->status = "success";
 
+		} else if (isset($_POST["sterge-utilizator"])) {
+
+			// verifica parola
+			$utiliz = $db->retrieve_utilizator_where_username("Id,Parola", $_SESSION["logatca"]);
+
+			if (password_verify($_POST["password"], $utiliz["Parola"])) {
+
+				$db->delete_utilizator($_POST["user-id"]);
+
+				$response->status = "success";
+
+			} else {
+
+				$response->status = "password-failed";
+
+			}
+
 		} else {
-			$response->status = "no-action-specified";
+			$response->status = "request-not-found";
 		}
 
 	} else {

@@ -140,6 +140,13 @@ if ($request == "utilizatori") {
 
 	$response->status = "success";
 
+} else if ($request == "is-diriginte") {
+
+	$clasa = $db->retrieve_clasa_where_diriginte("Id", $_GET["id"]);
+
+	$response->is_diriginte = ($clasa != NULL);
+	$response->status = "success";
+
 } else {
 
 	$response->status = "request-not-found";
