@@ -29,5 +29,6 @@ Vei putea, dar nu încă. Doresc să pun la punct modul în care se poate contri
 * [ ] Confirmarea parolei pentru accesarea datelor sensibile din baza de date
 * [ ] Crearea unui API (Portal API) pentru uz din afară (ar facilita crearea de aplicații de către elevi, sau idk)
 * [ ] Sistem pentru a raporta probleme și bugs
+* [ ] Filtrare profesor/elevi
 ### Site principal
 @edwardinio18 te rog completează 
