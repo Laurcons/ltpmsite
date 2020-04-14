@@ -32,7 +32,7 @@ if (isset($_GET["id"])) {
 
 		?>
 
-		<h3 class="mb-3">Toate clasele liceului</h3>
+		<h1 class="mb-3">Toate clasele liceului</h1>
 
 		<a class="btn btn-default border-primary mb-3" href="#" data-toggle="modal" data-target="#creeaza-clasa-modal">Adauga clasa</a>
 

@@ -48,6 +48,19 @@ $(document).ready(function() {
 
 	});
 
+	// pune handling la selectu de pagina
+	$("[data-pagination='utilizatori']").change(function() {
+
+		// vezi ce pagina s-a selectat
+		// nu stiu de ce sunt nevoit sa il fac asa, sigur jquery are o modalitate mai ok dar nu-mi
+		//  merge frate nicicum futu-i ceapa ma-sii
+		var selected = $(this).children("select").children("option:selected").data("page");
+		// fa ajax
+		currentPage = selected;
+		ajax_updateUtilizatori(false);
+
+	});
+
 	$("#adauga-utilizator-form").submit(function(e) {
 
 		e.preventDefault();
@@ -159,12 +172,13 @@ function ajax_updatePagination(updateList = false) {
 			.html($select);
 
 		// adauga event handlers
-		$("[data-page]").click(function() {
+		// adaugate deja pentru tot selectul
+		/*$("[data-page]").click(function() {
 
 			currentPage = $(this).attr("data-page");
 			ajax_updateUtilizatori(false);
 
-		});
+		});*/
 
 		// pune selected pe unde trebe
 		$("option[data-page='" + currentPage + "']")
