@@ -16,7 +16,7 @@ Ne-am bucura de orice fel de ajutor pe partea de programare! Dacă ești un entu
 Vei putea, dar nu încă. Doresc să pun la punct modul în care se poate contribui, contribute.md și alte chichițe. Dar poți face orice vrei tu cu acest proiect (în limita licenței), îl poți fork-ui, să lași issues, și le vom lua în considerare!
 ## FUNCȚIONALITĂȚI PLANIFICATE
 ### Portal LTPM
-* [ ] (FINALIZAT in portal-admin) Implementarea înregistrării prin coduri de acces
+* [x] (14.02.2020) Implementarea înregistrării prin coduri de acces
 * [ ] Implementarea super-logului global (pt administrație)
 * [ ] Implementarea unui sistem mai complex de permisiuni (probabil)
 * [ ] Implementarea unui sistem pentru adăugarea de Resurse
@@ -29,6 +29,7 @@ Vei putea, dar nu încă. Doresc să pun la punct modul în care se poate contri
 * [ ] Confirmarea parolei pentru accesarea datelor sensibile din baza de date
 * [ ] Crearea unui API (Portal API) pentru uz din afară (ar facilita crearea de aplicații de către elevi, sau idk)
 * [ ] Sistem pentru a raporta probleme și bugs
-* [ ] Filtrare profesor/elevii
+#### TODO Minore
+* [ ] Filtrare in portal/admin:clase
 ### Site principal
 @edwardinio18 te rog completează 
