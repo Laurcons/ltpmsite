@@ -136,8 +136,8 @@ if (isset($_GET["id"])) {
 
 			<div class="col-sm-4 text-center">
 
-				<div class="display-4">
-					Clasa <?= $clasa["Nivel"] . " " . $clasa["Sufix"] ?>
+				<div class="h1">
+					Clasa <?= $clasa["Nivel"] . "-" . $clasa["Sufix"] ?>
 				</div>
 
 			</div>
@@ -234,7 +234,11 @@ if (isset($_GET["id"])) {
 
 			<div class="col-md-12">
 
-				<button class="btn btn-sm border-primary">Adauga predare</button>
+				<button class="btn btn-sm border-primary"
+						data-toggle="modal"
+						data-target="#adauga-predare-modal">
+					Adauga predare
+				</button>
 
 			</div>
 
@@ -365,6 +369,74 @@ if (isset($_GET["id"])) {
 	
 	</div>
 
+	<div class="modal fade" id="adauga-predare-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header">
+	
+					<h4 class="modal-title">
+						Adauga predare
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+		
+					<p>Selecteaza materia predata, si profesorul care o preda.</p>
+
+					<div class="form-group">
+
+						<label class="font-weight-bold">Materia predata:</label>
+
+						<select class="form-control"
+								form="adauga-predare-form"
+								name="materie">
+
+						</select>
+
+					</div>
+
+					<div class="form-group">
+
+						<label class="font-weight-bold">Profesorul care o preda:</label>
+
+						<select class="form-control"
+								form="adauga-predare-form"
+								name="profesor">
+
+						</select>
+
+					</div>
+	
+				</div>
+	
+				<div class="modal-footer">
+
+					<span class="spinner-border text-primary d-none" id="adauga-predare-modal-spinner"></span>
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="adauga-predare-form"
+								class="btn btn-primary">
+							Adauga predare
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
 	<form id="atribuie-utilizator-form">
 
 		<input type="hidden" name="form-id">
@@ -381,6 +453,13 @@ if (isset($_GET["id"])) {
 
 	</form>
 
+	<form id="adauga-predare-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="clasa-id" value="<?= $current_id ?>">
+		<input type="hidden" name="adauga-predare">
+
+	</form>
 
 <?php endif; // current_id == -1 ?>
 

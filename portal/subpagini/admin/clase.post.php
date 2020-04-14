@@ -44,6 +44,16 @@ if (isset($_POST["form-id"])) {
 
 			$response->status = "success";
 
+		} else if (isset($_POST["adauga-predare"])) {
+
+			$db->insert_predare(array(
+				"IdMaterie" => $_POST["materie"],
+				"IdProfesor" => $_POST["profesor"],
+				"IdClasa" => $_POST["clasa-id"]
+			));
+
+			$response->status = "success";
+
 		} else {
 
 			$response->status = "request-not-found";

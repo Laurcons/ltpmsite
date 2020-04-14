@@ -71,6 +71,15 @@ if ($request == "clase") {
 	$response->elevi = $elevi;
 	$response->status = "success";
 
+} else if ($request == "adauga-predare-data") {
+
+	// returneaza toate materiile si profesorii
+	$response->materii = $db->retrieve_materii("Id,Nume")->fetch_all(MYSQLI_ASSOC);
+
+	$response->profesori = $db->retrieve_profesori("Id,Nume,Prenume,Username")->fetch_all(MYSQLI_ASSOC);
+
+	$response->status = "success";
+
 } else {
 
 	$response->status = "request-not-found";

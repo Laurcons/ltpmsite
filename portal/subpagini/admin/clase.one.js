@@ -108,6 +108,53 @@ $(document).ready(function() {
 
 	});
 
+	$("#adauga-predare-modal").on("show.bs.modal", function() {
+
+		ajax_updateAdaugaPredareModal();
+
+	});
+
+	$("#adauga-predare-form").submit(function(e) {
+
+		e.preventDefault();
+
+		// loading indicator
+		$("[form='adauga-predare-form'][type='submit']")
+			.append(
+				$("<span>")
+					.addClass("spinner-border spinner-border-sm"));
+
+		$.ajax({
+			url: "?p=admin:clase&post",
+			method: "POST",
+			dataType: "json",
+			data: $(this).serialize(),
+			success: function(result) {
+		
+				if (result.status == "success") {
+		
+					$("#adauga-predare-modal").modal("hide");
+					ajax_updatePredari();
+		
+				} else {
+					console.error("AJAX status: " + result.status);
+				}
+		
+			},
+			error: function(req, err) {
+				console.error("AJAX error: " + err);
+			},
+			complete: function() {
+				updateFormIds();
+				$("[form='adauga-predare-form'][type='submit']")
+					.children("span")
+						.remove();
+			}
+		
+		});
+
+	});
+
 });
 
 function ajax_updateElevi() {
@@ -245,6 +292,65 @@ function ajax_updateAdaugaElevModal() {
 			updateFormIds();
 				$("#atribuie-utilizator-modal-spinner")
 					.addClass("d-none");
+		}
+	
+	});
+
+}
+
+function ajax_updateAdaugaPredareModal() {
+
+	$("#adauga-predare-modal-spinner")
+		.removeClass("d-none");
+	$("select[form='adauga-predare-form']")
+		.empty();
+	$("[form='adauga-predare-form'][type='submit']")
+		.prop("disabled", true);
+
+	$.ajax({
+		url: "?p=admin:clase&ajax&r=adauga-predare-data",
+		method: "GET",
+		dataType: "json",
+		//data: ,
+		success: function(result) {
+	
+			if (result.status == "success") {
+	
+				// fill selects
+				result.materii.forEach(function(item, index) {
+
+					$("[form='adauga-predare-form'][name='materie']")
+						.append(
+							$("<option>")
+								.attr("value", item.Id)
+								.html(item.Nume));
+
+				});
+
+				result.profesori.forEach(function(item, index) {
+
+					$("[form='adauga-predare-form'][name='profesor']")
+						.append(
+							$("<option>")
+								.attr("value", item.Id)
+								.html(item.Nume + " " + item.Prenume));
+
+				});
+
+				$("[form='adauga-predare-form'][type='submit']")
+					.prop("disabled", false);
+	
+			} else {
+				console.error("AJAX status: " + result.status);
+			}
+	
+		},
+		error: function(req, err) {
+			console.error("AJAX error: " + err);
+		},
+		complete: function() {
+			$("#adauga-predare-modal-spinner")
+				.addClass("d-none");
 		}
 	
 	});

@@ -247,7 +247,10 @@
 
 					<a href="?p=admin:utilizatori&id={{profesor.Id}}" class="btn btn-sm border-info">Detalii profesor</a>
 
-					<button class="btn btn-sm border-danger">Sterge predare</button>
+					<button class="btn btn-sm border-danger"
+							onclick="alert('Haha nu, trebuie sa te duci pe pagina utilizatorului sa stergi de acolo. Am sa ma ocup si de asta.');">
+						Sterge predare
+					</button>
 
 				</div>
 
