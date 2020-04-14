@@ -11,33 +11,19 @@ function generateKey(length = 10) {
    return result;
 }
 
-function hideErrors() {
-
-	$("div[data-form='creeaza-clasa']").addClass("d-none");
-
-}
-
-function showError(form, field, text) {
-
-	var selector = "div[data-form='" + form + "'][data-for='" + field + "']";
-	$(selector).html(text);
-	$(selector).removeClass("d-none");
-
-}
-
 function validate_creeaza_clasa() {
 
 	var nivel = $("#creeaza-clasa-form-nivel").val();
 	var sufix = $("#creeaza-clasa-form-sufix").val();
 
-	if (nivel < 0 || nivel > 12) {
+	if ((nivel < 0 || nivel > 12) || nivel.trim() == "") {
 		// invalid
-		showError("creeaza-clasa", "denumire", "Nivelul trebuie sa fie o cifra araba de la 0 la 12!");
+		showFormError("creeaza-clasa", "denumire", "Nivelul trebuie sa fie o cifra araba de la 0 la 12!");
 		return false;
 
 	}
 	if (sufix.trim() == "") {
-		showError("creeaza-clasa", "denumire", "Sufixul clasei nu poate fi gol!");
+		showFormError("creeaza-clasa", "denumire", "Sufixul clasei nu poate fi gol!");
 		return false;
 	}
 	return true;
@@ -51,6 +37,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		if (!validate_creeaza_clasa())
 			return false;
+		hideFormErrors();
 		var form = $(this);
 		$("#creeaza-clasa-form-form-id").val(generateKey());
 

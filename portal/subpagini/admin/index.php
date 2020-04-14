@@ -22,9 +22,21 @@ if ($subpagina == "clase") {
 	else if ($ajax_redir)
 		include("materii.ajax.php");
 	else if ($js_redir) {
-		header("Content-type: text/javascript");
+		header("Content-type: application/javascript");
 		include("materii.js");
 	} else include("materii.php");
+
+} else if ($subpagina == "utilizatori") {
+
+	if ($post_redir)
+		include("utilizatori.post.php");
+	else if ($ajax_redir)
+		include("utilizatori.ajax.php");
+	else if ($js_redir) {
+		header("Content-type: application/javascript");
+		$file = $_GET["js"];
+		include("utilizatori." . $file . ".js");
+	} else include("utilizatori.php");
 
 }
 

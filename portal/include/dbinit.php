@@ -61,16 +61,23 @@ class db_connection {
 
 	public function insert_utilizator($utilizator_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO utilizatori (Username, Parola, Email, Autoritate, Functie, NrMatricol, Nume, Prenume) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param('ssssssss',
+		$stmt = $this->conn->prepare("INSERT INTO utilizatori (Parola, Username, Email, Autoritate, Functie, Nume, Prenume, IdClasa) VALUES ('notset', ?, ?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param('ssssssi',
 			$utilizator_data["Username"],
-			$utilizator_data["Parola"],
 			$utilizator_data["Email"],
 			$utilizator_data["Autoritate"],
 			$utilizator_data["Functie"],
-			$utilizator_data["NrMatricol"],
 			$utilizator_data["Nume"],
-			$utilizator_data["Prenume"]);
+			$utilizator_data["Prenume"],
+			$utilizator_data["IdClasa"]);
+		$stmt->execute();
+
+	}
+
+	public function delete_utilizator($utilizator_id) {
+
+		$stmt = $this->conn->prepare("DELETE FROM utilizatori WHERE Id=?;");
+		$stmt->bind_param("i", $utilizator_id);
 		$stmt->execute();
 
 	}
@@ -122,6 +129,27 @@ class db_connection {
 
 	}
 
+	public function retrieve_utilizator_where_cod_inregistrare($columns, $cod) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE CodInregistrare=?;");
+		$stmt->bind_param("i", $cod);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows == 0)
+			return null;
+		else return $result->fetch_assoc();
+
+	}
+
+	public function update_utilizator_cod_inregistrare($user_id, $cod) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET CodInregistrare=? WHERE Id=?;");
+		$stmt->bind_param("ii", $cod, $user_id);
+		$stmt->execute();
+
+	}
+
 	public function retrieve_count_utilizatori() {
 
 		$stmt = $this->conn->prepare("SELECT count(Id) FROM utilizatori;");
@@ -134,7 +162,7 @@ class db_connection {
 
 	public function retrieve_paged_utilizatori($columns, $entriesPerPage, $page) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori ORDER BY Id ASC LIMIT ? OFFSET ?;");
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori ORDER BY Nume,Prenume ASC LIMIT ? OFFSET ?;");
 		$offset = $page * $entriesPerPage;
 		$stmt->bind_param('ii',
 			$entriesPerPage,
@@ -143,6 +171,36 @@ class db_connection {
 		$result = $stmt->get_result();
 
 		return $result;
+
+	}
+
+	public function retrieve_utilizatori_pagination_titles($entriesPerPage) {
+
+		$count = $this->retrieve_count_utilizatori();
+		$remaining = $count;
+		$return = array();
+
+		while ($remaining > 0) {
+
+			$pag = ($count - $remaining) / $entriesPerPage;
+			$utiliz = $this->retrieve_paged_utilizatori("Nume,Prenume", $entriesPerPage, $pag);
+
+			$first = $utiliz->fetch_assoc();
+			$utiliz->data_seek($utiliz->num_rows - 1);
+			$last = $utiliz->fetch_assoc();
+
+			$return[] = array(
+				"page" => $pag,
+				"count" => $utiliz->num_rows,
+				"first" => $first["Nume"] . " " . $first["Prenume"],
+				"last" => $last["Nume"] . " " . $last["Prenume"]
+			);
+
+			$remaining -= $entriesPerPage;
+
+		}
+
+		return $return;
 
 	}
 
@@ -158,6 +216,45 @@ class db_connection {
 		$result = $stmt->get_result();
 
 		return $result;
+
+	}
+
+	public function update_utilizator_inregistrare($user_id, $data) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET Username=?,Email=?,Nume=?,Prenume=?,Parola=?,CodInregistrare=NULL,Activat=current_timestamp() WHERE Id=?;");
+		$stmt->bind_param("sssssi",
+			$data["Username"],
+			$data["Email"],
+			$data["Nume"],
+			$data["Prenume"],
+			$data["Parola"],
+			$user_id);
+		$stmt->execute();
+
+	}
+
+	public function update_utilizator_general_settings($user_id, $data) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET Username=?,Email=?,Nume=?,Prenume=?,Functie=?,Autoritate=? WHERE Id=?;");
+		$stmt->bind_param("ssssssi",
+			$data["Username"],
+			$data["Email"],
+			$data["Nume"],
+			$data["Prenume"],
+			$data["Functie"],
+			$data["Autoritate"],
+			$user_id);
+		$stmt->execute();
+
+	}
+
+	public function update_utilizator_set_clasa($user_id, $clasa_id) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET IdClasa=? WHERE Id=?;");
+		$stmt->bind_param("ii",
+			$clasa_id,
+			$user_id);
+		$stmt->execute();
 
 	}
 
@@ -294,10 +391,38 @@ class db_connection {
 
 	}
 
+	public function insert_predare($predare_data) {
+
+		$stmt = $this->conn->prepare("INSERT INTO predari (IdClasa, IdMaterie, IdProfesor) VALUES (?, ?, ?);");
+		$stmt->bind_param('iii',
+			$predare_data["IdClasa"],
+			$predare_data["IdMaterie"],
+			$predare_data["IdProfesor"]);
+		$stmt->execute();
+
+	}
+
+	public function delete_predare($predare_id) {
+
+		$stmt = $this->conn->prepare("DELETE FROM predari WHERE Id=?;");
+		$stmt->bind_param('i', $predare_id);
+		$stmt->execute();
+
+	}
+
+	// $id_clasa poate fi NULL
 	public function retrieve_elevi_where_clasa($columns, $id_clasa) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE IdClasa=? ORDER BY Nume,Prenume DESC;");
-		$stmt->bind_param('i', $id_clasa);
+		$clasaSql = "";
+		if ($id_clasa == NULL) {
+			$clasaSql = "IdClasa IS NULL";
+		} else {
+			$clasaSql = "IdClasa=?";
+		}
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE $clasaSql AND Functie='elev' ORDER BY Nume,Prenume DESC;");
+		if ($id_clasa != NULL)
+			$stmt->bind_param('i', $id_clasa);
 		$stmt->execute();
 
 		return $stmt->get_result();
@@ -308,6 +433,16 @@ class db_connection {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM clase WHERE Id=?;");
 		$stmt->bind_param('i', $id);
+		$stmt->execute();
+
+		return $stmt->get_result()->fetch_assoc();
+
+	}
+
+	public function retrieve_clasa_where_diriginte($columns, $diriginte_id) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM clase WHERE IdDiriginte=?;");
+		$stmt->bind_param('i', $diriginte_id);
 		$stmt->execute();
 
 		return $stmt->get_result()->fetch_assoc();

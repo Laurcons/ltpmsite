@@ -7,6 +7,8 @@ include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/dbinit.php");
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/note-style.php");
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/security.php");
 
+$CONFIG = include("include/config.php");
+
 $pagina = "";
 $subpagina = "";
 $post_redir = false;
@@ -57,7 +59,11 @@ if (isset($_GET["js"])) {
 
 if ($pagina == "" || $pagina == "prima") {
 
-	include("subpagini/primapagina.php");
+	if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("include/utility.js");
+	}
+	else include("subpagini/primapagina.php");
 
 } else if ($pagina == "logare") {
 
@@ -65,7 +71,14 @@ if ($pagina == "" || $pagina == "prima") {
 
 } else if ($pagina == "inreg") {
 
-	include("subpagini/inregistrare.php");
+	if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("subpagini/inregistrare.js");
+	} else if ($post_redir) {
+		include("subpagini/inregistrare.post.php");
+	} else if ($ajax_redir) {
+		include("subpagini/inregistrare.ajax.php");
+	} else include("subpagini/inregistrare.php");
 
 } else if ($pagina == "panou") {
 

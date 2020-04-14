@@ -36,9 +36,11 @@
 
 								<div class="dropdown-menu bg-dark">
 
-									<a class="dropdown-item bg-dark text-light" href="?p=admin:clase">Clasele scolii</a>
+									<a class="dropdown-item bg-dark text-light" href="?p=admin:clase">Clasele liceului</a>
 
-									<a class="dropdown-item bg-dark text-light" href="?p=admin:materii">Materiile scolii</a>
+									<a class="dropdown-item bg-dark text-light" href="?p=admin:materii">Materiile liceului</a>
+
+									<a class="dropdown-item bg-dark text-light" href="?p=admin:utilizatori">Utilizatori</a>
 
 								</div>
 
@@ -82,7 +84,7 @@
 
 					</li>
 
-					<li class="nav-item"> <a class="nav-link" href="/portal/?pagina=logout">
+					<li class="nav-item"> <a class="nav-link" href="/portal/?p=logout">
 						
 						<span class="d-none d-md-block">
 							<i class="fas fa-sign-out-alt"
@@ -96,7 +98,7 @@
 
 					<?php else : ?>
 
-						<li class="nav-item"> <a class="nav-link" href="/portal/?pagina=logare">
+						<li class="nav-item"> <a class="nav-link" href="/portal/?p=logare">
 
 							<span class="d-md-none d-lg-block">
 								<i class="fas fa-sign-in-alt"></i>
@@ -108,7 +110,7 @@
 
 						</a></li>
 
-						<li class="nav-item"> <a class="nav-link" href="/portal/?pagina=inreg">
+						<li class="nav-item"> <a class="nav-link" href="/portal/?p=inreg">
 
 							<span class="d-md-none d-lg-block">
 								<i class="fas fa-user-plus"></i>

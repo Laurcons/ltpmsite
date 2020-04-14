@@ -2,6 +2,8 @@
 
 $db = new db_connection();
 
+$loggeduser = $db->retrieve_utilizator_where_username("Id", $_SESSION["logatca"]);
+
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +22,7 @@ $db = new db_connection();
 
 	<div class="container">
 
-		<h3>Toate materiile liceului</h3>
+		<h1>Toate materiile liceului</h3>
 
 		<div class="d-none d-md-block"> <!-- header row -->
 
@@ -91,6 +93,14 @@ $db = new db_connection();
 							   name="nume"
 							   placeholder="Denumirea cu diacritice">
 
+						<div class="alert alert-danger d-none mt-1 p-1 pl-3"
+							 data-form="adauga-materie"
+							 data-for="nume">
+
+							 <!-- filled with javascript -->
+
+						</div>
+
 					</div>
 
 				</div>
@@ -130,7 +140,23 @@ $db = new db_connection();
 
 				<div class="modal-body">
 
-					Sunteti sigur ca doriti sa stergeti materia <span id="sterge-materie-modal-nume-materie"></span>?
+					<p>Sunteti sigur ca doriti sa stergeti materia <span id="sterge-materie-modal-nume-materie"></span>?</p>
+
+					<div class="alert alert-warning"><strong>Atentie!</strong> Toate notele, absentele si predarile care depind de aceasta materie vor fi <strong>sterse</strong>! Va rugam asigurati-va ca doriti sa faceti asta!</p></div>
+
+					<div class="form-group">
+
+						<label class="font-weight-bold">Va rugam sa tastati parola contului:</label>
+
+						<input id="sterge-materie-modal-password"
+							   type="password"
+							   name="password"
+							   form="sterge-materie-form"
+							   class="form-control">
+
+						<div class="alert alert-danger p-1 px-2 d-none" data-form="sterge-materie" data-for="password"></div>
+
+					</div>
 
 				</div>
 
@@ -166,6 +192,7 @@ $db = new db_connection();
 
 		<input type="hidden" id="sterge-materie-form-form-id" name="form-id" value="default-value">
 		<input type="hidden" id="sterge-materie-form-materie-id" name="materie-id">
+		<input type="hidden" name="admin-id" value="<?= $loggeduser['Id'] ?>">
 		<input type="hidden" name="sterge-materie" value=".">
 
 	</form>
