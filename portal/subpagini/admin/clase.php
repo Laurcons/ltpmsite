@@ -152,7 +152,10 @@ if (isset($_GET["id"])) {
 
 			<a href="?p=admin:utilizatori&id=<?= $diriginte['Id'] ?>" class="btn btn-sm bg-white border-info">Detalii</a>
 
-			<a class="btn btn-sm bg-white border-warning">Schimba</a>
+			<button class="btn btn-sm bg-white border-warning"
+					onclick="alert('Neimplementat. Asta se face direct din baza de date momentan.');">
+				Schimba
+			</button>
 
 		</p>
 
