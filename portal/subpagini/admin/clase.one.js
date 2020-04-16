@@ -236,7 +236,9 @@ $(document).ready(function() {
 				console.error("AJAX error: " + err);
 			},
 			complete: function() {
-
+				$("[form='schimba-diriginte-form'][type='submit']")
+					.children("span")
+						.remove();
 			}
 		
 		});
