@@ -255,6 +255,10 @@ function ajax_updateClaseList() {
 
 	// indicatorul de incarcare
 	$("#adauga-utilizator-modal-clase-spinner").removeClass("d-none");
+	
+	// sterge continutul listei cu clase
+	$("[form='adauga-utilizator-form'][name='insert-into-class']")
+		.empty();
 
 	$.ajax({
 		url: "?p=admin:utilizatori&ajax&r=clase-list",
