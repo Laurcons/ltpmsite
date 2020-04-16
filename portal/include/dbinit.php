@@ -150,9 +150,20 @@ class db_connection {
 
 	}
 
-	public function retrieve_count_utilizatori() {
+	public function retrieve_count_utilizatori($filter = null) {
 
-		$stmt = $this->conn->prepare("SELECT count(Id) FROM utilizatori;");
+		$filterSql = "";
+
+		if (in_array("profesori", $filter) && in_array("elevi", $filter)) {
+			$filterSql = "WHERE Functie='profesor' OR Functie='elev'";
+		} else {
+			if (in_array("profesori", $filter))
+				$filterSql = "WHERE Functie='profesor'";
+			if (in_array("elevi", $filter))
+				$filterSql = "WHERE Functie='elev'";
+		}
+
+		$stmt = $this->conn->prepare("SELECT count(Id) FROM utilizatori $filterSql;");
 		$stmt->execute();
 		$result = $stmt->get_result();
 
@@ -185,7 +196,7 @@ class db_connection {
 
 	}
 
-	public function retrieve_utilizatori_pagination_titles($entriesPerPage) {
+	public function retrieve_utilizatori_pagination_titles($entriesPerPage, $filter = null) {
 
 		$count = $this->retrieve_count_utilizatori();
 		$remaining = $count;
@@ -194,7 +205,7 @@ class db_connection {
 		while ($remaining > 0) {
 
 			$pag = ($count - $remaining) / $entriesPerPage;
-			$utiliz = $this->retrieve_paged_utilizatori("Nume,Prenume", $entriesPerPage, $pag);
+			$utiliz = $this->retrieve_paged_utilizatori("Nume,Prenume", $entriesPerPage, $pag, $filter);
 
 			$first = $utiliz->fetch_assoc();
 			$utiliz->data_seek($utiliz->num_rows - 1);
