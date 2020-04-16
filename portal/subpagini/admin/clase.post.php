@@ -54,6 +54,12 @@ if (isset($_POST["form-id"])) {
 
 			$response->status = "success";
 
+		} else if (isset($_POST["sterge-predare"])) {
+
+			$db->delete_predare($_POST["predare-id"]);
+
+			$response->status = "success";
+
 		} else {
 
 			$response->status = "request-not-found";

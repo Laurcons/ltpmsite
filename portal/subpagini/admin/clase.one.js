@@ -155,6 +155,51 @@ $(document).ready(function() {
 
 	});
 
+	$("#sterge-predare-modal").on("show.bs.modal", function(e) {
+
+		$("#sterge-predare-form input[name='predare-id']")
+			.val($(e.relatedTarget).data("predare-id"));
+
+	});
+
+	$("#sterge-predare-form").submit(function(e) {
+
+		e.preventDefault();
+
+		// loading indicator
+		appendLoadingIndicator("[form='sterge-predare-form'][type='submit']");
+
+		$.ajax({
+			url: "?p=admin:clase&post",
+			method: "POST",
+			dataType: "json",
+			data: $(this).serialize(),
+			success: function(result) {
+		
+				if (result.status == "success") {
+		
+					$("#sterge-predare-modal").modal("hide");
+					ajax_updatePredari();
+		
+				} else {
+					console.error("AJAX status: " + result.status);
+				}
+		
+			},
+			error: function(req, err) {
+				console.error("AJAX error: " + err);
+			},
+			complete: function() {
+				updateFormIds();
+				$("[form='sterge-predare-form'][type='submit']")
+					.children("span")
+						.remove();
+			}
+		
+		});
+
+	});
+
 });
 
 function ajax_updateElevi() {

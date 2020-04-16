@@ -440,6 +440,48 @@ if (isset($_GET["id"])) {
 	
 	</div>
 
+	<div class="modal fade" id="sterge-predare-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header bg-danger">
+	
+					<h4 class="modal-title text-white">
+						Sterge predare
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+	
+					Sunteti sigur ca doriti sa stergeti aceasta predare? Nimic altceva, in afara de predare, nu va fi afectat!
+	
+				</div>
+	
+				<div class="modal-footer">
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="sterge-predare-form"
+								class="btn btn-danger">
+							Sterge predare
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
 	<form id="atribuie-utilizator-form">
 
 		<input type="hidden" name="form-id">
@@ -461,6 +503,14 @@ if (isset($_GET["id"])) {
 		<input type="hidden" name="form-id">
 		<input type="hidden" name="clasa-id" value="<?= $current_id ?>">
 		<input type="hidden" name="adauga-predare">
+
+	</form>
+
+	<form id="sterge-predare-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="predare-id">
+		<input type="hidden" name="sterge-predare">
 
 	</form>
 
