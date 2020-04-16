@@ -80,7 +80,7 @@ if (isset($_POST["form-id"])) {
 				// obtine dirigintele clasei curente
 				$clasa_diriginte = $db->retrieve_clasa_where_id("Id,Nivel,Sufix,IdDiriginte", $clasa_id);
 				// fa schimbul
-				$db->update_clasa_set_diriginte($clasa_other["Id"], $clasa_diriginte["Id"]);
+				$db->update_clasa_set_diriginte($clasa_other["Id"], $clasa_diriginte["IdDiriginte"]);
 				$db->update_clasa_set_diriginte($clasa_id, $target_prof_id);
 
 			}
