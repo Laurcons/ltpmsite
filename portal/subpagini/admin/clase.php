@@ -153,7 +153,8 @@ if (isset($_GET["id"])) {
 			<a href="?p=admin:utilizatori&id=<?= $diriginte['Id'] ?>" class="btn btn-sm bg-white border-info">Detalii</a>
 
 			<button class="btn btn-sm bg-white border-warning"
-					onclick="alert('Neimplementat. Asta se face direct din baza de date momentan.');">
+					data-toggle="modal"
+					data-target="#schimba-diriginte-modal">
 				Schimba
 			</button>
 
@@ -440,6 +441,102 @@ if (isset($_GET["id"])) {
 	
 	</div>
 
+	<div class="modal fade" id="sterge-predare-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header bg-danger">
+	
+					<h4 class="modal-title text-white">
+						Sterge predare
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+	
+					Sunteti sigur ca doriti sa stergeti aceasta predare? Nimic altceva, in afara de predare, nu va fi afectat!
+	
+				</div>
+	
+				<div class="modal-footer">
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="sterge-predare-form"
+								class="btn btn-danger">
+							Sterge predare
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
+	<div class="modal fade" id="schimba-diriginte-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header">
+	
+					<h4 class="modal-title">
+						Schimba diriginte
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+	
+					<p>Selecteaza un profesor din lista pentru a face schimbul. Daca profesorul este deja diriginte al unei clase, dirigintii vor fi schimbati intre ei.</p>
+
+					<div class="form-group">
+
+						<label class="font-weight-bold">Profesorul cu care se va face schimbul:</label>
+
+						<select class="form-control"
+								name="profesor"
+								form="schimba-diriginte-form">
+
+						</select>
+
+					</div>
+	
+				</div>
+	
+				<div class="modal-footer">
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="schimba-diriginte-form"
+								class="btn btn-primary">
+							Schimba diriginte
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
 	<form id="atribuie-utilizator-form">
 
 		<input type="hidden" name="form-id">
@@ -461,6 +558,22 @@ if (isset($_GET["id"])) {
 		<input type="hidden" name="form-id">
 		<input type="hidden" name="clasa-id" value="<?= $current_id ?>">
 		<input type="hidden" name="adauga-predare">
+
+	</form>
+
+	<form id="sterge-predare-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="predare-id">
+		<input type="hidden" name="sterge-predare">
+
+	</form>
+
+	<form id="schimba-diriginte-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="clasa-id" value="<?= $current_id ?>">
+		<input type="hidden" name="schimba-diriginte">
 
 	</form>
 

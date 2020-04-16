@@ -160,9 +160,20 @@ class db_connection {
 
 	}
 
-	public function retrieve_paged_utilizatori($columns, $entriesPerPage, $page) {
+	public function retrieve_paged_utilizatori($columns, $entriesPerPage, $page, $filter = null) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori ORDER BY Nume,Prenume ASC LIMIT ? OFFSET ?;");
+		$filterSql = "";
+
+		if (in_array("profesori", $filter) && in_array("elevi", $filter)) {
+			$filterSql = "WHERE Functie='profesor' OR Functie='elev'";
+		} else {
+			if (in_array("profesori", $filter))
+				$filterSql = "WHERE Functie='profesor'";
+			if (in_array("elevi", $filter))
+				$filterSql = "WHERE Functie='elev'";
+		}
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori $filterSql ORDER BY Nume,Prenume ASC LIMIT ? OFFSET ?;");
 		$offset = $page * $entriesPerPage;
 		$stmt->bind_param('ii',
 			$entriesPerPage,
@@ -467,6 +478,16 @@ class db_connection {
 			$clasa_data["IdDiriginte"],
 			$clasa_data["AnScolar"]
 		);
+		$stmt->execute();
+
+	}
+
+	public function update_clasa_set_diriginte($clasa_id, $diriginte_id) {
+
+		$stmt = $this->conn->prepare("UPDATE clase SET IdDiriginte=? WHERE Id=?;");
+		$stmt->bind_param("ii",
+			$diriginte_id,
+			$clasa_id);
 		$stmt->execute();
 
 	}

@@ -13,8 +13,13 @@ if ($request == "utilizatori") {
 
 	$epp = $_GET["epp"];
 	$pag = $_GET["pag"];
+	$filter = array();
+	if (isset($_GET["filter-profs"]))
+		$filter[] = "profesori";
+	if (isset($_GET["filter-elevi"]))
+		$filter[] = "elevi";
 
-	$utiliz = $db->retrieve_paged_utilizatori("Id,Nume,Prenume,Username,Email,Functie,Autoritate,NrMatricol,IdClasa", $epp, $pag);
+	$utiliz = $db->retrieve_paged_utilizatori("Id,Nume,Prenume,Username,Email,Functie,Autoritate,NrMatricol,IdClasa", $epp, $pag, $filter);
 	$response->utilizatori = array();
 
 	while ($utilizator = $utiliz->fetch_assoc()) {

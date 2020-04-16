@@ -89,6 +89,7 @@
 						<span class="d-none d-md-block">
 							<i class="fas fa-sign-out-alt"
 								data-toggle="tooltip" data-placement="left" title="Iesire din cont"></i>
+							Iesire cont
 						</span>
 						<span class="d-md-none">
 							<i class="fas fa-sign-out-alt"></i> Iesire din cont

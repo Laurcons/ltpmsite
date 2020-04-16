@@ -2,6 +2,7 @@
 
 var currentPage = 0; // indexat cu 0
 var entriesPerPage = 25;
+var filters = {};
 
 var pagination_pages = null;
 
@@ -109,6 +110,25 @@ $(document).ready(function() {
 
 	});
 
+	$("#filter-profesori-checkbox").change(function() {
+
+		filters.profesori = $(this).prop("checked");
+		ajax_updateUtilizatori(true);
+
+	});
+
+	$("#filter-elevi-checkbox").change(function() {
+
+		filters.elevi = $(this).prop("checked");
+		ajax_updateUtilizatori(true);
+
+	});
+
+	filters = {
+		profesori: false,
+		elevi: false
+	};
+
 	ajax_updateUtilizatori();
 
 });
@@ -214,8 +234,16 @@ function ajax_updateUtilizatori(updatePaginationList = false) {
 
 	$("[data-tag='data-loading']").removeClass("d-none");
 
+	var url = "?p=admin:utilizatori&ajax&r=utilizatori&epp=" + entriesPerPage + "&pag=" + currentPage;
+	if (filters.profesori) {
+		url += "&filter-profs";
+	}
+	if (filters.elevi) {
+		url += "&filter-elevi";
+	}
+
 	$.ajax({
-		url: "?p=admin:utilizatori&ajax&r=utilizatori&epp=" + entriesPerPage + "&pag=" + currentPage,
+		url: url,
 		dataType: "json",
 		success: function(result) {
 
@@ -255,6 +283,10 @@ function ajax_updateClaseList() {
 
 	// indicatorul de incarcare
 	$("#adauga-utilizator-modal-clase-spinner").removeClass("d-none");
+
+	// sterge continutul listei cu clase
+	$("[form='adauga-utilizator-form'][name='insert-into-class']")
+		.empty();
 
 	$.ajax({
 		url: "?p=admin:utilizatori&ajax&r=clase-list",
