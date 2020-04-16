@@ -41,8 +41,13 @@ if ($request == "utilizatori") {
 } else if ($request == "utilizatori-pages") {
 
 	$epp = $_GET["epp"];
+	$filter = array();
+	if (isset($_GET["filter-profs"]))
+		$filter[] = "profesori";
+	if (isset($_GET["filter-elevi"]))
+		$filter[] = "elevi";
 
-	$result = $db->retrieve_utilizatori_pagination_titles($epp);
+	$result = $db->retrieve_utilizatori_pagination_titles($epp, $filter);
 
 	$response->pages = $result;
 	$response->status = "success";

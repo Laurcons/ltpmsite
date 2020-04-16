@@ -208,8 +208,16 @@ function ajax_updatePagination(updateList = false) {
 
 	if (updateList) {
 
+		var url = "?p=admin:utilizatori&ajax&r=utilizatori-pages&epp=" + entriesPerPage;
+		if (filters.profesori) {
+			url += "&filter-profs";
+		}
+		if (filters.elevi) {
+			url += "&filter-elevi";
+		}
+
 		$.ajax({
-			url: "?p=admin:utilizatori&ajax&r=utilizatori-pages&epp=" + entriesPerPage,
+			url: url,
 			dataType: "json",
 			success: function(result) {
 
