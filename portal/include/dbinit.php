@@ -482,6 +482,16 @@ class db_connection {
 
 	}
 
+	public function update_clasa_set_diriginte($clasa_id, $diriginte_id) {
+
+		$stmt = $this->conn->prepare("UPDATE clase SET IdDiriginte=? WHERE Id=?;");
+		$stmt->bind_param("ii",
+			$diriginte_id,
+			$clasa_id);
+		$stmt->execute();
+
+	}
+
 	public function delete_clasa($clasa_id) {
 
 		$stmt = $this->conn->prepare("DELETE FROM clase WHERE Id=?");

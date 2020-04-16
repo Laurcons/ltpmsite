@@ -80,6 +80,21 @@ if ($request == "clase") {
 
 	$response->status = "success";
 
+} else if ($request == "diriginti-disponibili") {
+
+	$profs = $db->retrieve_profesori("Id,Nume,Prenume");
+	$response->profesori = array();
+
+	while ($prof = $profs->fetch_assoc()) {
+
+		$obj = $prof;
+		$obj["clasa"] = $db->retrieve_clasa_where_diriginte("Id,Nivel,Sufix", $prof["Id"]);
+		$response->profesori[] = $obj;
+
+	}
+
+	$response->status = "success";
+
 } else {
 
 	$response->status = "request-not-found";

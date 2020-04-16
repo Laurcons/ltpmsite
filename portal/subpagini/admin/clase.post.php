@@ -60,6 +60,33 @@ if (isset($_POST["form-id"])) {
 
 			$response->status = "success";
 
+		} else if (isset($_POST["schimba-diriginte"])) {
+
+			$clasa_id = $_POST["clasa-id"];
+			$target_prof_id = $_POST["profesor"];
+
+			// vezi daca profesorul tinta e diriginte
+			$clasa_other = $db->retrieve_clasa_where_diriginte("Id,Nivel,Sufix", $target_prof_id);
+
+			if ($clasa_other == null) {
+
+				// profesorul tinta NU este diriginte, il punem aici
+				$db->update_clasa_set_diriginte($clasa_id, $target_prof_id);
+				// celalalt profesor nu mai este diriginte acum
+
+			} else {
+
+				// profesorul tinta ESTE diriginte, si trebuie sa facem schimbul
+				// obtine dirigintele clasei curente
+				$clasa_diriginte = $db->retrieve_clasa_where_id("Id,Nivel,Sufix,IdDiriginte", $clasa_id);
+				// fa schimbul
+				$db->update_clasa_set_diriginte($clasa_other["Id"], $clasa_diriginte["Id"]);
+				$db->update_clasa_set_diriginte($clasa_id, $target_prof_id);
+
+			}
+
+			$response->status = "success";
+
 		} else {
 
 			$response->status = "request-not-found";

@@ -200,6 +200,49 @@ $(document).ready(function() {
 
 	});
 
+	$("#schimba-diriginte-modal").on("show.bs.modal", function(e) {
+
+		ajax_updateSchimbaDiriginteModal();
+
+	});
+
+	$("#schimba-diriginte-form").submit(function(e) {
+
+		e.preventDefault();
+
+		// loading indicator
+		appendLoadingIndicator("[form='schimba-diriginte-form'][type='submit']");
+
+		$.ajax({
+			url: "?p=admin:clase&post",
+			method: "POST",
+			dataType: "json",
+			data: $(this).serialize(),
+			success: function(result) {
+		
+				if (result.status == "success") {
+		
+					$("[form='schimba-diriginte-form'][type='submit']")
+						.prop("disabled", true)
+						.html("Asteptati...");
+					window.location = window.location;
+		
+				} else {
+					console.error("AJAX status: " + result.status);
+				}
+		
+			},
+			error: function(req, err) {
+				console.error("AJAX error: " + err);
+			},
+			complete: function() {
+
+			}
+		
+		});
+
+	});
+
 });
 
 function ajax_updateElevi() {
@@ -396,6 +439,46 @@ function ajax_updateAdaugaPredareModal() {
 		complete: function() {
 			$("#adauga-predare-modal-spinner")
 				.addClass("d-none");
+		}
+	
+	});
+
+}
+
+function ajax_updateSchimbaDiriginteModal() {
+
+	$("[form='schimba-diriginte-form'][name='profesor']")
+		.empty();
+
+	$.ajax({
+		url: "?p=admin:clase&ajax&r=diriginti-disponibili",
+		method: "GET",
+		dataType: "json",
+		//data: ,
+		success: function(result) {
+	
+			if (result.status == "success") {
+	
+				result.profesori.forEach(function(item, index) {
+
+					$("[form='schimba-diriginte-form'][name='profesor']")
+						.append(
+							$("<option>")
+								.val(item.Id)
+								.html(item.Nume + " " + item.Prenume + " (" + (item.clasa == null ? "nu este diriginte" : "diriginte al " + item.clasa.Nivel + "-" + item.clasa.Sufix) + ")"));
+
+				});
+	
+			} else {
+				console.error("AJAX status: " + result.status);
+			}
+	
+		},
+		error: function(req, err) {
+			console.error("AJAX error: " + err);
+		},
+		complete: function() {
+	
 		}
 	
 	});
