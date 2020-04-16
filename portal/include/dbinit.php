@@ -160,9 +160,20 @@ class db_connection {
 
 	}
 
-	public function retrieve_paged_utilizatori($columns, $entriesPerPage, $page) {
+	public function retrieve_paged_utilizatori($columns, $entriesPerPage, $page, $filter = null) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori ORDER BY Nume,Prenume ASC LIMIT ? OFFSET ?;");
+		$filterSql = "";
+
+		if (in_array("profesori", $filter) && in_array("elevi", $filter)) {
+			$filterSql = "WHERE Functie='profesor' OR Functie='elev'";
+		} else {
+			if (in_array("profesori", $filter))
+				$filterSql = "WHERE Functie='profesor'";
+			if (in_array("elevi", $filter))
+				$filterSql = "WHERE Functie='elev'";
+		}
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori $filterSql ORDER BY Nume,Prenume ASC LIMIT ? OFFSET ?;");
 		$offset = $page * $entriesPerPage;
 		$stmt->bind_param('ii',
 			$entriesPerPage,

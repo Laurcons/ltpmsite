@@ -94,15 +94,35 @@
 
 			</div>
 
-			<div class="col-md-4 d-flex">
+			<div class="col-md-4 d-flex justify-content-between">
 
-				<div class="flex-shrink-0 mr-3">
+				<div class="flex-fill mr-1">
+
+					Functia:
+
+					<input type="checkbox"
+						   id="filter-profesori-checkbox"
+						   class="form-check d-inline">
+
+					<span onclick="$('#filter-profesori-checkbox').prop('checked', !$('#filter-profesori-checkbox').prop('checked')).trigger('change');"
+						  style="cursor: default;">profesori</span>
+
+					<input type="checkbox"
+						   id="filter-elevi-checkbox"
+						   class="form-check d-inline">
+
+					<span onclick="$('#filter-elevi-checkbox').prop('checked', !$('#filter-elevi-checkbox').prop('checked')).trigger('change');"
+						  style="cursor: default;">elevi</span>
+
+				</div>
+
+				<div class="flex-shrink-0 mr-1">
 
 					<span class="d-none spinner-border spinner-border-sm text-primary" data-tag="data-loading"></span>
 
 				</div>
 
-				<div class="w-100">
+				<div class="">
 
 					<button type="button"
 							data-toggle="modal"
