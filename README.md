@@ -4,7 +4,7 @@ Păi, pe scurt, un număr de elevi ai LTPM ne-am adunat într-o echipă și dori
 ## De ce există așa ceva
 Poveste lungă... dar pe scurt, ne plictisim. Programatorii trebuie să scrie cod. Și noi chiar scriem!, ajungem la 300 de linii pentru fiecare modal din Portal! Woo!
 ## „Echipa IT”
-* Pricop Laurențiu (XI-A)(coordonator)
+* Pricop Laurențiu (XI-A)(coordonator, back-end)
 * Iakab Edward (XI-A)(front-end, back-end)
 * Stoica Darius (X-A)(designer grafic, front-end)
 * Duca Cosmin (XI-A)(Unity și C#)
