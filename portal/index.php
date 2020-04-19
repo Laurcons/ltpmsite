@@ -102,7 +102,10 @@ if ($pagina == "" || $pagina == "prima") {
 		include("subpagini/clase.post.php");
 	else if ($ajax_redir)
 		include("subpagini/clase.ajax.php");
-	else include("subpagini/clase.php");
+	else if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("subpagini/clase." . $_GET["js"] . ".js");
+	} else include("subpagini/clase.php");
 
 } else if ($pagina == "citate") {
 

@@ -5,6 +5,7 @@
 include("clase.phphead.php");
 
 $request = "";
+$response = new stdClass();
 
 if (isset($_GET["r"])) {
 	$request = $_GET["r"];
@@ -25,7 +26,7 @@ if ($request != "") {
 
 	if ($request == "note") {
 
-		if ($user_id == 0 || $materie_id == 0 || $semestru == "") {
+		/*if ($user_id == 0 || $materie_id == 0 || $semestru == "") {
 			header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
 		} else {
 
@@ -33,11 +34,11 @@ if ($request != "") {
 
 			echo json_encode($data->fetch_all(MYSQLI_ASSOC));
 
-		}
+		}*/
 
-	} else if ($request = "absente") {
+	} else if ($request == "absente") {
 
-		if ($user_id == 0 || $materie_id == 0 || $semestru == "") {
+		/*if ($user_id == 0 || $materie_id == 0 || $semestru == "") {
 			header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
 		} else {
 
@@ -45,19 +46,40 @@ if ($request != "") {
 
 			echo json_encode($data->fetch_all(MYSQLI_ASSOC));
 
+		}*/
+
+	} else if ($request == "predari") {
+
+		$profesor = $db->retrieve_utilizator_where_username("Id", $_SESSION["logatca"]);
+
+		$predari = $db->retrieve_predari_where_profesor("*", $profesor["Id"]);
+
+		$response->predari = array();
+		while ($predare = $predari->fetch_assoc()) {
+
+			$predare["clasa"] = $db->retrieve_clasa_where_id("*", $predare["IdClasa"]);
+			$predare["materia"] = $db->retrieve_materie_where_id("*", $predare["IdMaterie"]);
+			if ($predare["clasa"]["IdDiriginte"] == $profesor["Id"])
+				$predare["calitateDe"] = "diriginte";
+			else $predare["calitateDe"] = "profesor";
+			$response->predari[] = $predare;
+
 		}
+
+		$response->status = "success";
 
 	} else {
 
-	header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
+		$response->status = "request-not-found";
 
 	}
 
 } else {
 
-	header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
+	$response->status = "request-empty";
 
 }
 
+echo(json_encode($response));
 
 ?>

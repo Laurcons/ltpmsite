@@ -1,20 +1,9 @@
-<script>
+
 
 // asta e aici ca sa mearga tooltipurile
 $(document).ready(function() {
 	$('[data-toggle="tooltip"]').tooltip();
 });
-
-// https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-function generateKey(length = 10) {
-   var result           = '';
-   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-   var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
-}
 
 function daysInMonth (month, year) {
     return new Date(year, month, 0).getDate();
@@ -371,5 +360,3 @@ $(document).ready(function() {
 	});
 
 });	
-
-</script>
