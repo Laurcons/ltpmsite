@@ -1,120 +1,79 @@
 <templates>
- <template id="nota-list-template">
 
- 	{{#note}}
- 	
- 	<span class="dropdown">
+	<template id="elev-row-template">
 
-		<span class="float-left border border-secondary bg-white rounded p-1 mr-1 mb-1" style="width: {{size}}rem; cursor: {{cursor}};"
-			data-toggle="dropdown" data-boundary="viewport">
+		<div class="row border p-2">
 
-			<h4 class="text-center">{{Nota}} <small>{{Ziua}} {{Luna}}</small></h4>
+			<div class="col-md-3">
 
-		</span>
+				<span class="badge badge-primary">{{nrcrt}}</span>
+				<span class="badge badge-danger">{{Id}}</span>
+				{{Nume}} {{Prenume}}
 
-		<div class="dropdown-menu">
+			</div>
 
-			<a class="dropdown-item text-weight-bold">Inchide</a>
-			<div class="dropdown-divider"></div>
-			<!--<a class="dropdown-item">Acordata la {{Ziua}} {{Luna}}</a>-->
-			<button class="dropdown-item bg-danger text-light"
-				type="submit"
-				form="anuleaza-nota-form"
-				id="anuleaza-nota-{{Id}}">
-				Sterge nota
-			</button>
+			<div class="col-md-5">
 
-		</div>
+				<b>Note:</b><br>
 
-		<script>
+				{{#note}}
 
-			$(document).ready(function() {
-				var nota_id = {{Id}};
-				var elev_id = {{IdElev}} ;
-				linkNotaToForms(nota_id, elev_id);
-			});
+					<div class="dropdown nota-dropdown d-inline">
 
-		</script>
+						<div class="nota nota-link"
+							 data-toggle="dropdown">
 
-	</span>
+							<h4>{{Nota}} <small>{{Ziua}} {{{lunaRoman}}}</small></h4>
 
-	{{/note}}
+						</div>
 
- </template>
+						<div class="dropdown-menu">
 
- <template id="nota-plus-template">
+							<a class="dropdown-item bg-primary text-white">Nota adaugata de {{profesor.Nume}} {{profesor.Prenume}}</a>
+							<a class="dropdown-item bg-primary text-white">la data de {{Timestamp}}</a>
 
-	<span class="float-left border border-secondary bg-white rounded p-1 mr-1 mb-1" style="width: 2.5rem; cursor: pointer;">
+							<div class="dropdown-divider"></div>
 
-		<h4 class="text-center">+</h4>
+							<a class="dropdown-item bg-danger text-white"
+							   data-toggle="modal"
+							   href="#anuleaza-nota-modal"
+							   data-nota-json="{{json}}">
+								Anuleaza nota
+							</a>
 
-	</span>
+						</div>
 
- </template>
+					</div>
 
- <template id="absenta-list-template">
+				{{/note}}
 
- 	{{#absente}}
+				<div class="nota nota-link"
+					 data-toggle="modal"
+					 data-target="#noteaza-modal"
+					 data-elev-id="{{Id}}">
+					<h4>+</h4>
+				</div>
 
- 	<span class="dropdown">
+				<br><b>Absente:</b><br>
 
-		<div class="d-inline float-left border border-secondary 
-			{{^Motivata}}bg-white{{/Motivata}}
-			{{#Motivata}}bg-secondary text-light{{/Motivata}}
-		 	rounded p-1 mr-1 mb-1" style="width: {{size}}rem; cursor: {{cursor}};"
-			data-toggle="dropdown" data-boundary="viewport">
+				{{#absente}}
 
-			<h4 class="text-center">{{Ziua}} <small>{{Luna}}</small></h4>
+					<div class="absenta {{#Motivata}}absenta-motivata{{/Motivata}}">
 
-		</div>
-		<div class="dropdown-menu">
+						<h4><small>{{Ziua}} {{{lunaRoman}}}</small></h4>
 
-			<a class="dropdown-item">Inchide</a>
-			<button class="dropdown-item bg-primary text-light my-3"
-				form="motiveaza-absenta-form"
-				type="submit"
-				id="motiveaza-absenta-{{Id}}">
-				{{#Motivata}}
-					Demotiveaza absenta
-				{{/Motivata}}
-				{{^Motivata}}
-					Motiveaza absenta
-				{{/Motivata}}
-			</button>
-			<button class="dropdown-item bg-danger text-light"
-				form="anuleaza-absenta-form"
-				type="submit"
-				id="anuleaza-absenta-{{Id}}">
-				Sterge absenta
-			</button>
+					</div>
+
+				{{/absente}}
+
+				<div class="absenta absenta-link">
+					<h4>+</h4>
+				</div>
+
+			</div>
 
 		</div>
 
-		<script>
+	</template>
 
-			$(document).ready(function() {
-
-				var elev_id = {{IdElev}};
-				var absenta_id = {{Id}};
-				linkAbsentaToForms(elev_id, absenta_id);
-
-			});
-
-		</script>
-
-	</span>
-
-	{{/absente}}
-
- </template>
-
- <template id="absenta-plus-template">
-
-	<div class="d-inline float-left border border-secondary bg-white rounded p-1 mr-1 mb-1" style="width: 2.5rem; cursor: pointer;">
-
-		<h4 class="text-center">+</h4>
-
-	</div>
-
- </template>
 </templates>

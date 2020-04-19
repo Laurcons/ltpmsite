@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 		$stmt->execute();
 		$result = $stmt->get_result();*/
-		$user = $db->retrieve_utilizator_where_username('Parola,Autoritate,Functie', $username);
+		$user = $db->retrieve_utilizator_where_username('Id,Parola,Autoritate,Functie', $username);
 
 		if ($user == null) {
 
@@ -64,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 			if ($success) {
 				$_SESSION["logatca"] = $username;
+				$_SESSION["logatid"] = $user["Id"];
 				$_SESSION["logat"] = true;
 				$_SESSION["autoritate"] = $user["Autoritate"];
 				$_SESSION["functie"] = $user["Functie"];

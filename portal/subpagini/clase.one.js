@@ -126,7 +126,7 @@ function validateNoteazaModal() {
 
 	if (ziua_max < ziua) {
 
-		setNoteazaValidationError("Luna nu are atatea zile!");
+		showFormError("noteaza", "data", "Luna nu are atatea zile!");
 		return false;
 
 	}
@@ -151,132 +151,181 @@ function validateAdaugaAbsentaModal() {
 	return true;
 }
 
-function ajax_updateNote(elev_id) {
+function ajax_updateElevi() {
 
-	// actualizeaza notele din pagina
-	$.ajax({url: "?p=clase&ajax&r=note&uid=" + elev_id +
-			"&mid=<?= $materie['Id'] ?>&sem=1",
-		dataType: "html",
+	$("#elevi-rows")
+		.html(
+			$("<div>")
+				.addClass("row border border-bottom-0 p-3")
+				.css("height", ($("#elevi-rows").height() > 0) ? $("#elevi-rows").height() : "auto")
+				.html(
+					$("<span>")
+						.addClass("spinner-border text-primary")));
+
+	$.ajax({
+		url: "?p=clase&ajax&r=elevi&id=" + urlGet("id"),
+		method: "GET",
+		dataType: "json",
+		//data: ,
 		success: function(result) {
+	
+			if (result.status == "success") {
+	
+				// pune cu mustache
+				var template = $("#elev-row-template").html();
+				$("#elevi-rows").empty();
 
-			// pune cu Mustache detaliile
-			var note_obj_inner = JSON.parse(result);
-			var note_obj = {};
-			note_obj.note = note_obj_inner;
-			note_obj.size = 6.35;
-			note_obj.cursor = "pointer";
-			var templ = $("#nota-list-template").html();
-			// converteste lunile
-			note_obj.note = note_obj.note.map(function(item) {
+				result.elevi.forEach(function(elev, elev_i) {
 
-				item.Luna = month_to_special_html(item.Luna);
-				if (item.Ziua < 10)
-					item.Ziua = "0" + item.Ziua;
-				return item;
+					elev.nrcrt = elev_i + 1;
+					var lunaRoman = function() {
+						return "&#x216" + (this.Luna-1).toString(16);
+					}
+					elev.note.forEach(function(nota) {
+						nota.lunaRoman = lunaRoman;
+						nota.json = JSON.stringify(nota).split("\"").join("\\\"");
+					});
+					elev.absente.forEach(function(absenta) {
+						absenta.lunaRoman = lunaRoman;
+					});
 
-			});
+					$("#elevi-rows")
+						.append(
+							Mustache.render(template, elev));
 
-			$("#note-" + elev_id).html(
-				Mustache.render(templ, note_obj)
-			);
-
+				});
+	
+			} else {
+				console.error("AJAX status: " + result.status);
+			}
+	
+		},
+		error: function(req, err) {
+			console.error("AJAX error: " + err);
+		},
+		complete: function() {
+	
 		}
-	});
-
-}
-
-function ajax_updateAbsente(elev_id) {
-
-	$.ajax({url: "?p=clase&ajax&r=absente&uid=" + elev_id +
-		"&mid=<?= $materie['Id'] ?>&sem=1",
-		dataType: "html",
-		success: function(result) {
-
-			// pune absentele cu Mustache
-			var absente_obj_inner = JSON.parse(result);
-			var absente_obj = {};
-			absente_obj.absente = absente_obj_inner;
-			absente_obj.size = 4.75;
-			absente_obj.cursor = "pointer";
-			var template = $("#absenta-list-template").html();
-			// converteste lunile
-			absente_obj.note = absente_obj.absente.map(function(item) {
-
-				item.Luna = month_to_special_html(item.Luna);
-				if (item.Ziua < 10)
-					item.Ziua = "0" + item.Ziua;
-				return item;
-
-			});
-
-			$("#absente-" + elev_id).html(
-				Mustache.render(template, absente_obj)
-			);
-
-		}
-
+	
 	});
 
 }
 
 $(document).ready(function() {
 
-	// configureaza un AJAX request pentru modalul noteaza
-	$("#noteaza-modal-form").submit(function(e) {
+	ajax_updateElevi();
+	updateFormIds();
 
-		e.preventDefault(); // avoid default submit behaviour
+	$("#noteaza-form").submit(function(e) {
 
-		hideErrors();
-
-		// regenereaza form-id-ul
-		$("#noteaza-modal-form-id").attr("value", generateKey());
+		e.preventDefault();
+		hideFormErrors("noteaza");
+		updateFormIds();
 
 		if (!validateNoteazaModal()) {
 			return;
 		}
 
-		//console.log("called");
+		appendLoadingIndicator("[form='noteaza-form'][type='submit']");
 
 		$.ajax({
+			url: "?p=clase&post",
 			method: "POST",
 			data: $(this).serialize(),
-			url: "<?= $post_href ?>",
+			dataType: "json",
 			success: function(result) {
 
-				// obtine user-id-ul pentru a actualiza notele din pagina
-				var elev_id = $("#noteaza-modal-user-id").attr("value");
+				if (result.status == "success") {
 
-				ajax_updateNote(elev_id);
+					// ascunde modalul
+					$("#noteaza-modal").modal("hide");
+					ajax_updateElevi();
 
-				// ascunde modalul
-				$("#noteaza-modal").modal("hide");
+				} else if (result.status == "exception") {
+
+					showFormError("noteaza", "form", "Nu s-a putut trece nota! Exista o nota pe aceeasi data?");
+
+				} else {
+
+					console.error("AJAX status: " + result.status);
+
+				}
 
 			},
 			error: function(xhr, text) {
-
-				showDiv("#noteaza-modal-server-error");
-
+				console.error("AJAX error: " + text);
+			},
+			complete: function() {
+				updateFormIds();
+				$("[form='noteaza-form'][type='submit']")
+					.children("span")
+						.remove();
 			}
 
 		});
 
 	});
 
-	// ajax request pentru anularea notei din dropdown
+	$("#noteaza-modal").on("show.bs.modal", function(e) {
+
+		var elev_id = $(e.relatedTarget).data("elev-id");
+		$("#noteaza-form [name='elev-id']")
+			.val(elev_id);
+		hideFormErrors("noteaza");
+
+	});
+
+	$("#anuleaza-nota-modal").on("show.bs.modal", function(e) {
+
+		var dataobj = JSON.parse($(e.relatedTarget).data("nota-json").split("\\\"").join("\""));
+		$("#anuleaza-nota-modal-body [data-name='nota']")
+			.html(dataobj.Nota);
+		$("#anuleaza-nota-modal-body [data-name='data']")
+			.html(dataobj.Ziua + " " + "&#x216" + (dataobj.Luna-1).toString(16));
+		$("#anuleaza-nota-form [name='nota-id']")
+			.val(dataobj.Id);
+		hideFormErrors("anuleaza-nota");
+
+	});
+
 	$("#anuleaza-nota-form").submit(function(e) {
 
 		e.preventDefault();
 
-		// fa ajax si sterge nota
+		appendLoadingIndicator("[form='anuleaza-nota-form'][type='submit']");
+		hideFormErrors("anuleaza-nota");
+
 		$.ajax({
-			url: "<?= $post_href ?>",
+			url: "?p=clase&post",
 			data: $(this).serialize(),
 			method: "POST",
-			success: function() {
+			dataType: "json",
+			success: function(result) {
 
-				var user_id = $("#anuleaza-nota-form-user-id").attr("value");
-				ajax_updateNote(user_id);
+				if (result.status == "success") {
 
+					$("#anuleaza-nota-modal").modal("hide");
+					ajax_updateElevi();
+
+				} else if (result.status == "password-failed") {
+
+					showFormError("anuleaza-nota", "password", "Parola este incorecta!");
+
+				} else {
+
+					console.error("AJAX status: " + result.status);
+
+				}
+
+			},
+			error: function(req, text) {
+				console.error("AJAX error: " + text);
+			},
+			complete: function() {
+				updateFormIds();
+				$("[form='anuleaza-nota-form'][type='submit']")
+					.children("span")	
+						.remove();
 			}
 
 		});
@@ -290,7 +339,7 @@ $(document).ready(function() {
 
 		// fa ajax si motiveaza
 		$.ajax({
-			url: "<?= $post_href ?>",
+			url: "6",
 			data: $(this).serialize(),
 			method: "POST",
 			success: function() {
@@ -318,7 +367,7 @@ $(document).ready(function() {
 		}
 
 		$.ajax({
-			url: "<?= $post_href ?>",
+			url: "7",
 			data: $(this).serialize(),
 			method: "POST",
 			success: function() {
@@ -345,7 +394,7 @@ $(document).ready(function() {
 		$("#anuleaza-absenta-form-form-id").attr("value", generateKey());
 
 		$.ajax({
-			url: "<?= $post_href ?>",
+			url: "8",
 			data: $(this).serialize(),
 			method: "POST",
 			success: function() {

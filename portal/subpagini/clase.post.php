@@ -2,6 +2,8 @@
 
 include("clase.phphead.php");
 
+$response = new stdClass();
+
 // prelucreaza POST-uri
 // POST-URI CU INDEMPOTENTA
 if (isset($_POST["form-id"])) {
@@ -13,48 +15,57 @@ if (isset($_POST["form-id"])) {
 
 		if (isset($_POST["noteaza"])) {
 
+			$predare = $db->retrieve_predare_where_id("*", $_POST["predare-id"]);
+
 			$nota_data = array();
-			$nota_data["IdElev"] = $_POST["user-id"];
+			$nota_data["IdElev"] = $_POST["elev-id"];
 			$nota_data["Nota"] = $_POST["nota"];
 			$nota_data["IdMaterie"] = $predare["IdMaterie"];
 			$nota_data["IdClasa"] = $predare["IdClasa"];
+			$nota_data["IdProfesor"] = $_SESSION["logatid"];
 			$nota_data["Semestru"] = "1";
 			$nota_data["Ziua"] = $_POST["ziua"];
 			$nota_data["Luna"] = $_POST["luna"];
-
-			var_dump($nota_data);
 
 			try {
 
 				$db->insert_nota($nota_data);
 
+				$response->status = "success";
+
 			} catch (Exception $e) {
 
-				header($_SERVER["SERVER_PROTOCOL"] . " 409 Conflict");
+				$response->status = "exception";
+				$response->exception = $e->getMessage();
  
 			}
 
-		}
+		} else if (isset($_POST["anuleaza-nota"])) {
 
-		if (isset($_POST["anuleaza-nota"])) {
+			$user = $db->retrieve_utilizator_where_username("Id,Parola", $_SESSION["logatca"]);
 
-			if ($_POST["nota-id"] != "insert_js_here") {
+			if (password_verify($_POST["password"], $user["Parola"])) {
 
 				try {
 
 					$db->delete_nota_where_id($_POST["nota-id"]);
 
+					$response->status = "success";
+
 				} catch (Exception $e) {
 
-					header($_SERVER["SERVER_PROTOCOL"] . " 409 Conflict");
+					$response->status = "exception";
+					$response->exception = $e->getMessage();
 
 				}
 
+			} else {
+
+				$response->status = "password-failed";
+
 			}
 
-		}
-
-		if (isset($_POST["absent-azi"])) {
+		} else if (isset($_POST["absent-azi"])) {
 
 			$azi = new DateTime();
 			$ab = array();
@@ -71,13 +82,12 @@ if (isset($_POST["form-id"])) {
 
 			} catch (Exception $e) {
 
-				header($_SERVER["SERVER_PROTOCOL"] . " 409 Conflict");
+				$response->status = "exception";
+				$response->exception = $e;
 
 			}
 
-		}
-
-		if (isset($_POST["anuleaza-absenta"])) {
+		} else if (isset($_POST["anuleaza-absenta"])) {
 
 			$ab = $_POST["absenta-id"];
 
@@ -89,13 +99,12 @@ if (isset($_POST["form-id"])) {
 
 			} catch (Exception $e) {
 
-				header($_SERVER["SERVER_PROTOCOL"] . " 409 Conflict");
+				$response->status = "exception";
+				$response->exception = $e;
 
 			}
 
-		}
-
-		if (isset($_POST["motiveaza-absenta"])) {
+		} else if (isset($_POST["motiveaza-absenta"])) {
 
 			// vezi starea motivarii si pune invers fata de cum e
 			$absenta_id = $_POST["absenta-id"];
@@ -112,13 +121,12 @@ if (isset($_POST["form-id"])) {
 
 			} catch (Exception $e) {
 
-				header($_SERVER["SERVER_PROTOCOL"] . " 409 Conflict");
+				$response->status = "exception";
+				$response->exception = $e;
 
 			}
 
-		}
-
-		if (isset($_POST["adauga-absenta"])) {
+		} else if (isset($_POST["adauga-absenta"])) {
 
 			$ab = array();
 			$ab["IdElev"] = $_POST["elev-id"];
@@ -134,14 +142,29 @@ if (isset($_POST["form-id"])) {
 
 			} catch (Exception $e) {
 
-				header($_SERVER["SERVER_PROTOCOL"] . " 409 Conflict");
+				$response->status = "exception";
+				$response->exception = $e;
 
 			}
 
+		} else {
+
+			$response->status = "action-not-found";
+
 		}
 
-	} 
+	} else {
+
+		$response->status = "form-id-failed";
+
+	}
+
+} else {
+
+	$response->status = "form-id-not-found";
 
 }
+
+echo(json_encode($response));
 
 ?>

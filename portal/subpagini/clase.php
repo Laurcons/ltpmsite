@@ -2,8 +2,6 @@
 
 include("clase.phphead.php");
 
-$post_href = "/portal/?p=clase&id=" . $predare_id . "&post";
-
  ?>
 
  <!DOCTYPE html>
@@ -49,15 +47,15 @@ $post_href = "/portal/?p=clase&id=" . $predare_id . "&post";
 			<!-- randul de antet, doar pe md -->
 			<div class="d-none d-md-block">
 
-				<div class="row border p-2">
+				<div class="row border p-2" style="border-bottom-width: 2px !important;">
 
-					<div class="col-md-2 font-weight-bold">
+					<div class="col-md-3 font-weight-bold">
 
 						Elevul
 
 					</div>
 
-					<div class="col-md-6 font-weight-bold">
+					<div class="col-md-5 font-weight-bold">
 						
 						Note si absente
 
@@ -73,302 +71,7 @@ $post_href = "/portal/?p=clase&id=" . $predare_id . "&post";
 
 			</div> <!-- randul de antet -->
 
-			<?php $rowcount = 0; ?>
-			<?php while ($elev = $elevi->fetch_assoc()) : ?>
-
-				<?php $rowcount++; ?>
-
-				<div class="row border-left border-bottom border-right <?= ($rowcount == 1 ? 'border-top' : '') ?> px-2 py-3">
-
-					<div class="col-md-2">
-
-						<span class="d-md-none font-weight-bold">
-
-							<h4><span class="badge badge-primary"><?= $rowcount; ?></span>
-								<?= $elev["Nume"] . " " . $elev["Prenume"]; ?></h4>
-
-						</span>
-						<span class="d-md-block d-none">
-
-							<span class="badge badge-primary"><?= $rowcount; ?></span>
-							<?= $elev["Nume"] . " " . $elev["Prenume"]; ?>
-
-						</span>
-
-					</div>
-
-					<div class="col-md-6 mb-2">
-
-						<span class="font-weight-bold">Note:</span>
-
-						<div class="row col">
-
-							<div>
-
-								<span class="d-inline" id="note-<?= $elev['Id'] ?>">
-
-								</span>
-
-								<span class="d-inline" id="note-plus-<?= $elev['Id'] ?>">
-
-								</span>
-
-							</div>
-
-						</div>
-
-						<span class="font-weight-bold">Absente:</span>
-
-						<div class="row col">
-
-							<div>
-
-								<span id="absente-<?= $elev['Id'] ?>">
-
-								</span>
-
-								<span id="absente-plus-<?= $elev['Id'] ?>">
-
-								</span>
-
-							</div>
-
-						</div>
-
-					</div>
-
-					<div class="col-md-4">
-
-						<span class="d-md-none font-weight-bold">
-							Optiuni:<br>
-						</span>
-
-						<p>
-							Nimic aici...
-						</p>
-
-					</div>
-
-				</div>
-
-				<script>
-
-					$(document).ready(function() {
-
-						var elev_id = <?= $elev['Id'] ?>;
-
-						ajax_updateNote(<?= $elev["Id"] ?>);
-						// pune faza cu "note plus"
-						$("#note-plus-<?= $elev['Id'] ?>").html(
-							$("#nota-plus-template").html()
-						);
-
-						ajax_updateAbsente(<?= $elev["Id"] ?>);
-						// pune aialalta faza, cu absente plus
-						$("#absente-plus-<?= $elev['Id'] ?>").html(
-							$("#absenta-plus-template").html()
-						);
-
-						linkElevToNoteazaModal(elev_id);
-						linkElevToAdaugaAbsentaModal(elev_id);
-					});
-
-				</script>
-
-			<?php endwhile; ?>
-
-			<div class="modal fade" id="noteaza-modal" tabindex="-1" role="dialog">
-
-				<div class="modal-dialog">
-
-					<div class="modal-content">
-
-						<div class="modal-header">
-
-							<div class="modal-title">
-								<h4>Trece nota</h4>
-							</div>
-
-						</div>
-						<div class="modal-body">
-
-							<div class="form-group">
-
-								<div class="input-group">
-
-									<div class="input-group-prepend">
-
-										<div class="input-group-text">
-
-											Nota:
-
-										</div>
-
-									</div>
-
-									<select class="form-control" form="noteaza-modal-form" name="nota" id="noteaza-modal-nota">
-
-										<option>10</option>
-										<option>9</option>
-										<option>8</option>
-										<option>7</option>
-										<option>6</option>
-										<option>5</option>
-										<option>4</option>
-										<option>3</option>
-										<option>2</option>
-										<option>1</option>
-
-									</select>
-
-								</div> <!-- input-group -->
-
-							</div> <!-- form-group -->
-
-							<div class="form-group">
-
-								<div class="input-group">
-
-									<div class="input-group-prepend">
-
-										<div class="input-group-text">
-											Data:
-										</div>
-
-									</div>
-
-									<select class="form-control" form="noteaza-modal-form" name="ziua" id="noteaza-modal-ziua">
-
-										<?php
-											for ($i = 1; $i <= 31; $i++) {
-												echo '<option>';
-												if ($i < 10) echo '0';
-												echo $i;
-												echo '</option>';
-											}
-										?>
-
-									</select>
-
-									<select class="form-control" form="noteaza-modal-form" name="luna" id="noteaza-modal-luna">
-
-										<?php
-											for ($i = 1; $i <= 12; $i++) {
-												echo '<option value="' . $i . '">';
-												echo '&#' . (8543 + $i) . ';';
-												echo '</option>';
-											}
-										?>
-
-									</select>
-
-								</div> <!-- row -->
-
-							</div> <!-- form-group -->
-
-							<div class="d-none alert alert-danger" id="noteaza-modal-validation-error"></div>
-
-							<div class="d-none alert alert-danger" id="noteaza-modal-server-error">A aparut o eroare la trecerea notei. Probabil exista o nota cu aceeasi data?</div>
-
-						</div> <!-- modal-body -->
-						<div class="modal-footer">
-
-							<div class="btn-group">
-
-								<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
-
-								<input type="submit" form="noteaza-modal-form" class="btn btn-primary" value="Noteaza">
-
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-
-			</div>
-
-			<div class="modal fade" id="adauga-absenta-modal">
-
-				<div class="modal-dialog">
-
-					<div class="modal-content">
-
-						<div class="modal-header">
-
-							<h4>Pune absenta</h4>
-
-						</div>
-
-						<div class="modal-body">
-
-							<p>Selecteaza data pe care doresti sa treci absenta.</p>
-
-							<div class="form-group">
-
-								<div class="input-group">
-
-									<div class="input-group-prepend">
-
-										<div class="input-group-text">
-											Data
-										</div>
-
-									</div>
-
-									<select class="form-control" form="adauga-absenta-form" name="ziua" id="adauga-absenta-form-ziua">
-											
-										<?php
-											for ($i = 1; $i <= 31; $i++) {
-												echo '<option>';
-												if ($i < 10) echo '0';
-												echo $i;
-												echo '</option>';
-											}
-										?>
-
-									</select>
-
-									<select class="form-control" form="adauga-absenta-form" name="luna" id="adauga-absenta-form-luna">
-
-										<?php
-											for ($i = 1; $i <= 12; $i++) {
-												echo '<option value="' . $i . '">';
-												echo '&#' . (8543 + $i) . ';';
-												echo '</option>';
-											}
-										?>
-
-									</select>
-
-								</div>
-
-							</div>
-
-							<div class="d-none alert alert-danger" id="adauga-absenta-validation-error"></div>
-
-							<div class="d-none alert alert-danger" id="adauga-absenta-server-error">A aparut o eroare la trecerea absentei. Probabil exista deja o absenta pe aceeasi data?</div>
-
-						</div>
-
-						<div class="modal-footer">
-
-							<div class="btn-group">
-
-								<button type="button" class="btn bg-white border border-primary" data-dismiss="modal">Inapoi</button>
-
-								<input type="submit" class="btn btn-primary" 
-									form="adauga-absenta-form"
-									value="Adauga absenta">
-
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
+			<div id="elevi-rows" style="min-height: 5rem;">
 
 			</div>
 
@@ -388,16 +91,283 @@ $post_href = "/portal/?p=clase&id=" . $predare_id . "&post";
 
  	<?php else : ?>
 
-		<form class="d-none" id="anuleaza-nota-form">
+		<div class="modal fade" id="noteaza-modal">
 
-			<input type="hidden" id="anuleaza-nota-form-user-id" name="user-id" value="who knows">
-			<input type="hidden" id="anuleaza-nota-form-nota-id" name="nota-id" value="edwix_suks">
-			<input type="hidden" id="anuleaza-nota-form-form-id" name="form-id" value="fill-me-daddy">
-			<input type="hidden" name="anuleaza-nota" value="lugu lugu">
+			<div class="modal-dialog">
+
+				<div class="modal-content">
+
+					<div class="modal-header">
+
+						<div class="modal-title">
+							<h4>Noteaza</h4>
+						</div>
+
+					</div>
+					<div class="modal-body">
+
+						<div class="form-group">
+
+							<div class="input-group">
+
+								<div class="input-group-prepend">
+
+									<div class="input-group-text">
+
+										Nota:
+
+									</div>
+
+								</div>
+
+								<select class="form-control" form="noteaza-form" name="nota" id="noteaza-modal-nota">
+
+									<option>10</option>
+									<option>9</option>
+									<option>8</option>
+									<option>7</option>
+									<option>6</option>
+									<option>5</option>
+									<option>4</option>
+									<option>3</option>
+									<option>2</option>
+									<option>1</option>
+
+								</select>
+
+							</div> <!-- input-group -->
+
+						</div> <!-- form-group -->
+
+						<div class="form-group">
+
+							<div class="input-group">
+
+								<div class="input-group-prepend">
+
+									<div class="input-group-text">
+										Data:
+									</div>
+
+								</div>
+
+								<select class="form-control" form="noteaza-form" name="ziua" id="noteaza-modal-ziua">
+
+									<?php
+										for ($i = 1; $i <= 31; $i++) {
+											echo '<option>';
+											if ($i < 10) echo '0';
+											echo $i;
+											echo '</option>';
+										}
+									?>
+
+								</select>
+
+								<select class="form-control" form="noteaza-form" name="luna" id="noteaza-modal-luna">
+
+									<?php
+										for ($i = 1; $i <= 12; $i++) {
+											echo '<option value="' . $i . '">';
+											echo '&#' . (8543 + $i) . ';';
+											echo '</option>';
+										}
+									?>
+
+								</select>
+
+							</div> <!-- input group -->
+
+							<div class="alert alert-danger p-1 px-2 d-none" data-form="noteaza" data-for="data"></div>
+
+						</div> <!-- form-group -->
+
+						<div class="alert alert-danger p-2 d-none" data-form="noteaza" data-for="form"></div>
+
+					</div> <!-- modal-body -->
+
+					<div class="modal-footer">
+
+						<div class="btn-group">
+
+							<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+
+							<button type="submit" form="noteaza-form" class="btn btn-primary">
+								Noteaza
+							</button>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="modal fade" id="adauga-absenta-modal">
+
+			<div class="modal-dialog">
+
+				<div class="modal-content">
+
+					<div class="modal-header">
+
+						<h4>Pune absenta</h4>
+
+					</div>
+
+					<div class="modal-body">
+
+						<p>Selecteaza data pe care doresti sa treci absenta.</p>
+
+						<div class="form-group">
+
+							<div class="input-group">
+
+								<div class="input-group-prepend">
+
+									<div class="input-group-text">
+										Data
+									</div>
+
+								</div>
+
+								<select class="form-control" form="adauga-absenta-form" name="ziua" id="adauga-absenta-form-ziua">
+										
+									<?php
+										for ($i = 1; $i <= 31; $i++) {
+											echo '<option>';
+											if ($i < 10) echo '0';
+											echo $i;
+											echo '</option>';
+										}
+									?>
+
+								</select>
+
+								<select class="form-control" form="adauga-absenta-form" name="luna" id="adauga-absenta-form-luna">
+
+									<?php
+										for ($i = 1; $i <= 12; $i++) {
+											echo '<option value="' . $i . '">';
+											echo '&#' . (8543 + $i) . ';';
+											echo '</option>';
+										}
+									?>
+
+								</select>
+
+							</div>
+
+						</div>
+
+						<div class="d-none alert alert-danger" id="adauga-absenta-validation-error"></div>
+
+						<div class="d-none alert alert-danger" id="adauga-absenta-server-error">A aparut o eroare la trecerea absentei. Probabil exista deja o absenta pe aceeasi data?</div>
+
+					</div>
+
+					<div class="modal-footer">
+
+						<div class="btn-group">
+
+							<button type="button" class="btn bg-white border border-primary" data-dismiss="modal">Inapoi</button>
+
+							<input type="submit" class="btn btn-primary" 
+								form="adauga-absenta-form"
+								value="Adauga absenta">
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="modal fade" id="anuleaza-nota-modal">
+		
+			<div class="modal-dialog">
+		
+				<div class="modal-content">
+		
+					<div class="modal-header bg-danger">
+		
+						<h4 class="modal-title text-white">
+							Anuleaza nota
+						</h4>
+		
+					</div>
+		
+					<div class="modal-body" id="anuleaza-nota-modal-body">
+		
+						<p>Sunteti sigur ca doriti sa anulati nota? Aceasta actiune nu este reversibila!</p>
+
+						<h5>Veti anula nota <span data-name="nota"></span> de pe data de <span data-name="data"></span>!</h5>
+
+						<div class="form-group">
+
+							<label class="font-weight-bold">Confirmati parola contului dvs:</label>
+
+							<input type="password"
+								   name="password"
+								   form="anuleaza-nota-form"
+								   class="form-control">
+
+							<div class="alert alert-danger p-2 d-none" data-form="anuleaza-nota" data-for="password"></div>
+
+						</div>
+
+						<div class="form-group">
+
+							<label class="font-weight-bold">Scrieti motivul pe larg pentru care anulati nota:</label>
+
+							<textarea rows="3"
+									  name="reason"
+									  form="anuleaza-nota-form"
+									  class="form-control"></textarea>
+
+							<small class="mt-1">Va rugam sa detaliati pe cat puteti!</small>
+
+						</div>
+		
+					</div>
+		
+					<div class="modal-footer">
+		
+						<div class="btn-group">
+		
+							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+		
+							<button type="submit"
+									form="anuleaza-nota-form"
+									class="btn btn-danger">
+								Anuleaza nota
+							</button>
+		
+						</div>
+		
+					</div>
+		
+				</div>
+		
+			</div>
+		
+		</div>
+
+		<form id="anuleaza-nota-form">
+
+			<input type="hidden" name="nota-id">
+			<input type="hidden" name="form-id">
+			<input type="hidden" name="anuleaza-nota">
 
 		</form>
 
-		<form class="d-none" id="anuleaza-absenta-form">
+		<form id="anuleaza-absenta-form">
 
 			<input type="hidden" id="anuleaza-absenta-form-elev-id" name="elev-id" value="banea the best">
 			<input type="hidden" id="anuleaza-absenta-form-absenta-id" name="absenta-id" value="badu the best">
@@ -406,16 +376,16 @@ $post_href = "/portal/?p=clase&id=" . $predare_id . "&post";
 
 		</form>
 
-		<form class="d-none" id="noteaza-modal-form">
+		<form id="noteaza-form">
 
-			<input type="hidden" id="noteaza-modal-user-id" name="user-id" value="insert_js_here">
-			<input type="hidden" id="noteaza-modal-form-id" name="form-id" value="helo">
-			<!-- celelalte field-uri sunt pe modal -->
-			<input type="hidden" name="noteaza" value="covid-19">
+			<input type="hidden" name="elev-id">
+			<input type="hidden" name="predare-id" value="<?= $predare_id ?>">
+			<input type="hidden" name="form-id">
+			<input type="hidden" name="noteaza">
 
 		</form>
 
-		<form class="d-none" id="motiveaza-absenta-form"> 
+		<form id="motiveaza-absenta-form"> 
 
 			<input type="hidden" id="motiveaza-absenta-form-user-id" name="user-id" value="ehehehaehea">
 			<input type="hidden" id="motiveaza-absenta-form-form-id" name="form-id" value="a zis mama ca daca nu merg acum la masa ma da cu capul de tastatugaerbgoeruagboaerugae">
@@ -424,7 +394,7 @@ $post_href = "/portal/?p=clase&id=" . $predare_id . "&post";
 
 		</form>
 
-		<form class="d-none" id="adauga-absenta-form">
+		<form id="adauga-absenta-form">
 
 			<input type="hidden" id="adauga-absenta-form-elev-id" name="elev-id" value="XXL">
 			<input type="hidden" id="adauga-absenta-form-form-id" name="form-id" value="MICUTZU">

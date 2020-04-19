@@ -13,40 +13,39 @@ if (isset($_GET["r"])) {
 
 if ($request != "") {
 
-	$user_id = 0;
-	$materie_id = 0;
-	$semestru = "";
+	if ($request == "elevi") {
 
-	if (isset($_GET["uid"]))
-		$user_id = $_GET["uid"];
-	if (isset($_GET["mid"]))
-		$materie_id = $_GET["mid"];
-	if (isset($_GET["sem"]))
-		$semestru = $_GET["sem"];
+		$semestru = "1";
 
-	if ($request == "note") {
+		$predare = $db->retrieve_predare_where_id("*", $_GET["id"]);
+		$elevi = $db->retrieve_elevi_where_clasa("Id,Nume,Prenume,Username", $predare["IdClasa"]);
+		$response->elevi = array();
 
-		/*if ($user_id == 0 || $materie_id == 0 || $semestru == "") {
-			header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
-		} else {
+		while ($elev = $elevi->fetch_assoc()) {
 
-			$data = $db->retrieve_note_where_utilizator_and_materie_and_semestru("*", $user_id, $materie_id, $semestru);
+			$note = $db->retrieve_note_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
+			$elev["note"] = array();
+			while ($nota = $note->fetch_assoc()) {
 
-			echo json_encode($data->fetch_all(MYSQLI_ASSOC));
+				$nota["profesor"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $nota["IdProfesor"]);
+				$elev["note"][] = $nota;
 
-		}*/
+			}
 
-	} else if ($request == "absente") {
+			$absente = $db->retrieve_absente_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
+			$elev["absente"] = array();
+			while ($absenta = $absente->fetch_assoc()) {
 
-		/*if ($user_id == 0 || $materie_id == 0 || $semestru == "") {
-			header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
-		} else {
+				$absenta["profesor"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $absenta["IdProfesor"]);
+				$elev["absente"][] = $absenta;
 
-			$data = $db->retrieve_absente_where_utilizator_and_materie_and_semestru("*", $user_id, $materie_id, $semestru);
+			}
 
-			echo json_encode($data->fetch_all(MYSQLI_ASSOC));
+			$response->elevi[] = $elev;
 
-		}*/
+		}
+
+		$response->status = "success";
 
 	} else if ($request == "predari") {
 
