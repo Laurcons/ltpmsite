@@ -21,7 +21,7 @@
 			<div class="card-body">
 
 				<a class="btn btn-primary w-100"
-				   href="?p=clase&id={{Id}}">
+				   href="/portal/clase/{{Id}}">
 					Acceseaza
 				</a>
 

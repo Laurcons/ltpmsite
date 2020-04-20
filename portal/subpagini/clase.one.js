@@ -163,7 +163,7 @@ function ajax_updateElevi() {
 						.addClass("spinner-border text-primary")));
 
 	$.ajax({
-		url: "?p=clase&ajax&r=elevi&id=" + urlGet("id"),
+		url: "/portal/clase/ajax/elevi?id=" + urlId(),
 		method: "GET",
 		dataType: "json",
 		//data: ,
@@ -229,7 +229,7 @@ $(document).ready(function() {
 		appendLoadingIndicator("[form='noteaza-form'][type='submit']");
 
 		$.ajax({
-			url: "?p=clase&post",
+			url: "/portal/clase/post",
 			method: "POST",
 			data: $(this).serialize(),
 			dataType: "json",
@@ -296,7 +296,7 @@ $(document).ready(function() {
 		hideFormErrors("anuleaza-nota");
 
 		$.ajax({
-			url: "?p=clase&post",
+			url: "/portal/clase/post",
 			data: $(this).serialize(),
 			method: "POST",
 			dataType: "json",

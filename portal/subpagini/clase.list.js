@@ -17,7 +17,7 @@ function ajax_updatePredari() {
 						.addClass("spinner-border text-primary ml-5")));
 
 	$.ajax({
-		url: "?p=clase&ajax&r=predari",
+		url: "/portal/clase/ajax/predari",
 		method: "GET",
 		dataType: "json",
 		//data: ,

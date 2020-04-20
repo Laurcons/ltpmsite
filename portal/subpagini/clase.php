@@ -86,7 +86,7 @@ include("clase.phphead.php");
 
  	<?php if ($predare_id == -1) : ?>
 
- 		<script src="?p=clase&js=list"></script>
+ 		<script src="/portal/clase/js/list"></script>
  		<?php include("clase.list.templ.php"); ?>
 
  	<?php else : ?>
@@ -402,7 +402,7 @@ include("clase.phphead.php");
 
 		</form>
 
-	 	<script src="?p=clase&js=one"></script>
+	 	<script src="/portal/clase/js/one"></script>
 	 	<?php include("clase.one.templ.php"); ?>
 
 	<?php endif; ?>
