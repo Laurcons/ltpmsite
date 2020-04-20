@@ -92,7 +92,7 @@ $autoritati = $CONFIG["autoritati"];
 
 				<div class="col-sm-3">
 
-					<a class="btn btn-default border-primary" href="?p=admin:utilizatori">Inapoi la utilizatori</a>
+					<a class="btn btn-default border-primary" href="/portal/admin/utilizatori">Inapoi la utilizatori</a>
 
 				</div>
 
@@ -241,11 +241,11 @@ $autoritati = $CONFIG["autoritati"];
 
 					<br class="mb-2">
 
-					<a href="?p=admin:clase" class="btn btn-sm btn-default border-dark">Gestionare clase</a>
+					<a href="/portal/admin/clase" class="btn btn-sm btn-default border-dark">Gestionare clase</a>
 
 					<?php if ($clasa != null) : ?>
 
-						<a href="?p=admin:clase&id=<?= $clasa['Id'] ?>" class="btn btn-sm btn-default border-dark">Gestionare <?= $clasa["Nivel"] . "-" . $clasa["Sufix"] ?></a>
+						<a href="/portal/admin/clase/<?= $clasa['Id'] ?>" class="btn btn-sm btn-default border-dark">Gestionare <?= $clasa["Nivel"] . "-" . $clasa["Sufix"] ?></a>
 
 					<?php endif; ?>
 
@@ -543,7 +543,7 @@ $autoritati = $CONFIG["autoritati"];
 						</button>
 
 						<a class="btn btn-default border-dark btn-sm"
-						   href="?p=admin:materii">
+						   href="/portal/admin/materii">
 						   Gestionare materii
 						</a>
 
@@ -1017,12 +1017,12 @@ $autoritati = $CONFIG["autoritati"];
 
 	<?php if ($current_id == -1) : ?>
 
-		<script src="?p=admin:utilizatori&js=list"></script>
+		<script src="/portal/admin/utilizatori/js/list"></script>
 		<?php require_once("utilizatori.list.templ.php"); ?>
 
 	<?php else : // current_id == -1 ?>
 
-		<script src="?p=admin:utilizatori&js=one"></script>
+		<script src="/portal/admin/utilizatori/js/one"></script>
 		<?php require_once("utilizatori.one.templ.php"); ?>
 
 		<script>

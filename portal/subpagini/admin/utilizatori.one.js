@@ -1,11 +1,4 @@
 
-
-function getId() {
-
-	return urlGet("id");
-
-}
-
 $(document).ready(function() {
 
 	updateFormIds();
@@ -31,7 +24,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		$.ajax({
-			url: "?p=admin:utilizatori&post",
+			url: "/portal/admin/utilizatori/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -73,7 +66,7 @@ $(document).ready(function() {
 		});
 
 		$.ajax({
-			url: "?p=admin:utilizatori&post",
+			url: "/portal/admin/utilizatori/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -107,11 +100,11 @@ $(document).ready(function() {
 			"Genereaza " + "<span class='spinner-border spinner-border-sm'></span>");
 
 		$.ajax({
-			url: "?p=admin:utilizatori&post",
+			url: "/portal/admin/utilizatori/post",
 			method: "POST",
 			data: {
 				"form-id": generateKey(),
-				"user-id": getId(),
+				"user-id": urlId(),
 				"cod-inreg": ""
 			},
 			dataType: "json",
@@ -151,7 +144,7 @@ $(document).ready(function() {
 					.addClass("spinner-border spinner-border-sm"));
 
 		$.ajax({
-			url: "?p=admin:utilizatori&post",
+			url: "/portal/admin/utilizatori/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -202,7 +195,7 @@ $(document).ready(function() {
 					.addClass("spinner-border spinner-border-sm"));
 
 		$.ajax({
-			url: "?p=admin:utilizatori&post",
+			url: "/portal/admin/utilizatori/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -259,7 +252,7 @@ $(document).ready(function() {
 		hideFormErrors("sterge-utilizator");
 
 		$.ajax({
-			url: "?p=admin:utilizatori&post",
+			url: "/portal/admin/utilizatori/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -309,7 +302,7 @@ function ajax_updatePredari() {
 						.addClass("spinner-border text-primary")));
 
 	$.ajax({
-		url: "?p=admin:utilizatori&ajax&r=predari&id=" + getId(),
+		url: "/portal/admin/utilizatori/ajax/predari?id=" + urlId(),
 		method: "GET",
 		dataType: "json",
 		//data: ,
@@ -378,7 +371,7 @@ function ajax_updatePredareModal() {
 	$("[form='adauga-predare-form'][name='clasa']").empty();
 
 	$.ajax({
-		url: "?p=admin:utilizatori&ajax&r=adauga-predare-data",
+		url: "/portal/admin/utilizatori/ajax/adauga-predare-data",
 		dataType: "json",
 		success: function(result) {
 	
@@ -436,7 +429,7 @@ function ajax_updateStergeUtilizatorModal() {
 	$("[form='sterge-utilizator-form'][type='submit']").prop("disabled", true);
 
 	$.ajax({
-		url: "?p=admin:utilizatori&ajax&r=is-diriginte&id=" + getId(),
+		url: "/portal/admin/utilizatori/ajax/is-diriginte?id=" + urlId(),
 		method: "GET",
 		dataType: "json",
 		success: function(result) {
