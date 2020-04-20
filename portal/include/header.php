@@ -26,7 +26,7 @@
 
 						<?php if (is_functie("elev")) : ?>
 
-							<li class="nav-item <?= ($header_cpage == 'situatia' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/?p=situatia">Situatia</a></li>
+							<li class="nav-item <?= ($header_cpage == 'situatia' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/situatia">Situatia</a></li>
 
 						<?php endif; if (is_autoritate("admin")) : ?>
 
@@ -36,11 +36,11 @@
 
 								<div class="dropdown-menu bg-dark">
 
-									<a class="dropdown-item bg-dark text-light" href="?p=admin:clase">Clasele liceului</a>
+									<a class="dropdown-item bg-dark text-light" href="/portal/admin/clase">Clasele liceului</a>
 
-									<a class="dropdown-item bg-dark text-light" href="?p=admin:materii">Materiile liceului</a>
+									<a class="dropdown-item bg-dark text-light" href="/portal/admin/materii">Materiile liceului</a>
 
-									<a class="dropdown-item bg-dark text-light" href="?p=admin:utilizatori">Utilizatori</a>
+									<a class="dropdown-item bg-dark text-light" href="/portal/admin/utilizatori">Utilizatori</a>
 
 								</div>
 
@@ -48,17 +48,17 @@
 
 						<?php endif; if (is_functie("profesor")) : ?>
 
-							<li class="nav-item <?= ($header_cpage == 'clase' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/?p=clase">Clasele mele</a></li>
+							<li class="nav-item <?= ($header_cpage == 'clase' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/clase">Clasele mele</a></li>
 
 						<?php endif; ?>
 
-						<!--<li class="nav-item <?= ($header_cpage == 'citate' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/?p=citate">Propune citat</a></li>-->
+						<!--<li class="nav-item <?= ($header_cpage == 'citate' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/citate">Propune citat</a></li>-->
 
-						<li class="nav-item <?= ($header_cpage == 'resurse' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/?p=resurse">Resurse</a></li>
+						<li class="nav-item <?= ($header_cpage == 'resurse' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/resurse">Resurse</a></li>
 
 					<?php else : ?>
 
-						<!--<li class="nav-item <?= ($header_cpage == 'citate' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/?p=citate">Citate celebre</a></li>-->
+						<!--<li class="nav-item <?= ($header_cpage == 'citate' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/citate">Citate celebre</a></li>-->
 
 					<?php endif; ?>
 
@@ -84,7 +84,7 @@
 
 					</li>
 
-					<li class="nav-item"> <a class="nav-link" href="/portal/?p=logout">
+					<li class="nav-item"> <a class="nav-link" href="/portal/logout">
 						
 						<span class="d-none d-md-block">
 							<i class="fas fa-sign-out-alt"
@@ -99,7 +99,7 @@
 
 					<?php else : ?>
 
-						<li class="nav-item"> <a class="nav-link" href="/portal/?p=logare">
+						<li class="nav-item"> <a class="nav-link" href="/portal/logare">
 
 							<span class="d-md-none d-lg-block">
 								<i class="fas fa-sign-in-alt"></i>
@@ -111,7 +111,7 @@
 
 						</a></li>
 
-						<li class="nav-item"> <a class="nav-link" href="/portal/?p=inreg">
+						<li class="nav-item"> <a class="nav-link" href="/portal/inreg">
 
 							<span class="d-md-none d-lg-block">
 								<i class="fas fa-user-plus"></i>

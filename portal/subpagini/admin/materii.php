@@ -199,7 +199,7 @@ $loggeduser = $db->retrieve_utilizator_where_username("Id", $_SESSION["logatca"]
 
 </body>
 <footer>
-	<script src="?p=admin:materii&js"></script>
+	<script src="/portal/admin/materii/js"></script>
 	<?php require_once("materii.templ.php"); ?>
 
 </footer>

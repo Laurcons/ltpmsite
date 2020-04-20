@@ -50,7 +50,7 @@
 
 			<div class="col-md-4">
 
-				<a class="btn btn-default border-primary" href="?p=admin:utilizatori&id={{Id}}">Detalii</a>
+				<a class="btn btn-default border-primary" href="/portal/admin/utilizatori/{{Id}}">Detalii</a>
 
 			</div>
 

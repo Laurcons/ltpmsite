@@ -40,6 +40,18 @@ function urlGet(param) {
 
 }
 
+function urlId() {
+
+   // ia id-ul din URL, fara query
+   // taie query
+   var noquery = window.location.href.split("?")[0];
+   // taie restul url-ului
+   var id = noquery.substring(noquery.lastIndexOf("/") + 1);
+
+   return id;
+
+}
+
 function appendLoadingIndicator(selector) {
 
    $(selector)
