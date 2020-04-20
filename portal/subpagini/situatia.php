@@ -105,7 +105,7 @@ if ($prevclase_index != 0) {
 
 			<h5 class="mb-1">
 				<?php if ($semestru == "2") : ?>
-					<a href="?p=situatia&tab=<?= $tab ?>&sem=1" style="text-decoration: none;">
+					<a href="/portal/situatia?tab=<?= $tab ?>&sem=1" style="text-decoration: none;">
 				<?php else : ?>
 					<a class="text-muted">
 				<?php endif; ?>
@@ -118,7 +118,7 @@ if ($prevclase_index != 0) {
 				&nbsp;
 
 				<?php if ($semestru == "1") : ?>
-					<a href="?p=situatia&tab=<?= $tab ?>&sem=2" style="text-decoration: none;">
+					<a href="/portal/situatia?tab=<?= $tab ?>&sem=2" style="text-decoration: none;">
 				<?php else : ?>
 					<a class="text-muted">
 				<?php endif; ?>
@@ -137,11 +137,11 @@ if ($prevclase_index != 0) {
 
 		<div class="nav nav-tabs">
 
-			<li class="nav-item"><a class="nav-link<?= ($tab == 'note' ? ' active' : '') ?>" href="/portal/?p=situatia&tab=note&sem=<?= $semestru ?>">
+			<li class="nav-item"><a class="nav-link<?= ($tab == 'note' ? ' active' : '') ?>" href="/portal/situatia?tab=note&sem=<?= $semestru ?>">
 				Note
 			</a></li>
 
-			<li class="nav-item"><a class="nav-link<?= ($tab == 'absente' ? ' active' : '') ?>" href="/portal/?p=situatia&tab=absente&sem=<?= $semestru ?>">
+			<li class="nav-item"><a class="nav-link<?= ($tab == 'absente' ? ' active' : '') ?>" href="/portal/situatia?tab=absente&sem=<?= $semestru ?>">
 				Absente
 			</a></li>
 

@@ -1,6 +1,6 @@
 <?php
 
-redirect_if_not_autoritate("admin", "?");
+redirect_if_not_autoritate("admin", "/portal/");
 
 if ($subpagina == "clase") {
 

@@ -5,7 +5,7 @@ $db = new db_connection();
 $username = $username_err = "";
 $parola = $parola_err = "";
 
-$redir = "/portal/?p=panou";
+$redir = "/portal/panou";
 if (isset($_GET["redir"])) {
 	$redir = $_GET["redir"];
 }

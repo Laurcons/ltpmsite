@@ -33,7 +33,7 @@
 
 						<div class="card-body">
 
-							<a class="btn btn-primary w-100" href="?p=admin:clase&id={{Id}}">Administreaza</a>
+							<a class="btn btn-primary w-100" href="/portal/admin/clase/{{Id}}">Administreaza</a>
 
 						</div>
 
@@ -196,7 +196,7 @@
 						Optiuni:
 					</div>
 
-					<a href="?p=admin:utilizatori&id={{Id}}" class="btn btn-sm border-info">Detalii elev</a>
+					<a href="/portal/admin/utilizatori/{{Id}}" class="btn btn-sm border-info">Detalii elev</a>
 
 					<button class="btn btn-sm border-danger"
 							data-toggle="modal"
@@ -245,7 +245,7 @@
 
 				<div class="col-md-5">
 
-					<a href="?p=admin:utilizatori&id={{profesor.Id}}" class="btn btn-sm border-info">Detalii profesor</a>
+					<a href="/portal/admin/utilizatori/{{profesor.Id}}" class="btn btn-sm border-info">Detalii profesor</a>
 
 					<button class="btn btn-sm border-danger"
 							data-predare-id="{{Id}}"

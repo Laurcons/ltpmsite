@@ -1,6 +1,6 @@
 <?php
 
-redirect_if_logged_in("/portal/?p=panou&src=prima");
+redirect_if_logged_in("/portal/panou?src=prima");
 
 ?>
 

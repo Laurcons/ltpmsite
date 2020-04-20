@@ -76,7 +76,7 @@ $(document).ready(function() {
 					.addClass("spinner-border spinner-border-sm"));
 
 		$.ajax({
-			url: "?p=admin:utilizatori&post",
+			url: "/portal/admin/utilizatori/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -208,7 +208,7 @@ function ajax_updatePagination(updateList = false) {
 
 	if (updateList) {
 
-		var url = "?p=admin:utilizatori&ajax&r=utilizatori-pages&epp=" + entriesPerPage;
+		var url = "/portal/admin/utilizatori/ajax/utilizatori-pages?epp=" + entriesPerPage;
 		if (filters.profesori) {
 			url += "&filter-profs";
 		}
@@ -242,7 +242,7 @@ function ajax_updateUtilizatori(updatePaginationList = false) {
 
 	$("[data-tag='data-loading']").removeClass("d-none");
 
-	var url = "?p=admin:utilizatori&ajax&r=utilizatori&epp=" + entriesPerPage + "&pag=" + currentPage;
+	var url = "/portal/admin/utilizatori/ajax/utilizatori?epp=" + entriesPerPage + "&pag=" + currentPage;
 	if (filters.profesori) {
 		url += "&filter-profs";
 	}
@@ -297,7 +297,7 @@ function ajax_updateClaseList() {
 		.empty();
 
 	$.ajax({
-		url: "?p=admin:utilizatori&ajax&r=clase-list",
+		url: "/portal/admin/utilizatori/ajax/clase-list",
 		dataType: "json",
 		success: function(result) {
 
