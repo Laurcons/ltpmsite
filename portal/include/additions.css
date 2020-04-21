@@ -34,3 +34,10 @@ body {
 .nota-teza small {
 	color: black;
 }
+
+.cursor-default {
+	cursor: default;
+}
+.cursor-pointer {
+	cursor: pointer;
+}

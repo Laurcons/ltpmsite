@@ -1,5 +1,7 @@
 
 
+var elevToUpdate = {id: "all", index: 0};
+
 function validateNoteazaModal() {
 
 	var ziua = $("#noteaza-modal-ziua").children("option:selected").val();
@@ -34,19 +36,45 @@ function validateAdaugaAbsentaModal() {
 	return true;
 }
 
-function ajax_updateElevi() {
+function ajax_updateElevi(elev_id = "all", elev_index = 0) {
 
-	$("#elevi-rows")
+	var updatedElement = (elev_id != "all" ? $("div.row[data-elev-id='" + elev_id + "']") : $("#elevi-rows"));
+
+	updatedElement
 		.html(
 			$("<div>")
-				.addClass("row border border-top-0 p-3")
-				.css("height", ($("#elevi-rows").height() > 0) ? $("#elevi-rows").height() : "auto")
+				.addClass((elev_id != "all" ? "" : "row col border border-top-0 p-3"))
+				.css("height", (updatedElement.height() > 0) ? updatedElement.height() : "auto")
 				.html(
 					$("<span>")
 						.addClass("spinner-border text-primary")));
 
-	$.ajax({
-		url: "/portal/clase/ajax/elevi?id=" + urlId(),
+	var elev_work = function(elev, index) {
+
+		elev.nrcrt = index + 1;
+		var lunaRoman = function() {
+			return "&#x216" + (this.Luna-1).toString(16);
+		}
+		elev.note.forEach(function(nota) {
+			nota.lunaRoman = lunaRoman;
+			nota.json = JSON.stringify(nota).split("\"").join("\\\"");
+			nota.numeElev = elev.Nume + " " + elev.Prenume;
+			nota.isOral = nota.Tip == "oral";
+			nota.isTest = nota.Tip == "test";
+			nota.isTeza = nota.Tip == "teza";
+		});
+		elev.absente.forEach(function(absenta) {
+			absenta.lunaRoman = lunaRoman;
+		});
+		if (elev.media == 0)
+			elev.media = "-";
+		// faza cu .49
+		elev.mediaAlert = parseInt((elev.media - parseInt(elev.media)) * 100) == 49;
+
+	};
+
+	$.ajax({ // url-ul merge si pentru elevi si pentru un singur elev
+		url: "/portal/clase/ajax/" + (elev_id != "all" ? "elev" : "elevi") + "?id=" + urlId() + "&pid=" + urlId() + (elev_id != "all" ? "&uid=" + elev_id : ""),
 		method: "GET",
 		dataType: "json",
 		//data: ,
@@ -56,35 +84,29 @@ function ajax_updateElevi() {
 	
 				// pune cu mustache
 				var template = $("#elev-row-template").html();
-				$("#elevi-rows").empty();
+				updatedElement.empty();
 
-				result.elevi.forEach(function(elev, elev_i) {
+				if (elev_id == "all") {
 
-					elev.nrcrt = elev_i + 1;
-					var lunaRoman = function() {
-						return "&#x216" + (this.Luna-1).toString(16);
-					}
-					elev.note.forEach(function(nota) {
-						nota.lunaRoman = lunaRoman;
-						nota.json = JSON.stringify(nota).split("\"").join("\\\"");
-						nota.numeElev = elev.Nume + " " + elev.Prenume;
-						nota.isOral = nota.Tip == "oral";
-						nota.isTest = nota.Tip == "test";
-						nota.isTeza = nota.Tip == "teza";
+					result.elevi.forEach(function(elev, elev_i) {
+
+						elev_work(elev, elev_i);
+
+						updatedElement
+							.append(
+								Mustache.render(template, elev));
+
 					});
-					elev.absente.forEach(function(absenta) {
-						absenta.lunaRoman = lunaRoman;
-					});
-					if (elev.media == 0)
-						elev.media = "-";
-					// faza cu .49
-					elev.mediaAlert = parseInt((elev.media - parseInt(elev.media)) * 100) == 49;
 
-					$("#elevi-rows")
-						.append(
-							Mustache.render(template, elev));
+				} else {
 
-				});
+					elev_work(result.elev, elev_index);
+
+					updatedElement
+						.html(
+							$($.parseHTML(Mustache.render(template, result.elev))).filter("div").html());
+
+				}
 	
 			} else {
 				console.error("AJAX status: " + result.status);
@@ -130,7 +152,7 @@ $(document).ready(function() {
 
 					// ascunde modalul
 					$("#noteaza-modal").modal("hide");
-					ajax_updateElevi();
+					ajax_updateElevi(elevToUpdate.id, elevToUpdate.index);
 
 				} else if (result.status == "exception") {
 
@@ -166,6 +188,9 @@ $(document).ready(function() {
 			.html($(e.relatedTarget).data("elev-nume"));
 		hideFormErrors("noteaza");
 
+		elevToUpdate.id = $(e.relatedTarget).closest(".elev-row").data("elev-id");
+		elevToUpdate.index = $(e.relatedTarget).closest(".elev-row").data("elev-index");
+
 	});
 
 	// anuleaza nota
@@ -182,9 +207,11 @@ $(document).ready(function() {
 				.html(dataobj.Nota);
 			$("#anuleaza-nota-modal-body [data-name='data']")
 				.html(dataobj.Ziua + " " + "&#x216" + (dataobj.Luna-1).toString(16));
+			elevToUpdate.id = $(e.relatedTarget).closest(".elev-row").data("elev-id");
+			elevToUpdate.index = $(e.relatedTarget).closest(".elev-row").data("elev-index");
 		},
 		on_ajax_success: function(result, modal) {
-			ajax_updateElevi();
+			ajax_updateElevi(elevToUpdate.id, elevToUpdate.index);
 			modal.modal("hide");
 		},
 		on_ajax_nonsuccess: function(result) {
@@ -202,8 +229,12 @@ $(document).ready(function() {
 		action: "/portal/clase/post",
 		validator: validateAdaugaAbsentaModal,
 		bind_data: ["elev-id"],
+		on_open: function(e) {
+			elevToUpdate.id = $(e.relatedTarget).closest(".elev-row").data("elev-id");
+			elevToUpdate.index = $(e.relatedTarget).closest(".elev-row").data("elev-index");
+		},
 		on_ajax_success: function(result, modal) {
-			ajax_updateElevi();
+			ajax_updateElevi(elevToUpdate.id, elevToUpdate.index);
 			modal.modal("hide");
 		},
 		on_ajax_nonsuccess: function(result) {
@@ -225,9 +256,11 @@ $(document).ready(function() {
 			var ziuasidata = $(e.relatedTarget).data("absenta-data").split(" ");
 			$("#anuleaza-absenta-modal-body [data-name='data']")
 				.html(ziuasidata[0] + " " + "&#x216" + (ziuasidata[1]-1).toString(16));
+			elevToUpdate.id = $(e.relatedTarget).closest(".elev-row").data("elev-id");
+			elevToUpdate.index = $(e.relatedTarget).closest(".elev-row").data("elev-index");
 		},
 		on_ajax_success: function(result, modal) {
-			ajax_updateElevi();
+			ajax_updateElevi(elevToUpdate.id, elevToUpdate.index);
 			modal.modal("hide");
 		},
 		on_ajax_nonsuccess: function(result) {
@@ -238,13 +271,22 @@ $(document).ready(function() {
 	});
 
 	// motiveaza, nu se poate face cu createModalForm
+	// eventul e pe document pentru ca butoanele astea, la momentul asta nu exista in DOM
 	$(document).on("click", "[data-action='motiveaza-absenta']", function(e) {
 
 		e.preventDefault();
 
+		var button = $(this);
+
 		$("#motiveaza-absenta-form [name='absenta-id']")
 			.val(
-				$(this).data("absenta-id"));
+				button.data("absenta-id"));
+
+		// pune un loading indicator pe nota
+		button.closest(".dropdown").children(".absenta")
+			.html(
+				$("<span>")
+					.addClass("spinner-border spinner-border-sm text-dark"));
 
 		$.ajax({
 			url: "/portal/clase/post",
@@ -255,7 +297,10 @@ $(document).ready(function() {
 		
 				if (result.status == "success") {
 		
-					ajax_updateElevi();
+					elevToUpdate.id = button.closest("div.elev-row").data("elev-id");
+					elevToUpdate.index = button.closest("div.elev-row").data("elev-index");
+
+					ajax_updateElevi(elevToUpdate.id, elevToUpdate.index);
 		
 				} else {
 					console.error("AJAX status: " + result.status);

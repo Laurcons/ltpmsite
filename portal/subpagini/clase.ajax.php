@@ -23,33 +23,20 @@ if ($request != "") {
 
 		while ($elev = $elevi->fetch_assoc()) {
 
-			$note = $db->retrieve_note_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
-			$elev["note"] = array();
-			while ($nota = $note->fetch_assoc()) {
-
-				$nota["profesor"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $nota["IdProfesor"]);
-				$elev["note"][] = $nota;
-
-			}
-			sortBySchoolDate($elev["note"]);
-
-			$absente = $db->retrieve_absente_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
-			$elev["absente"] = array();
-			while ($absenta = $absente->fetch_assoc()) {
-
-				$absenta["profesor"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $absenta["IdProfesor"]);
-				$elev["absente"][] = $absenta;
-
-			}
-
-			$elev["media"] = averageNoteWithTeza($elev["note"]);
-			sortBySchoolDate($elev["note"]);
-			sortBySchoolDate($elev["absente"]);
-
-			$response->elevi[] = $elev;
+			$response->elevi[] = elevi_getAdditional($db, $elev, $predare, $semestru);
 
 		}
 
+		$response->status = "success";
+
+	} else if ($request == "elev") {
+
+		$semestru = "1";
+
+		$predare = $db->retrieve_predare_where_id("*", $_GET["pid"]);
+		$elev = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $_GET["uid"]);
+
+		$response->elev = elevi_getAdditional($db, $elev, $predare, $semestru);
 		$response->status = "success";
 
 	} else if ($request == "predari") {
@@ -86,5 +73,34 @@ if ($request != "") {
 }
 
 echo(json_encode($response));
+
+function elevi_getAdditional($db, $elev, $predare, $semestru) {
+
+	$note = $db->retrieve_note_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
+	$elev["note"] = array();
+	while ($nota = $note->fetch_assoc()) {
+
+		$nota["profesor"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $nota["IdProfesor"]);
+		$elev["note"][] = $nota;
+
+	}
+	sortBySchoolDate($elev["note"]);
+
+	$absente = $db->retrieve_absente_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
+	$elev["absente"] = array();
+	while ($absenta = $absente->fetch_assoc()) {
+
+		$absenta["profesor"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $absenta["IdProfesor"]);
+		$elev["absente"][] = $absenta;
+
+	}
+
+	$elev["media"] = averageNoteWithTeza($elev["note"]);
+	sortBySchoolDate($elev["note"]);
+	sortBySchoolDate($elev["absente"]);
+
+	return $elev;
+
+}
 
 ?>

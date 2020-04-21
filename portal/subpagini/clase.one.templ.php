@@ -2,7 +2,7 @@
 
 	<template id="elev-row-template">
 
-		<div class="row border border-top-0 p-2">
+		<div class="row border border-top-0 p-2 elev-row" data-elev-id="{{Id}}" data-elev-index="{{nrcrt}}">
 
 			<div class="col-md-3">
 
@@ -49,8 +49,8 @@
 
 						<div class="dropdown-menu">
 
-							<a class="dropdown-item bg-info text-white">Nota <b>{{#isTeza}}la teza{{/isTeza}}{{#isOral}}la oral{{/isOral}}{{#isTest}}la test{{/isTest}}</b> adaugata de <b>{{profesor.Nume}} {{profesor.Prenume}}</b></a>
-							<a class="dropdown-item bg-info text-white">la data de <b>{{Timestamp}}</b></a>
+							<a class="dropdown-item bg-info text-white cursor-default">Nota <b>{{#isTeza}}la teza{{/isTeza}}{{#isOral}}la oral{{/isOral}}{{#isTest}}la test{{/isTest}}</b> adaugata de <b>{{profesor.Nume}} {{profesor.Prenume}}</b></a>
+							<a class="dropdown-item bg-info text-white cursor-default">la data de <b>{{Timestamp}}</b></a>
 
 							<div class="dropdown-divider"></div>
 
@@ -92,8 +92,8 @@
 
 						<div class="dropdown-menu">
 
-							<a class="dropdown-item bg-info text-white">Absenta trecuta de <b>{{profesor.Nume}} {{profesor.Prenume}}</b></a>
-							<a class="dropdown-item bg-info text-white">la data de <b>{{Timestamp}}</b></a>
+							<a class="dropdown-item bg-info text-white cursor-default">Absenta trecuta de <b>{{profesor.Nume}} {{profesor.Prenume}}</b></a>
+							<a class="dropdown-item bg-info text-white cursor-default">la data de <b>{{Timestamp}}</b></a>
 
 							<div class="dropdown-divider"></div>
 
