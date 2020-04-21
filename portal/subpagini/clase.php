@@ -223,6 +223,76 @@ include("clase.phphead.php");
 
 		</div>
 
+		<div class="modal fade" id="anuleaza-nota-modal">
+		
+			<div class="modal-dialog">
+		
+				<div class="modal-content">
+		
+					<div class="modal-header bg-danger">
+		
+						<h4 class="modal-title text-white">
+							Anuleaza nota
+						</h4>
+		
+					</div>
+		
+					<div class="modal-body" id="anuleaza-nota-modal-body">
+		
+						<p>Sunteti sigur ca doriti sa anulati nota? Aceasta actiune nu este reversibila!</p>
+
+						<h5>Veti anula nota <span data-name="nota"></span> de pe data de <span data-name="data"></span>!</h5>
+
+						<div class="form-group">
+
+							<label class="font-weight-bold">Confirmati parola contului dvs:</label>
+
+							<input type="password"
+								   name="password"
+								   form="anuleaza-nota-form"
+								   class="form-control">
+
+							<div class="alert alert-danger p-2 d-none" data-form="anuleaza-nota" data-for="password"></div>
+
+						</div>
+
+						<div class="form-group">
+
+							<label class="font-weight-bold">Scrieti motivul pe larg pentru care anulati nota:</label>
+
+							<textarea rows="3"
+									  name="reason"
+									  form="anuleaza-nota-form"
+									  class="form-control"></textarea>
+
+							<small class="mt-1">Va rugam sa detaliati pe cat puteti!</small>
+
+						</div>
+		
+					</div>
+		
+					<div class="modal-footer">
+		
+						<div class="btn-group">
+		
+							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+		
+							<button type="submit"
+									form="anuleaza-nota-form"
+									class="btn btn-danger">
+								Anuleaza nota
+							</button>
+		
+						</div>
+		
+					</div>
+		
+				</div>
+		
+			</div>
+		
+		</div>
+
 		<div class="modal fade" id="adauga-absenta-modal">
 
 			<div class="modal-dialog">
@@ -306,7 +376,7 @@ include("clase.phphead.php");
 
 		</div>
 
-		<div class="modal fade" id="anuleaza-nota-modal">
+		<div class="modal fade" id="anuleaza-absenta-modal">
 		
 			<div class="modal-dialog">
 		
@@ -315,16 +385,16 @@ include("clase.phphead.php");
 					<div class="modal-header bg-danger">
 		
 						<h4 class="modal-title text-white">
-							Anuleaza nota
+							Anuleaza absenta
 						</h4>
 		
 					</div>
 		
-					<div class="modal-body" id="anuleaza-nota-modal-body">
-		
-						<p>Sunteti sigur ca doriti sa anulati nota? Aceasta actiune nu este reversibila!</p>
+					<div class="modal-body" id="anuleaza-absenta-modal-body">
 
-						<h5>Veti anula nota <span data-name="nota"></span> de pe data de <span data-name="data"></span>!</h5>
+						<p>Sunteti sigur ca doriti sa anulati absenta? Aceasta actiune nu este reversibila!</p>
+
+						<h5>Veti anula absenta de pe data de <span data-name="data"></span>!</h5>
 
 						<div class="form-group">
 
@@ -332,20 +402,20 @@ include("clase.phphead.php");
 
 							<input type="password"
 								   name="password"
-								   form="anuleaza-nota-form"
+								   form="anuleaza-absenta-form"
 								   class="form-control">
 
-							<div class="alert alert-danger p-2 d-none" data-form="anuleaza-nota" data-for="password"></div>
+							<div class="alert alert-danger p-2 d-none" data-form="anuleaza-absenta" data-for="password"></div>
 
 						</div>
 
 						<div class="form-group">
 
-							<label class="font-weight-bold">Scrieti motivul pe larg pentru care anulati nota:</label>
+							<label class="font-weight-bold">Scrieti motivul pe larg pentru care anulati absenta:</label>
 
 							<textarea rows="3"
 									  name="reason"
-									  form="anuleaza-nota-form"
+									  form="anuleaza-absenta-form"
 									  class="form-control"></textarea>
 
 							<small class="mt-1">Va rugam sa detaliati pe cat puteti!</small>
@@ -361,9 +431,9 @@ include("clase.phphead.php");
 							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
 		
 							<button type="submit"
-									form="anuleaza-nota-form"
+									form="anuleaza-absenta-form"
 									class="btn btn-danger">
-								Anuleaza nota
+								Anuleaza absenta
 							</button>
 		
 						</div>

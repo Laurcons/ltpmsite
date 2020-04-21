@@ -203,6 +203,31 @@ $(document).ready(function() {
 		}
 	});
 
+	// anuleaza absenta
+	createModalForm({
+		modal: $("#anuleaza-absenta-modal"),
+		form: $("#anuleaza-absenta-form"),
+		formErrorName: "anuleaza-absenta",
+		action: "/portal/clase/post",
+		bind_data: ["absenta-id"],
+		on_open: function(e) {
+			$("#anuleaza-absenta-form")[0].reset();
+			var ziuasidata = $(e.relatedTarget).data("absenta-data").split(" ");
+			$("#anuleaza-absenta-modal-body [data-name='data']")
+				.html(ziuasidata[0] + " " + "&#x216" + (ziuasidata[1]-1).toString(16));
+		},
+		on_ajax_success: function(result, modal) {
+			ajax_updateElevi();
+			modal.modal("hide");
+		},
+		on_ajax_nonsuccess: function(result) {
+			if (result.status == "password-failed") {
+				showFormError("anuleaza-nota", "password", "Parola este incorecta!");
+			}
+		}
+	});
+
+	// motiveaza, nu se poate face cu createModalForm
 	$(document).on("click", "[data-action='motiveaza-absenta']", function() {
 
 		console.log("called");

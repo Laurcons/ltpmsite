@@ -67,6 +67,8 @@ if (isset($_POST["form-id"])) {
 
 		} else if (isset($_POST["absent-azi"])) {
 
+			// UNUSED CURRENTLY
+
 			$azi = new DateTime();
 			$ab = array();
 			$ab["IdElev"] = $_POST["user-id"];
@@ -83,7 +85,7 @@ if (isset($_POST["form-id"])) {
 			} catch (Exception $e) {
 
 				$response->status = "exception";
-				$response->exception = $e;
+				$response->exception = $e->getMessage();
 
 			}
 
@@ -91,16 +93,16 @@ if (isset($_POST["form-id"])) {
 
 			$ab = $_POST["absenta-id"];
 
-			var_dump($_POST);
-
 			try {
 
 				$db->delete_absenta($ab);
 
+				$response->status = "success";
+
 			} catch (Exception $e) {
 
 				$response->status = "exception";
-				$response->exception = $e;
+				$response->exception = $e->getMessage();
 
 			}
 
@@ -124,7 +126,7 @@ if (isset($_POST["form-id"])) {
 			} catch (Exception $e) {
 
 				$response->status = "exception";
-				$response->exception = $e;
+				$response->exception = $e->getMessage();
 
 			}
 

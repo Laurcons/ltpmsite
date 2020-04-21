@@ -82,6 +82,17 @@
 								Motiveaza absenta
 							</a>
 
+							<div class="dropdown-divider"></div>
+
+							<a class="dropdown-item bg-danger text-white"
+							   data-toggle="modal"
+							   data-target="#anuleaza-absenta-modal"
+							   data-absenta-id="{{Id}}"
+							   data-absenta-data="{{Ziua}} {{Luna}}"
+							   href="#">
+								Anuleaza absenta
+							</a>
+
 						</div>
 
 					</div>
