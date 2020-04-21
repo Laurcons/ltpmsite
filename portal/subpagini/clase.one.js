@@ -39,7 +39,7 @@ function ajax_updateElevi() {
 	$("#elevi-rows")
 		.html(
 			$("<div>")
-				.addClass("row border border-bottom-0 p-3")
+				.addClass("row border border-top-0 p-3")
 				.css("height", ($("#elevi-rows").height() > 0) ? $("#elevi-rows").height() : "auto")
 				.html(
 					$("<span>")
@@ -67,10 +67,18 @@ function ajax_updateElevi() {
 					elev.note.forEach(function(nota) {
 						nota.lunaRoman = lunaRoman;
 						nota.json = JSON.stringify(nota).split("\"").join("\\\"");
+						nota.numeElev = elev.Nume + " " + elev.Prenume;
+						nota.isOral = nota.Tip == "oral";
+						nota.isTest = nota.Tip == "test";
+						nota.isTeza = nota.Tip == "teza";
 					});
 					elev.absente.forEach(function(absenta) {
 						absenta.lunaRoman = lunaRoman;
 					});
+					if (elev.media == 0)
+						elev.media = "-";
+					// faza cu .49
+					elev.mediaAlert = parseInt((elev.media - parseInt(elev.media)) * 100) == 49;
 
 					$("#elevi-rows")
 						.append(
@@ -154,6 +162,8 @@ $(document).ready(function() {
 		var elev_id = $(e.relatedTarget).data("elev-id");
 		$("#noteaza-form [name='elev-id']")
 			.val(elev_id);
+		$("#noteaza-modal-body span[data-for='nume']")
+			.html($(e.relatedTarget).data("elev-nume"));
 		hideFormErrors("noteaza");
 
 	});
@@ -228,9 +238,9 @@ $(document).ready(function() {
 	});
 
 	// motiveaza, nu se poate face cu createModalForm
-	$(document).on("click", "[data-action='motiveaza-absenta']", function() {
+	$(document).on("click", "[data-action='motiveaza-absenta']", function(e) {
 
-		console.log("called");
+		e.preventDefault();
 
 		$("#motiveaza-absenta-form [name='absenta-id']")
 			.val(

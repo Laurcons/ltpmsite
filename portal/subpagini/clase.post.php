@@ -27,6 +27,11 @@ if (isset($_POST["form-id"])) {
 			$nota_data["Ziua"] = $_POST["ziua"];
 			$nota_data["Luna"] = $_POST["luna"];
 
+			if ($_POST["tip"] == "teza")
+				$nota_data["Teza"] = 'da';
+			else $nota_data["Teza"] = NULL;
+			$nota_data["Tip"] = $_POST["tip"];
+
 			try {
 
 				$db->insert_nota($nota_data);

@@ -121,81 +121,133 @@ include("clase.phphead.php");
 						</div>
 
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" id="noteaza-modal-body">
 
-						<div class="form-group">
+						<p>Sunteti pe cale sa notati elevul <b><span data-for="nume"></span></b>.</p>
 
-							<div class="input-group">
+						<div class="form-group form-row">
 
-								<div class="input-group-prepend">
+							<label class="col-3 col-form-label font-weight-bold">Nota:</label>
 
-									<div class="input-group-text">
+							<div class="col-9">
 
-										Nota:
+								<div class="input-group">
 
-									</div>
+									<select class="form-control" form="noteaza-form" name="nota" id="noteaza-modal-nota">
+
+										<option>10</option>
+										<option>9</option>
+										<option>8</option>
+										<option>7</option>
+										<option>6</option>
+										<option>5</option>
+										<option>4</option>
+										<option>3</option>
+										<option>2</option>
+										<option>1</option>
+
+									</select>
 
 								</div>
-
-								<select class="form-control" form="noteaza-form" name="nota" id="noteaza-modal-nota">
-
-									<option>10</option>
-									<option>9</option>
-									<option>8</option>
-									<option>7</option>
-									<option>6</option>
-									<option>5</option>
-									<option>4</option>
-									<option>3</option>
-									<option>2</option>
-									<option>1</option>
-
-								</select>
 
 							</div> <!-- input-group -->
 
 						</div> <!-- form-group -->
 
-						<div class="form-group">
+						<div class="form-group form-row">
 
-							<div class="input-group">
+							<label class="col-3 col-form-label font-weight-bold">Data:</label>
 
-								<div class="input-group-prepend">
+							<div class="col-9">
 
-									<div class="input-group-text">
-										Data:
-									</div>
+								<div class="input-group">
+
+									<select class="form-control" form="noteaza-form" name="ziua" id="noteaza-modal-ziua">
+
+										<?php
+											for ($i = 1; $i <= 31; $i++) {
+												echo '<option>';
+												if ($i < 10) echo '0';
+												echo $i;
+												echo '</option>';
+											}
+										?>
+
+									</select>
+
+									<select class="form-control" form="noteaza-form" name="luna" id="noteaza-modal-luna">
+
+										<?php
+											for ($i = 1; $i <= 12; $i++) {
+												echo '<option value="' . $i . '">';
+												echo '&#' . (8543 + $i) . ';';
+												echo '</option>';
+											}
+										?>
+
+									</select>
+
+								</div> <!-- input group -->
+
+							</div>
+
+							<div class="alert alert-danger p-1 px-2 d-none" data-form="noteaza" data-for="data"></div>
+
+						</div> <!-- form-group -->
+
+						<div class="form-group form-row">
+
+							<label class="col-3 font-weight-bold">Tipul notei:</label>
+
+							<div class="col-9">
+
+								<div class="form-check form-check-inline">
+
+									<input class="form-check-input"
+										   type="radio"
+										   form="noteaza-form"
+										   name="tip"
+										   value="oral"
+										   id="check-oral"
+										   checked>
+
+									<label class="form-check-label" for="check-oral">
+										oral
+									</label>
 
 								</div>
 
-								<select class="form-control" form="noteaza-form" name="ziua" id="noteaza-modal-ziua">
+								<div class="form-check form-check-inline">
 
-									<?php
-										for ($i = 1; $i <= 31; $i++) {
-											echo '<option>';
-											if ($i < 10) echo '0';
-											echo $i;
-											echo '</option>';
-										}
-									?>
+									<input class="form-check-input"
+										   type="radio"
+										   form="noteaza-form"
+										   name="tip"
+										   value="test"
+										   id="check-test">
 
-								</select>
+									<label class="form-check-label" for="check-test">
+										test
+									</label>
 
-								<select class="form-control" form="noteaza-form" name="luna" id="noteaza-modal-luna">
+								</div>
 
-									<?php
-										for ($i = 1; $i <= 12; $i++) {
-											echo '<option value="' . $i . '">';
-											echo '&#' . (8543 + $i) . ';';
-											echo '</option>';
-										}
-									?>
+								<div class="form-check form-check-inline">
 
-								</select>
+									<input class="form-check-input"
+										   type="radio"
+										   form="noteaza-form"
+										   name="tip"
+										   value="teza"
+										   id="check-teza">
 
-							</div> <!-- input group -->
+									<label class="form-check-label text-danger" for="check-teza">
+										teza
+									</label>
 
-							<div class="alert alert-danger p-1 px-2 d-none" data-form="noteaza" data-for="data"></div>
+								</div>
+
+							</div>
 
 						</div> <!-- form-group -->
 

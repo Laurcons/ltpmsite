@@ -27,3 +27,10 @@ body {
 	color: #007bff; /* primary */
 	text-decoration: underline;
 }
+
+.nota-teza {
+	color: red;
+}
+.nota-teza small {
+	color: black;
+}

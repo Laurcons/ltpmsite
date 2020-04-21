@@ -4,7 +4,7 @@ session_start();
 
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/loginchecks.php");
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/dbinit.php");
-//include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/note-style.php"); // unused, and if used, needs to be unused
+include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/utility.php");
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/security.php");
 
 $CONFIG = include("include/config.php");

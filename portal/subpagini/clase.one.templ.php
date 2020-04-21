@@ -2,13 +2,32 @@
 
 	<template id="elev-row-template">
 
-		<div class="row border p-2">
+		<div class="row border border-top-0 p-2">
 
 			<div class="col-md-3">
 
 				<span class="badge badge-primary">{{nrcrt}}</span>
 				<span class="badge badge-danger">{{Id}}</span>
+
 				{{Nume}} {{Prenume}}
+
+				<div class="d-none d-md-block">
+					<hr class="mb-2">
+				</div>
+				<div class="d-block d-md-none">
+					<!-- empty, works as new row -->
+				</div>
+
+				<b>Media semestriala:</b>
+				<span class="badge badge-info mb-2" style="font-size: 1em;">{{media}}</span>
+
+				{{#mediaAlert}}
+				<div class="alert alert-danger p-1 px-2">
+
+					<strong>Atentie!</strong> Media semestriala a elevului se termina in .49! Va rugam sa ii mai acordati inca o nota pentru a-i definitiva media!
+
+				</div>
+				{{/mediaAlert}}
 
 			</div>
 
@@ -18,9 +37,10 @@
 
 				{{#note}}
 
-					<div class="dropdown d-inline"> <!-- nota id {{Id}}: {{Nota}} / {{Ziua}}.{{Luna}} -->
+					<!-- nota id {{Id}}: {{Nota}} / {{Ziua}}.{{Luna}} -->
+					<div class="dropdown d-inline">
 
-						<div class="nota nota-link"
+						<div class="nota nota-link {{#isTeza}}nota-teza{{/isTeza}}"
 							 data-toggle="dropdown">
 
 							<h4>{{Nota}} <small>{{Ziua}} {{{lunaRoman}}}</small></h4>
@@ -29,8 +49,8 @@
 
 						<div class="dropdown-menu">
 
-							<a class="dropdown-item bg-info text-white">Nota adaugata de {{profesor.Nume}} {{profesor.Prenume}}</a>
-							<a class="dropdown-item bg-info text-white">la data de {{Timestamp}}</a>
+							<a class="dropdown-item bg-info text-white">Nota <b>{{#isTeza}}la teza{{/isTeza}}{{#isOral}}la oral{{/isOral}}{{#isTest}}la test{{/isTest}}</b> adaugata de <b>{{profesor.Nume}} {{profesor.Prenume}}</b></a>
+							<a class="dropdown-item bg-info text-white">la data de <b>{{Timestamp}}</b></a>
 
 							<div class="dropdown-divider"></div>
 
@@ -51,7 +71,8 @@
 				<div class="nota nota-link"
 					 data-toggle="modal"
 					 data-target="#noteaza-modal"
-					 data-elev-id="{{Id}}">
+					 data-elev-id="{{Id}}"
+					 data-elev-nume="{{Nume}} {{Prenume}}">
 					<h4>+</h4>
 				</div>
 
@@ -59,7 +80,8 @@
 
 				{{#absente}}
 
-					<div class="dropdown d-inline"> <!-- absenta id {{Id}}: {{Ziua}}.{{Luna}} -->
+					<!-- absenta id {{Id}}: {{Ziua}}.{{Luna}} -->
+					<div class="dropdown d-inline"> 
 
 						<div class="absenta {{#Motivata}}absenta-motivata{{/Motivata}} absenta-link"
 							 data-toggle="dropdown">
@@ -70,8 +92,8 @@
 
 						<div class="dropdown-menu">
 
-							<a class="dropdown-item bg-info text-white">Absenta trecuta de {{profesor.Nume}} {{profesor.Prenume}}</a>
-							<a class="dropdown-item bg-info text-white">la data de {{Timestamp}}</a>
+							<a class="dropdown-item bg-info text-white">Absenta trecuta de <b>{{profesor.Nume}} {{profesor.Prenume}}</b></a>
+							<a class="dropdown-item bg-info text-white">la data de <b>{{Timestamp}}</b></a>
 
 							<div class="dropdown-divider"></div>
 
@@ -79,7 +101,8 @@
 							   data-action="motiveaza-absenta"
 							   data-absenta-id="{{Id}}"
 							   href="#">
-								Motiveaza absenta
+							   	{{#Motivata}}Demotiveaza absenta{{/Motivata}}
+								{{^Motivata}}Motiveaza absenta{{/Motivata}}
 							</a>
 
 							<div class="dropdown-divider"></div>
@@ -102,8 +125,17 @@
 				<div class="absenta absenta-link"
 					 data-toggle="modal"
 					 data-target="#adauga-absenta-modal"
-					 data-elev-id="{{Id}}">
+					 data-elev-id="{{Id}}"
+					 data-elev-nume="{{Nume}} {{Prenume}}">
 					<h4>+</h4>
+				</div>
+
+			</div>
+
+			<div class="col-md">
+
+				<div class="d-md-none d-block font-weight-bold">
+					Optiuni:
 				</div>
 
 			</div>

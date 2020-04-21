@@ -31,6 +31,7 @@ if ($request != "") {
 				$elev["note"][] = $nota;
 
 			}
+			sortBySchoolDate($elev["note"]);
 
 			$absente = $db->retrieve_absente_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
 			$elev["absente"] = array();
@@ -40,6 +41,10 @@ if ($request != "") {
 				$elev["absente"][] = $absenta;
 
 			}
+
+			$elev["media"] = averageNoteWithTeza($elev["note"]);
+			sortBySchoolDate($elev["note"]);
+			sortBySchoolDate($elev["absente"]);
 
 			$response->elevi[] = $elev;
 

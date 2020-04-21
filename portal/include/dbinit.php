@@ -523,12 +523,14 @@ class db_connection {
 
 	public function insert_nota($nota_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO note (IdElev, IdClasa, IdMaterie, IdProfesor, Semestru, Nota, Ziua, Luna) VALUES (?,?,?,?,?,?,?,?);");
-		$stmt->bind_param("iiiisiii",
+		$stmt = $this->conn->prepare("INSERT INTO note (IdElev, IdClasa, IdMaterie, IdProfesor, Teza, Tip, Semestru, Nota, Ziua, Luna) VALUES (?,?,?,?,?,?,?,?,?,?);");
+		$stmt->bind_param("iiiisssiii",
 			$nota_data["IdElev"],
 			$nota_data["IdClasa"],
 			$nota_data["IdMaterie"],
 			$nota_data["IdProfesor"],
+			$nota_data["Teza"],
+			$nota_data["Tip"],
 			$nota_data["Semestru"],
 			$nota_data["Nota"],
 			$nota_data["Ziua"],
