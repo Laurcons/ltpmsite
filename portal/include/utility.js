@@ -60,3 +60,7 @@ function appendLoadingIndicator(selector) {
             .addClass("spinner-border spinner-border-sm"));
 
 }
+
+function daysInMonth (month, year) {
+    return new Date(year, month, 0).getDate();
+}

@@ -13,12 +13,12 @@ $loggeduser = $db->retrieve_utilizator_where_username("Id", $_SESSION["logatca"]
 <head>
 
 	<title>Administrare materii - Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 
 </head>
 
 <body>
-	<?php $header_cpage = "admin:materii"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "admin:materii"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 	<div class="container">
 

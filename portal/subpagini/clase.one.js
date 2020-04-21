@@ -1,122 +1,5 @@
 
 
-// asta e aici ca sa mearga tooltipurile
-$(document).ready(function() {
-	$('[data-toggle="tooltip"]').tooltip();
-});
-
-function daysInMonth (month, year) {
-    return new Date(year, month, 0).getDate();
-}
-
-function month_to_special_html(month) {
-
-	var roman_code = 8543;
-	roman_code += month;
-	return String.fromCharCode(roman_code);
-	//("&#" + roman_code + ";").text();
-
-}
-
-function hideDiv(selector) {
-
-	var cls = $(selector).attr("class");
-	cls += " d-none";
-	$(selector).attr("class", cls);
-
-}
-
-function showDiv(selector) {
-
-	var cls = $(selector).attr("class");
-	cls = cls.split("d-none").join("");
-	$(selector).attr("class", cls);
-
-}
-
-function hideErrors() {
-
-	hideDiv("#noteaza-modal-server-error");
-	hideDiv("#noteaza-modal-validation-error");
-	hideDiv("#adauga-absenta-validation-error");
-	hideDiv("#adauga-absenta-server-error");
-
-}
-
-function setNoteazaValidationError(message) {
-
-	showDiv("#noteaza-modal-validation-error");
-	$("#noteaza-modal-validation-error").html(message);
-
-}
-
-function setAdaugaAbsentaValidationError(message) {
-
-	showDiv("#adauga-absenta-validation-error");
-	$("#adauga-absenta-validation-error").html(message);
-
-}
-
-function linkNotaToForms(nota_id, elev_id) {
-
-	$("#anuleaza-nota-" + nota_id).click(function() {
-
-		// completeaza formul
-		$("#anuleaza-nota-form-user-id").attr("value", elev_id);
-		$("#anuleaza-nota-form-nota-id").attr("value", nota_id);
-		$("#anuleaza-nota-form-form-id").attr("value", generateKey());
-
-
-	});
-
-}
-
-function linkAbsentaToForms(elev_id, absenta_id) {
-
-	$("#motiveaza-absenta-" + absenta_id).click(function() {
-
-		// completeaza formul
-		$("#motiveaza-absenta-form-user-id").attr("value", elev_id);
-		$("#motiveaza-absenta-form-absenta-id").attr("value", absenta_id);
-		$("#motiveaza-absenta-form-form-id").attr("value", generateKey());
-
-	});
-	$("#anuleaza-absenta-" + absenta_id).click(function() {
-
-		// completeaza formul
-		$("#anuleaza-absenta-form-elev-id").attr("value", elev_id);
-		$("#anuleaza-absenta-form-form-id").attr("value", generateKey());
-		$("#anuleaza-absenta-form-absenta-id").attr("value", absenta_id);
-
-
-	});
-
-}
-
-function linkElevToNoteazaModal(elev_id) {
-
-	$("#note-plus-" + elev_id).click(function() {
-
-		$("#noteaza-modal-user-id").attr("value", elev_id);
-		$("#noteaza-modal").modal("show");
-		hideErrors();
-
-	});
-
-}
-
-function linkElevToAdaugaAbsentaModal(elev_id) {
-
-	$("#absente-plus-" + elev_id).click(function() {
-
-		$("#adauga-absenta-form-elev-id").attr("value", elev_id);
-		$("#adauga-absenta-modal").modal("show");
-		hideErrors();
-
-	})
-
-}
-
 function validateNoteazaModal() {
 
 	var ziua = $("#noteaza-modal-ziua").children("option:selected").val();
@@ -277,13 +160,17 @@ $(document).ready(function() {
 
 	$("#anuleaza-nota-modal").on("show.bs.modal", function(e) {
 
+		$("#anuleaza-nota-form")[0].reset();
+
 		var dataobj = JSON.parse($(e.relatedTarget).data("nota-json").split("\\\"").join("\""));
 		$("#anuleaza-nota-modal-body [data-name='nota']")
 			.html(dataobj.Nota);
 		$("#anuleaza-nota-modal-body [data-name='data']")
 			.html(dataobj.Ziua + " " + "&#x216" + (dataobj.Luna-1).toString(16));
+
 		$("#anuleaza-nota-form [name='nota-id']")
 			.val(dataobj.Id);
+
 		hideFormErrors("anuleaza-nota");
 
 	});

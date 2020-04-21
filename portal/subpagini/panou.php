@@ -16,7 +16,7 @@ redirect_if_not_logged_in("/portal/");
 
 <head>
 	<title>Panou control - Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 </head>
 
 	<script>
@@ -43,7 +43,7 @@ redirect_if_not_logged_in("/portal/");
 
 <body style="background-color: #f5f5f5;">
 
-	<?php $header_cpage = "panou"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "panou"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 	<div class="container">
 

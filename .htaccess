@@ -2,6 +2,7 @@ RewriteEngine on
 # rescrieri pentru Portal
 
 RewriteRule ^portal/js$ /portal/?js [L,QSA]
+RewriteRule ^portal/css$ /portal/?css [L,QSA]
 
 RewriteRule ^portal/([a-z]+)/(js|post)/?([a-z]+)? /portal/?p=$1\&$2=$3 [QSA,L]
 RewriteRule ^portal/([a-z]+)/ajax/([a-z-]+)/? /portal?p=$1\&ajax\&r=$2 [QSA,L]
