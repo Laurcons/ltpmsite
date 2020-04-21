@@ -598,11 +598,12 @@ class db_connection {
 
 	public function insert_absenta($absenta_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO absente (IdElev, IdMaterie, IdClasa, Semestru, Ziua, Luna) VALUES (?, ?, ?, ?, ?, ?);");
-		$stmt->bind_param("iiisii",
+		$stmt = $this->conn->prepare("INSERT INTO absente (IdElev, IdMaterie, IdClasa, IdProfesor, Semestru, Ziua, Luna) VALUES (?, ?, ?, ?, ?, ?, ?);");
+		$stmt->bind_param("iiiisii",
 			$absenta_data["IdElev"],
 			$absenta_data["IdMaterie"],
 			$absenta_data["IdClasa"],
+			$absenta_data["IdProfesor"],
 			$absenta_data["Semestru"],
 			$absenta_data["Ziua"],
 			$absenta_data["Luna"]);

@@ -61,6 +61,7 @@ if ($request != "") {
 			if ($predare["clasa"]["IdDiriginte"] == $profesor["Id"])
 				$predare["calitateDe"] = "diriginte";
 			else $predare["calitateDe"] = "profesor";
+			$predare["nrelevi"] = $db->retrieve_count_elevi_where_clasa($predare["IdClasa"]);
 			$response->predari[] = $predare;
 
 		}

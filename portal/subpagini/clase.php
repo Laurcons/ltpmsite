@@ -11,7 +11,7 @@ include("clase.phphead.php");
 
  	<title>Clasele mele - Portal LTPM</title>
  	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
- 	<?php // clase.js.php included at bottom ?>
+ 	<?php // clase.js included at bottom ?>
 
  </head>
 
@@ -38,9 +38,26 @@ include("clase.phphead.php");
 				$materie = $db->retrieve_materie_where_id("*", $predare["IdMaterie"]);
 			?>
 
-			<h2 class="text-center">Clasa <?= $clasa["Nivel"] . " " . $clasa["Sufix"] ?> - <?= $materie["Nume"] ?></h2>
-			<h4 class="text-center">SEMESTRUL 1</h4>
-			<h4 class="text-center mb-3">Profesor: <?= $prof["Nume"] . " " . $prof["Prenume"] ?></h4>
+			<div class="row">
+
+				<div class="col-md-4">
+
+					<a class="btn btn-default border-primary"
+					   href="/portal/clase">
+					    Inapoi la clasele mele
+					</a>
+
+				</div>
+
+				<div class="col-md-4">
+
+					<h2 class="text-center">Clasa <?= $clasa["Nivel"] . " " . $clasa["Sufix"] ?> - <?= $materie["Nume"] ?></h2>
+					<h4 class="text-center">SEMESTRUL 1</h4>
+					<h4 class="text-center mb-3">Profesor: <?= $prof["Nume"] . " " . $prof["Prenume"] ?></h4>
+
+				</div>
+
+			</div>
 
 			<?php $elevi = $db->retrieve_elevi_where_clasa("*", $clasa["Id"]); ?>
 
@@ -263,9 +280,8 @@ include("clase.phphead.php");
 
 						</div>
 
-						<div class="d-none alert alert-danger" id="adauga-absenta-validation-error"></div>
-
-						<div class="d-none alert alert-danger" id="adauga-absenta-server-error">A aparut o eroare la trecerea absentei. Probabil exista deja o absenta pe aceeasi data?</div>
+						<div class="d-none alert alert-danger p-2" data-form="adauga-absenta" data-for="form">
+						</div>
 
 					</div>
 
@@ -275,9 +291,10 @@ include("clase.phphead.php");
 
 							<button type="button" class="btn bg-white border border-primary" data-dismiss="modal">Inapoi</button>
 
-							<input type="submit" class="btn btn-primary" 
-								form="adauga-absenta-form"
-								value="Adauga absenta">
+							<button type="submit" class="btn btn-primary" 
+									form="adauga-absenta-form">
+								Adauga absenta
+							</button>
 
 						</div>
 
@@ -359,23 +376,6 @@ include("clase.phphead.php");
 		
 		</div>
 
-		<form id="anuleaza-nota-form">
-
-			<input type="hidden" name="nota-id">
-			<input type="hidden" name="form-id">
-			<input type="hidden" name="anuleaza-nota">
-
-		</form>
-
-		<form id="anuleaza-absenta-form">
-
-			<input type="hidden" id="anuleaza-absenta-form-elev-id" name="elev-id" value="banea the best">
-			<input type="hidden" id="anuleaza-absenta-form-absenta-id" name="absenta-id" value="badu the best">
-			<input type="hidden" id="anuleaza-absenta-form-form-id" name="form-id" value="ltpm the best">
-			<input type="hidden" name="anuleaza-absenta" value="WooHoo(tm)">
-
-		</form>
-
 		<form id="noteaza-form">
 
 			<input type="hidden" name="elev-id">
@@ -385,20 +385,37 @@ include("clase.phphead.php");
 
 		</form>
 
-		<form id="motiveaza-absenta-form"> 
+		<form id="anuleaza-nota-form">
 
-			<input type="hidden" id="motiveaza-absenta-form-user-id" name="user-id" value="ehehehaehea">
-			<input type="hidden" id="motiveaza-absenta-form-form-id" name="form-id" value="a zis mama ca daca nu merg acum la masa ma da cu capul de tastatugaerbgoeruagboaerugae">
-			<input type="hidden" id="motiveaza-absenta-form-absenta-id" name="absenta-id" value="pornhub.com">
-			<input type="hidden" name="motiveaza-absenta" value="idfk">
+			<input type="hidden" name="nota-id">
+			<input type="hidden" name="form-id">
+			<input type="hidden" name="anuleaza-nota">
 
 		</form>
 
 		<form id="adauga-absenta-form">
 
-			<input type="hidden" id="adauga-absenta-form-elev-id" name="elev-id" value="XXL">
-			<input type="hidden" id="adauga-absenta-form-form-id" name="form-id" value="MICUTZU">
-			<input type="hidden" name="adauga-absenta" value="ehh">
+			<input type="hidden" name="form-id"> <!-- value="わたしはウィーブです！" -->
+			<input type="hidden" name="elev-id">
+			<input type="hidden" name="predare-id" value="<?= $predare_id ?>">
+			<input type="hidden" name="adauga-absenta">
+
+		</form>
+
+		<form id="motiveaza-absenta-form"> 
+
+			<input type="hidden" name="form-id">
+			<input type="hidden" name="absenta-id">
+			<input type="hidden" name="motiveaza-absenta">
+
+		</form>
+
+		<form id="anuleaza-absenta-form">
+
+			<input type="hidden" id="anuleaza-absenta-form-elev-id" name="elev-id" value="banea the best">
+			<input type="hidden" id="anuleaza-absenta-form-absenta-id" name="absenta-id" value="badu the best">
+			<input type="hidden" id="anuleaza-absenta-form-form-id" name="form-id" value="ltpm the best">
+			<input type="hidden" name="anuleaza-absenta" value="WooHoo(tm)">
 
 		</form>
 

@@ -158,140 +158,83 @@ $(document).ready(function() {
 
 	});
 
-	$("#anuleaza-nota-modal").on("show.bs.modal", function(e) {
-
-		$("#anuleaza-nota-form")[0].reset();
-
-		var dataobj = JSON.parse($(e.relatedTarget).data("nota-json").split("\\\"").join("\""));
-		$("#anuleaza-nota-modal-body [data-name='nota']")
-			.html(dataobj.Nota);
-		$("#anuleaza-nota-modal-body [data-name='data']")
-			.html(dataobj.Ziua + " " + "&#x216" + (dataobj.Luna-1).toString(16));
-
-		$("#anuleaza-nota-form [name='nota-id']")
-			.val(dataobj.Id);
-
-		hideFormErrors("anuleaza-nota");
-
+	// anuleaza nota
+	createModalForm({
+		modal: $("#anuleaza-nota-modal"),
+		form: $("#anuleaza-nota-form"),
+		formErrorName: "anuleaza-nota",
+		action: "/portal/clase/post",
+		bind_data: ["nota-id"],
+		on_open: function(e) {
+			$("#anuleaza-nota-form")[0].reset();
+			var dataobj = JSON.parse($(e.relatedTarget).data("nota-json").split("\\\"").join("\""));
+			$("#anuleaza-nota-modal-body [data-name='nota']")
+				.html(dataobj.Nota);
+			$("#anuleaza-nota-modal-body [data-name='data']")
+				.html(dataobj.Ziua + " " + "&#x216" + (dataobj.Luna-1).toString(16));
+		},
+		on_ajax_success: function(result, modal) {
+			ajax_updateElevi();
+			modal.modal("hide");
+		},
+		on_ajax_nonsuccess: function(result) {
+			if (result.status == "password-failed") {
+				showFormError("anuleaza-nota", "password", "Parola este incorecta!");
+			}
+		}
 	});
 
-	$("#anuleaza-nota-form").submit(function(e) {
+	// adauga absenta
+	createModalForm({
+		modal: $("#adauga-absenta-modal"),
+		form: $("#adauga-absenta-form"),
+		formErrorName: "adauga-absenta",
+		action: "/portal/clase/post",
+		validator: validateAdaugaAbsentaModal,
+		bind_data: ["elev-id"],
+		on_ajax_success: function(result, modal) {
+			ajax_updateElevi();
+			modal.modal("hide");
+		},
+		on_ajax_nonsuccess: function(result) {
+			if (result.status == "exception") {
+				showFormError("adauga-absenta", "form", "Absenta nu a putut fi trecuta. Probabil exista o absenta pe aceeasi data?");
+			}
+		}
+	});
 
-		e.preventDefault();
+	$(document).on("click", "[data-action='motiveaza-absenta']", function() {
 
-		appendLoadingIndicator("[form='anuleaza-nota-form'][type='submit']");
-		hideFormErrors("anuleaza-nota");
+		console.log("called");
+
+		$("#motiveaza-absenta-form [name='absenta-id']")
+			.val(
+				$(this).data("absenta-id"));
 
 		$.ajax({
 			url: "/portal/clase/post",
-			data: $(this).serialize(),
 			method: "POST",
 			dataType: "json",
+			data: $("#motiveaza-absenta-form").serialize(),
 			success: function(result) {
-
+		
 				if (result.status == "success") {
-
-					$("#anuleaza-nota-modal").modal("hide");
+		
 					ajax_updateElevi();
-
-				} else if (result.status == "password-failed") {
-
-					showFormError("anuleaza-nota", "password", "Parola este incorecta!");
-
+		
 				} else {
-
 					console.error("AJAX status: " + result.status);
-
 				}
-
+		
 			},
-			error: function(req, text) {
-				console.error("AJAX error: " + text);
+			error: function(req, err) {
+				console.error("AJAX error: " + err);
 			},
 			complete: function() {
 				updateFormIds();
-				$("[form='anuleaza-nota-form'][type='submit']")
-					.children("span")	
-						.remove();
 			}
-
-		});
-
-	});
-
-	// ajax request pentru motivarea absentei din dropdown
-	$("#motiveaza-absenta-form").submit(function(e) {
-
-		e.preventDefault();
-
-		// fa ajax si motiveaza
-		$.ajax({
-			url: "6",
-			data: $(this).serialize(),
-			method: "POST",
-			success: function() {
-
-				var user_id = $("#motiveaza-absenta-form-user-id").attr("value");
-				ajax_updateAbsente(user_id);
-
-			}
-
-
-		})
-
-	});
-
-	$("#adauga-absenta-form").submit(function(e) {
-
-		e.preventDefault();
-
-		hideErrors();
-
-		$("#adauga-absenta-form-form-id").attr("value", generateKey());
-
-		if (!validateNoteazaModal()) {
-			return;
-		}
-
-		$.ajax({
-			url: "7",
-			data: $(this).serialize(),
-			method: "POST",
-			success: function() {
-
-				var user_id = $("#adauga-absenta-form-elev-id").attr("value");
-				ajax_updateAbsente(user_id);
-
-				$("#adauga-absenta-modal").modal("hide");
-
-			},
-			error: function() {
-
-				showDiv("#adauga-absenta-server-error");
-
-			}
-		});
-
-	});
-
-	$("#anuleaza-absenta-form").submit(function(e) {
-
-		e.preventDefault();
-
-		$("#anuleaza-absenta-form-form-id").attr("value", generateKey());
-
-		$.ajax({
-			url: "8",
-			data: $(this).serialize(),
-			method: "POST",
-			success: function() {
-
-				var user_id = $("#anuleaza-absenta-form-elev-id").attr("value");
-				ajax_updateAbsente(user_id);
-
-			}
-
-		});
+		
+		});	
 
 	});
 

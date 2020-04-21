@@ -16,6 +16,8 @@
 
 				<li class="list-group-item">Ore pe saptamana: 420</li>
 
+				<li class="list-group-item">Numar elevi: {{nrelevi}}</li>
+
 			</ul>
 
 			<div class="card-body">

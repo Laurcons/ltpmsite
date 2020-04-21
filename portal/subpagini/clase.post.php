@@ -119,6 +119,8 @@ if (isset($_POST["form-id"])) {
 
 				$db->update_absenta_motivare($absenta_id, $motiv);
 
+				$response->status = "success";
+
 			} catch (Exception $e) {
 
 				$response->status = "exception";
@@ -128,10 +130,13 @@ if (isset($_POST["form-id"])) {
 
 		} else if (isset($_POST["adauga-absenta"])) {
 
+			$predare = $db->retrieve_predare_where_id("*", $_POST["predare-id"]);
+
 			$ab = array();
 			$ab["IdElev"] = $_POST["elev-id"];
 			$ab["IdMaterie"] = $predare["IdMaterie"];
 			$ab["IdClasa"] = $predare["IdClasa"];
+			$ab["IdProfesor"] = $_SESSION["logatid"];
 			$ab["Ziua"] = $_POST["ziua"];
 			$ab["Luna"] = $_POST["luna"];
 			$ab["Semestru"] = "1";
@@ -140,10 +145,12 @@ if (isset($_POST["form-id"])) {
 			
 				$db->insert_absenta($ab);
 
+				$response->status = "success";
+
 			} catch (Exception $e) {
 
 				$response->status = "exception";
-				$response->exception = $e;
+				$response->exception = $e->getMessage();
 
 			}
 
