@@ -104,7 +104,7 @@ if ($request == "utilizatori") {
 			$clasa = $db->retrieve_clasa_where_id("*", $predare["IdClasa"]);
 
 			$clasa["diriginte"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
-			$clasa["predare"]["Id"] = $predare["Id"];
+			$clasa["predare"] = $predare;
 
 			$materie["clase"][] = $clasa;
 

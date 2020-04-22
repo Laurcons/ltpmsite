@@ -516,7 +516,13 @@ $autoritati = $CONFIG["autoritati"];
 
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-2">
+
+							<div class="font-weight-bold">Tip teza</div>
+
+						</div>
+
+						<div class="col-md-4">
 
 							<div class="font-weight-bold">Optiuni</div>
 

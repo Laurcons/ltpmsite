@@ -415,11 +415,12 @@ class db_connection {
 
 	public function insert_predare($predare_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO predari (IdClasa, IdMaterie, IdProfesor) VALUES (?, ?, ?);");
-		$stmt->bind_param('iii',
+		$stmt = $this->conn->prepare("INSERT INTO predari (IdClasa, IdMaterie, IdProfesor, TipTeza) VALUES (?, ?, ?, ?);");
+		$stmt->bind_param('iiis',
 			$predare_data["IdClasa"],
 			$predare_data["IdMaterie"],
-			$predare_data["IdProfesor"]);
+			$predare_data["IdProfesor"],
+			$predare_data["TipTeza"]);
 		$stmt->execute();
 
 	}

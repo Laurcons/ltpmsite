@@ -24,7 +24,13 @@
 
 			</div>
 
-			<div class="col-md-6">
+			<div class="col-md-2">
+
+				{{clasa.predare.tipTeza}}
+
+			</div>
+
+			<div class="col-md-4">
 
 				<a href="/portal/admin/clase/{{clasa.Id}}" class="btn btn-default border-dark btn-sm">Gestionare {{clasa.Nivel}}-{{clasa.Sufix}}</a>
 
