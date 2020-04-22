@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 		$stmt->execute();
 		$result = $stmt->get_result();*/
-		$user = $db->retrieve_utilizator_where_username('Parola,Autoritate,Functie', $username);
+		$user = $db->retrieve_utilizator_where_username('Id,Parola,Autoritate,Functie', $username);
 
 		if ($user == null) {
 
@@ -64,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 			if ($success) {
 				$_SESSION["logatca"] = $username;
+				$_SESSION["logatid"] = $user["Id"];
 				$_SESSION["logat"] = true;
 				$_SESSION["autoritate"] = $user["Autoritate"];
 				$_SESSION["functie"] = $user["Functie"];
@@ -104,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
 
 	<title>Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
  	<style>
  		/* imbina cele doua controale de la login */
  		.login-control-top {
@@ -124,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body style="background-color: #f5f5f5">
 
-	<?php $header_cpage = "logare"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "logare"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 	<div class="container mb-5">
 

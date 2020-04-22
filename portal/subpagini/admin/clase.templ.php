@@ -215,7 +215,7 @@
 
 			<div class="row border p-2 {{^first}}border-top-0{{/first}}">
 
-				<div class="col-md-4">
+				<div class="col-md-3">
 
 					<div class="d-none d-md-block">
 
@@ -243,7 +243,13 @@
 
 				</div>
 
-				<div class="col-md-5">
+				<div class="col-md-2">
+
+					{{tipTeza}}
+
+				</div>
+
+				<div class="col-md-4">
 
 					<a href="/portal/admin/utilizatori/{{profesor.Id}}" class="btn btn-sm border-info">Detalii profesor</a>
 

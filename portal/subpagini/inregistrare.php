@@ -11,13 +11,13 @@ redirect_if_logged_in("/portal/?p=panou");
 <head>
 
 	<title>Inregistrare - Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 
 </head>
 
 <body>
 
-	<?php $header_cpage = "inreg"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "inreg"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 	<div class="container">
 

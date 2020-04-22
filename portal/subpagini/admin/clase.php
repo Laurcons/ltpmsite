@@ -16,12 +16,12 @@ if (isset($_GET["id"])) {
 <head>
 
 	<title>Administrare clase - Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 
 </head>
 
 <body>
-	<?php $header_cpage = "admin:clase"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "admin:clase"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 <div class="container">
 
@@ -206,7 +206,7 @@ if (isset($_GET["id"])) {
 
 			<div class="row border p-2">
 
-				<div class="col-md-4">
+				<div class="col-md-3">
 
 					<span class="font-weight-bold">Materia predata</span>	
 
@@ -218,7 +218,13 @@ if (isset($_GET["id"])) {
 
 				</div>
 
-				<div class="col-md-5">
+				<div class="col-md-2">
+
+					<span class="font-weight-bold">Tip teza</span>
+
+				</div>
+
+				<div class="col-md-4">
 
 					<span class="font-weight-bold">Optiuni</span>	
 
@@ -412,6 +418,26 @@ if (isset($_GET["id"])) {
 								name="profesor">
 
 						</select>
+
+					</div>
+
+					<div class="form-group form-row">
+
+						<label class="col-3 col-form-label font-weight-bold">Tip teza:</label>
+
+						<div class="col-9">
+
+							<select class="form-control"
+									form="adauga-predare-form"
+									name="tip-teza">
+
+								<option value="nu" selected>Nu se da teza</option> 
+								<option value="optional">Teza e optionala</option>
+								<option value="obligatoriu">Teza e obligatorie</option>
+
+							</select>
+
+						</div>
 
 					</div>
 	

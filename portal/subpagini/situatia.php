@@ -46,14 +46,14 @@ if ($prevclase_index != 0) {
  <head>
 
  	<title>Situatia elevului - Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 
  </head>
 
  <body>
 
  	<header>
-	<?php $header_cpage = "situatia"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "situatia"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 	<script>
 		// asta e aici ca sa mearga tooltipurile
 		$(function () {

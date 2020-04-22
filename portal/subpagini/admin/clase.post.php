@@ -49,7 +49,8 @@ if (isset($_POST["form-id"])) {
 			$db->insert_predare(array(
 				"IdMaterie" => $_POST["materie"],
 				"IdProfesor" => $_POST["profesor"],
-				"IdClasa" => $_POST["clasa-id"]
+				"IdClasa" => $_POST["clasa-id"],
+				"TipTeza" => $_POST["tip-teza"]
 			));
 
 			$response->status = "success";

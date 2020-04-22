@@ -1,0 +1,43 @@
+
+body {
+	background-color: #f5f5f5;
+	margin-bottom: 10rem;
+}
+
+.nota, .absenta {
+
+	border-style: solid;
+	border-width: 1px;
+	border-color: #292b2c;
+	border-radius: 4px;
+	padding: 4px 8px;
+	margin: 2px 1px;
+	background-color: #FFF;
+	width: fit-content;
+	cursor: default;
+	display: inline-block;
+	
+}
+
+.nota-link, .absenta-link {
+	cursor: pointer;
+}
+
+.absenta-motivata {
+	color: #007bff; /* primary */
+	text-decoration: underline;
+}
+
+.nota-teza {
+	color: red;
+}
+.nota-teza small {
+	color: black;
+}
+
+.cursor-default {
+	cursor: default;
+}
+.cursor-pointer {
+	cursor: pointer;
+}

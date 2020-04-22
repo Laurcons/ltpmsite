@@ -308,6 +308,12 @@ function ajax_updatePredari() {
 			var output = "";
 			result.predari.forEach(function(item, index) {
 
+				switch (item.TipTeza) {
+					case "nu": item.tipTeza = "Nu se da teza"; break;
+					case "optional": item.tipTeza = "Teza e la alegere"; break;
+					case "obligatoriu": item.tipTeza = "Teza e obligatorie"; break;
+				}
+
 				var rendered = Mustache.render($("#predare-template").html(), item);
 				output += rendered;
 
@@ -388,7 +394,7 @@ function ajax_updateAdaugaPredareModal() {
 
 	$("#adauga-predare-modal-spinner")
 		.removeClass("d-none");
-	$("select[form='adauga-predare-form']")
+	$("select[form='adauga-predare-form'][name!='tip-teza']")
 		.empty();
 	$("[form='adauga-predare-form'][type='submit']")
 		.prop("disabled", true);

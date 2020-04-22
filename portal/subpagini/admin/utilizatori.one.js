@@ -326,6 +326,11 @@ function ajax_updatePredari() {
 						row.hasMaterie = i_clasa == 0;
 						row.materie = materie;
 						row.clasa = clasa;
+						switch (clasa.predare.TipTeza) {
+							case "nu": clasa.predare.tipTeza = "Nu se da teza"; break;
+							case "optional": clasa.predare.tipTeza = "Teza e la alegere"; break;
+							case "obligatoriu": clasa.predare.tipTeza = "Teza e obligatorie"; break;
+						}
 
 						output += Mustache.render(template, row);
 

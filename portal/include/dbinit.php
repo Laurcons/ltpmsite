@@ -415,11 +415,12 @@ class db_connection {
 
 	public function insert_predare($predare_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO predari (IdClasa, IdMaterie, IdProfesor) VALUES (?, ?, ?);");
-		$stmt->bind_param('iii',
+		$stmt = $this->conn->prepare("INSERT INTO predari (IdClasa, IdMaterie, IdProfesor, TipTeza) VALUES (?, ?, ?, ?);");
+		$stmt->bind_param('iiis',
 			$predare_data["IdClasa"],
 			$predare_data["IdMaterie"],
-			$predare_data["IdProfesor"]);
+			$predare_data["IdProfesor"],
+			$predare_data["TipTeza"]);
 		$stmt->execute();
 
 	}
@@ -511,7 +512,7 @@ class db_connection {
 
 	}
 
-	public function retrieve_note_where_utilizator_and_materie_and_semestru($columns, $user_id, $materie_id, $semestru) {
+	public function retrieve_note_where_elev_and_materie_and_semestru($columns, $user_id, $materie_id, $semestru) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM note WHERE IdElev=? AND IdMaterie=? AND Semestru=? ORDER BY Luna,Ziua DESC;");
 		$stmt->bind_param("iis", $user_id, $materie_id, $semestru);
@@ -523,11 +524,14 @@ class db_connection {
 
 	public function insert_nota($nota_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO note (IdElev, IdClasa, IdMaterie, Semestru, Nota, Ziua, Luna) VALUES (?,?,?,?,?,?,?);");
-		$stmt->bind_param("iiisiii",
+		$stmt = $this->conn->prepare("INSERT INTO note (IdElev, IdClasa, IdMaterie, IdProfesor, Teza, Tip, Semestru, Nota, Ziua, Luna) VALUES (?,?,?,?,?,?,?,?,?,?);");
+		$stmt->bind_param("iiiisssiii",
 			$nota_data["IdElev"],
 			$nota_data["IdClasa"],
 			$nota_data["IdMaterie"],
+			$nota_data["IdProfesor"],
+			$nota_data["Teza"],
+			$nota_data["Tip"],
 			$nota_data["Semestru"],
 			$nota_data["Nota"],
 			$nota_data["Ziua"],
@@ -575,7 +579,7 @@ class db_connection {
 
 	}
 
-	public function retrieve_absente_where_utilizator_and_materie_and_semestru($columns, $user_id, $materie_id, $semestru) {
+	public function retrieve_absente_where_elev_and_materie_and_semestru($columns, $user_id, $materie_id, $semestru) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM absente WHERE IdElev=? AND IdMaterie=? AND Semestru=? ORDER BY Luna,Ziua ASC");
 		$stmt->bind_param("iii", $user_id, $materie_id, $semestru);
@@ -597,11 +601,12 @@ class db_connection {
 
 	public function insert_absenta($absenta_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO absente (IdElev, IdMaterie, IdClasa, Semestru, Ziua, Luna) VALUES (?, ?, ?, ?, ?, ?);");
-		$stmt->bind_param("iiisii",
+		$stmt = $this->conn->prepare("INSERT INTO absente (IdElev, IdMaterie, IdClasa, IdProfesor, Semestru, Ziua, Luna) VALUES (?, ?, ?, ?, ?, ?, ?);");
+		$stmt->bind_param("iiiisii",
 			$absenta_data["IdElev"],
 			$absenta_data["IdMaterie"],
 			$absenta_data["IdClasa"],
+			$absenta_data["IdProfesor"],
 			$absenta_data["Semestru"],
 			$absenta_data["Ziua"],
 			$absenta_data["Luna"]);
