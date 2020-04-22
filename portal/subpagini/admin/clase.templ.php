@@ -211,7 +211,7 @@
 
 		</template>
 
-		<template id="predare-template">
+		<template id="materie-template">
 
 			<div class="row border p-2 {{^first}}border-top-0{{/first}}">
 
@@ -222,7 +222,7 @@
 						<span class="badge badge-primary">{{nrcrt}}</span>
 						<span class="badge badge-danger mr-1">{{Id}}</span>
 
-						{{materie.Nume}}
+						{{Nume}}
 
 					</div>
 					<div class="d-block d-md-none h5">
@@ -230,7 +230,7 @@
 						<span class="badge badge-primary">{{nrcrt}}</span>
 						<span class="badge badge-danger mr-1">{{Id}}</span>
 
-						{{materie.Nume}}
+						{{Nume}}
 
 					</div>
 
@@ -254,10 +254,10 @@
 					<a href="/portal/admin/utilizatori/{{profesor.Id}}" class="btn btn-sm border-info">Detalii profesor</a>
 
 					<button class="btn btn-sm border-danger"
-							data-predare-id="{{Id}}"
+							data-materie-id="{{Id}}"
 							data-toggle="modal"
-							data-target="#sterge-predare-modal">
-						Sterge predare
+							data-target="#sterge-materie-modal">
+						Sterge materie
 					</button>
 
 				</div>

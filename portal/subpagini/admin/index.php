@@ -15,7 +15,7 @@ if ($subpagina == "clase") {
 	}
 	else include("clase.php");
 
-} else if ($subpagina == "materii") {
+}/* else if ($subpagina == "materii") {
 
 	if ($post_redir)
 		include("materii.post.php");
@@ -26,7 +26,7 @@ if ($subpagina == "clase") {
 		include("materii.js");
 	} else include("materii.php");
 
-} else if ($subpagina == "utilizatori") {
+}*/ else if ($subpagina == "utilizatori") {
 
 	if ($post_redir)
 		include("utilizatori.post.php");
@@ -37,6 +37,11 @@ if ($subpagina == "clase") {
 		$file = $_GET["js"];
 		include("utilizatori." . $file . ".js");
 	} else include("utilizatori.php");
+
+} else {
+
+	header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+	include($_SERVER["DOCUMENT_ROOT"] . "/errors/404.php");
 
 }
 
