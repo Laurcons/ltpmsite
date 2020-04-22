@@ -15,7 +15,7 @@ if ($request != "") {
 
 	if ($request == "elevi") {
 
-		$semestru = "1";
+		$semestru = $_GET["sem"] ?? getCurrentSemestru();
 
 		$predare = $db->retrieve_predare_where_id("*", $_GET["id"]);
 		$elevi = $db->retrieve_elevi_where_clasa("Id,Nume,Prenume,Username", $predare["IdClasa"]);
@@ -31,7 +31,7 @@ if ($request != "") {
 
 	} else if ($request == "elev") {
 
-		$semestru = "1";
+		$semestru = $_GET["sem"] ?? getCurrentSemestru();
 
 		$predare = $db->retrieve_predare_where_id("*", $_GET["pid"]);
 		$elev = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $_GET["uid"]);
@@ -127,9 +127,19 @@ function elevi_getAdditional($db, $elev, $predare, $semestru) {
 	}
 
 	$elev["hasTeza"] = $db->has_elev_teza_in_predare($elev["Id"], $predare["Id"]);
-	$elev["media"] = averageNoteWithTeza($elev["note"]);
+	//$elev["media"] = averageNoteWithTeza($elev["note"]);
 	sortBySchoolDate($elev["note"]);
 	sortBySchoolDate($elev["absente"]);
+
+	// vezi mediile pe toate semestrele
+	$note_sem1 = $db->retrieve_note_where_elev_and_materie_and_semestru("Nota", $elev["Id"], $predare["IdMaterie"], "1")->fetch_all(MYSQLI_ASSOC);
+	$note_sem2 = $db->retrieve_note_where_elev_and_materie_and_semestru("Nota", $elev["Id"], $predare["IdMaterie"], "2")->fetch_all(MYSQLI_ASSOC);
+	$elev["media_sem1"] = averageNoteWithTeza($note_sem1);
+	$elev["media_sem2"] = averageNoteWithTeza($note_sem2);
+	$elev["media_gen"] = 
+		($elev["media_sem1"] != 0 && $elev["media_sem2"] != 0) ?
+		truncMedie(($elev["media_sem1"] + $elev["media_sem2"]) / 2) :
+		0;
 
 	return $elev;
 

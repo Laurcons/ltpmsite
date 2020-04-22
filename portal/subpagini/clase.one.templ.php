@@ -18,8 +18,12 @@
 					<!-- empty, works as new row -->
 				</div>
 
-				<b>Media semestriala:</b>
-				<span class="badge badge-info mb-2" style="font-size: 1em;">{{media}}</span>
+				<small>Sem. 1:</small>
+				<span class="badge badge-info mb-2">{{media_sem1}}</span>
+				<small>Sem. 2:</small>
+				<span class="badge badge-info mb-2">{{media_sem2}}</span>
+				<small>Gen.:</small>
+				<span class="badge badge-info mb-2">{{media_gen}}</span>
 
 				{{#mediaAlert}}
 				<div class="alert alert-danger p-1 px-2">

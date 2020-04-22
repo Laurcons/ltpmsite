@@ -25,6 +25,11 @@
 
 	}
 
+	$semestru = getCurrentSemestru();
+	if (isset($_GET["sem"])) {
+		$semestru = $_GET["sem"];
+	}
+
 	// ia date
 	$prof = $db->retrieve_utilizator_where_username("*", $_SESSION["logatca"]);
 	$prof_id = $prof["Id"];

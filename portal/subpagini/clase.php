@@ -36,6 +36,7 @@ include("clase.phphead.php");
 			<?php
 				$clasa = $db->retrieve_clasa_where_id("*", $predare["IdClasa"]);
 				$materie = $db->retrieve_materie_where_id("*", $predare["IdMaterie"]);
+				$diriginte = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
 			?>
 
 			<div class="row">
@@ -52,15 +53,24 @@ include("clase.phphead.php");
 				<div class="col-md-4">
 
 					<h2 class="text-center">Clasa <?= $clasa["Nivel"] . " " . $clasa["Sufix"] ?> - <?= $materie["Nume"] ?></h2>
-					<h4 class="text-center">SEMESTRUL 1</h4>
-					<h4 class="text-center mb-3">Profesor: <?= $prof["Nume"] . " " . $prof["Prenume"] ?></h4>
+					<h4 class="text-center">
+						<?php if ($semestru == "2") : ?>
+							<a href="?sem=1" class="text-decoration-none">&lt;</a>
+						<?php endif; ?>
+						SEMESTRUL <?= $semestru ?>
+						<?php if ($semestru == "1") : ?>
+							<a href="?sem=2" class="text-decoration-none">&gt;</a>
+						<?php endif; ?>
+					</h4>
+					<!--<h5 class="text-center">Profesor: <?= $prof["Nume"] . " " . $prof["Prenume"] ?></h5>-->
+					<h5 class="text-center mb-3">Diriginte: <?= $diriginte["Nume"] . " " . $diriginte["Prenume"] ?></h5>
 
 				</div>
 
 			</div>
 
 			<button type="button" data-toggle="collapse" data-target="#clasa-options-collapse" class="btn btn-default btn-sm border-info mb-1">
-				Deschide detalii clasa
+				Detalii clasa
 			</button>
 
 			<div class="collapse border p-3" id="clasa-options-collapse">
@@ -598,6 +608,7 @@ include("clase.phphead.php");
 			<input type="hidden" name="elev-id">
 			<input type="hidden" name="predare-id" value="<?= $predare_id ?>">
 			<input type="hidden" name="form-id">
+			<input type="hidden" name="semestru" value="<?= $semestru ?>">
 			<input type="hidden" name="noteaza">
 
 		</form>
@@ -615,6 +626,7 @@ include("clase.phphead.php");
 			<input type="hidden" name="form-id"> <!-- value="わたしはウィーブです！" -->
 			<input type="hidden" name="elev-id">
 			<input type="hidden" name="predare-id" value="<?= $predare_id ?>">
+			<input type="hidden" name="semestru" value="<?= $semestru ?>">
 			<input type="hidden" name="adauga-absenta">
 
 		</form>
@@ -645,6 +657,9 @@ include("clase.phphead.php");
 		</form>
 
 	 	<script src="/portal/clase/js/one"></script>
+	 	<script>
+	 		var semestru = urlGet("sem") ?? <?= getCurrentSemestru() ?>;
+	 	</script>
 	 	<?php include("clase.one.templ.php"); ?>
 
 	<?php endif; ?>

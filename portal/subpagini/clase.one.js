@@ -66,15 +66,24 @@ function ajax_updateElevi(elev_id = "all", elev_index = 0) {
 		elev.absente.forEach(function(absenta) {
 			absenta.lunaRoman = lunaRoman;
 		});
-		if (elev.media == 0)
-			elev.media = "-";
+		if (elev.media_sem1 == 0)
+			elev.media_sem1 = "-";
+		if (elev.media_sem2 == 0)
+			elev.media_sem2 = "-";
+		if (elev.media_gen == 0)
+			elev.media_gen = "-";
 		// faza cu .49
-		elev.mediaAlert = parseInt((elev.media - parseInt(elev.media)) * 100) == 49;
+		if (parseInt((elev.media_sem1 - parseInt(elev.media_sem1)) * 100) == 49 ||
+			parseInt((elev.media_sem2 - parseInt(elev.media_sem2)) * 100) == 49 ||
+			parseInt((elev.media_gen - parseInt(elev.media_gen)) * 100) == 49)
+			elev.mediaAlert = true;
+		else elev.mediaAlert = false;
 
 	};
 
 	$.ajax({ // url-ul merge si pentru elevi si pentru un singur elev
-		url: "/portal/clase/ajax/" + (elev_id != "all" ? "elev" : "elevi") + "?id=" + urlId() + "&pid=" + urlId() + (elev_id != "all" ? "&uid=" + elev_id : ""),
+		url: "/portal/clase/ajax/" + (elev_id != "all" ? "elev" : "elevi") + "?id=" + urlId() + "&pid=" + urlId() + (elev_id != "all" ? "&uid=" + elev_id : "") +
+			"&sem=" + semestru,
 		method: "GET",
 		dataType: "json",
 		//data: ,

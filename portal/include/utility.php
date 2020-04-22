@@ -1,5 +1,13 @@
 <?php
 
+function truncMedie($num) {
+
+	return ((int)($num * 100)) / 100;
+
+}
+
+// nota data should contain
+//  "Nota" => ...
 function averageNote($nota_data_array) {
 
 	$sum = $count = 0;
@@ -11,17 +19,20 @@ function averageNote($nota_data_array) {
 	}
 
 	$avg = $sum / (($count != 0) ? $count : 1); // prevent division by zero
-
-	// aproximare (se taie tot dupa a 2-a zecimala)
-	$avg = ((int)($avg * 100)) / 100;
+	$avg = truncMedie($avg);
 
 	return $avg;
 
 }
 
+// nota data should contain
+//  "Nota" => ...
 function averageNoteWithTeza($nota_data_array) {
 
 	$avg_oral = averageNote($nota_data_array);
+
+	if ($avg_oral == 0)
+		return 0;
 
 	// vezi daca sunt note la teza prin sir
 	$nota_teza = // these are applied from bottom to top, btw
@@ -43,7 +54,7 @@ function averageNoteWithTeza($nota_data_array) {
 
 	// fa media
 	$avg = (($avg_oral * 3) + $nota_teza) / 4;
-	$avg = ((int)($avg * 100)) / 100;
+	$avg = truncMedie($avg);
 
 	return $avg;
 
@@ -73,6 +84,12 @@ function sortBySchoolDate(&$objects) {
 
 	// join them, in reverse
 	$objects = array_merge($postAug, $preAug);
+
+}
+
+function getCurrentSemestru() {
+
+	return (date("n") < 8 ? "2" : "1");
 
 }
 

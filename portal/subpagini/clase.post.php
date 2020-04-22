@@ -23,7 +23,7 @@ if (isset($_POST["form-id"])) {
 			$nota_data["IdMaterie"] = $predare["IdMaterie"];
 			$nota_data["IdClasa"] = $predare["IdClasa"];
 			$nota_data["IdProfesor"] = $_SESSION["logatid"];
-			$nota_data["Semestru"] = "1";
+			$nota_data["Semestru"] = $_POST["semestru"];
 			$nota_data["Ziua"] = $_POST["ziua"];
 			$nota_data["Luna"] = $_POST["luna"];
 
@@ -94,6 +94,8 @@ if (isset($_POST["form-id"])) {
 
 			}
 
+			// ENDOF UNUSED CURRENTLY
+
 		} else if (isset($_POST["anuleaza-absenta"])) {
 
 			$ab = $_POST["absenta-id"];
@@ -146,7 +148,7 @@ if (isset($_POST["form-id"])) {
 			$ab["IdProfesor"] = $_SESSION["logatid"];
 			$ab["Ziua"] = $_POST["ziua"];
 			$ab["Luna"] = $_POST["luna"];
-			$ab["Semestru"] = "1";
+			$ab["Semestru"] = $_POST["semestru"];
 
 			try {
 			
