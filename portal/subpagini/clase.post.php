@@ -23,7 +23,7 @@ if (isset($_POST["form-id"])) {
 			$nota_data["IdMaterie"] = $predare["IdMaterie"];
 			$nota_data["IdClasa"] = $predare["IdClasa"];
 			$nota_data["IdProfesor"] = $_SESSION["logatid"];
-			$nota_data["Semestru"] = "1";
+			$nota_data["Semestru"] = $_POST["semestru"];
 			$nota_data["Ziua"] = $_POST["ziua"];
 			$nota_data["Luna"] = $_POST["luna"];
 
@@ -94,6 +94,8 @@ if (isset($_POST["form-id"])) {
 
 			}
 
+			// ENDOF UNUSED CURRENTLY
+
 		} else if (isset($_POST["anuleaza-absenta"])) {
 
 			$ab = $_POST["absenta-id"];
@@ -146,7 +148,7 @@ if (isset($_POST["form-id"])) {
 			$ab["IdProfesor"] = $_SESSION["logatid"];
 			$ab["Ziua"] = $_POST["ziua"];
 			$ab["Luna"] = $_POST["luna"];
-			$ab["Semestru"] = "1";
+			$ab["Semestru"] = $_POST["semestru"];
 
 			try {
 			
@@ -160,6 +162,32 @@ if (isset($_POST["form-id"])) {
 				$response->exception = $e->getMessage();
 
 			}
+
+		} else if (isset($_POST["preferinte-teza"])) {
+
+			$teze = array();
+
+			$teze_post = array_map(function($key, $value) {
+				return array(
+					"id" => $key,
+					"teza" => $value
+				);
+			}, array_keys($_POST["elev"]), $_POST["elev"]);
+
+			foreach ($teze_post as $teza) {
+
+				$teze[] = array(
+					"IdElev" => $teza["id"],
+					"IdPredare" => $_POST["predare-id"],
+					"Teza" => $teza["teza"]
+				);
+
+			}
+
+			$db->update_teze($teze);
+
+			$response->teze = $teze_post;
+			$response->status = "success";
 
 		} else {
 

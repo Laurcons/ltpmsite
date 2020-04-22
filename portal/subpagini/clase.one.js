@@ -66,15 +66,24 @@ function ajax_updateElevi(elev_id = "all", elev_index = 0) {
 		elev.absente.forEach(function(absenta) {
 			absenta.lunaRoman = lunaRoman;
 		});
-		if (elev.media == 0)
-			elev.media = "-";
+		if (elev.media_sem1 == 0)
+			elev.media_sem1 = "-";
+		if (elev.media_sem2 == 0)
+			elev.media_sem2 = "-";
+		if (elev.media_gen == 0)
+			elev.media_gen = "-";
 		// faza cu .49
-		elev.mediaAlert = parseInt((elev.media - parseInt(elev.media)) * 100) == 49;
+		if (parseInt((elev.media_sem1 - parseInt(elev.media_sem1)) * 100) == 49 ||
+			parseInt((elev.media_sem2 - parseInt(elev.media_sem2)) * 100) == 49 ||
+			parseInt((elev.media_gen - parseInt(elev.media_gen)) * 100) == 49)
+			elev.mediaAlert = true;
+		else elev.mediaAlert = false;
 
 	};
 
 	$.ajax({ // url-ul merge si pentru elevi si pentru un singur elev
-		url: "/portal/clase/ajax/" + (elev_id != "all" ? "elev" : "elevi") + "?id=" + urlId() + "&pid=" + urlId() + (elev_id != "all" ? "&uid=" + elev_id : ""),
+		url: "/portal/clase/ajax/" + (elev_id != "all" ? "elev" : "elevi") + "?id=" + urlId() + "&pid=" + urlId() + (elev_id != "all" ? "&uid=" + elev_id : "") +
+			"&sem=" + semestru,
 		method: "GET",
 		dataType: "json",
 		//data: ,
@@ -118,6 +127,59 @@ function ajax_updateElevi(elev_id = "all", elev_index = 0) {
 		},
 		complete: function() {
 	
+		}
+	
+	});
+
+}
+
+function ajax_updatePreferinteTezaModal() {
+
+	$("#preferinte-teza-modal-table")
+		.html(
+			$("<span>")
+				.addClass("spinner-border text-primary"));
+
+	$.ajax({
+		url: "/portal/clase/ajax/teze?pid=" + urlId(),
+		method: "GET",
+		dataType: "json",
+		//data: ,
+		success: function(result) {
+	
+			if (result.status == "success") {
+
+				var template = $("#preferinte-teza-row-template").html();
+	
+				result.elevi.forEach(function(elev, index) {
+
+					elev.nrcrt = index + 1;
+
+					$("#preferinte-teza-modal-table")
+						.append(
+							Mustache.render(template, elev));
+
+					if (elev.teza)
+						$("#preferinta-teza-modal-elev-" + elev.Id + "-da")
+							.prop("checked", true);
+					else 
+						$("#preferinta-teza-modal-elev-" + elev.Id + "-nu")
+							.prop("checked", true);
+
+				});
+	
+			} else {
+				console.error("AJAX status: " + result.status);
+			}
+	
+		},
+		error: function(req, err) {
+			console.error("AJAX error: " + err);
+		},
+		complete: function() {
+			$("#preferinte-teza-modal-table")
+				.children("span")
+					.remove();
 		}
 	
 	});
@@ -181,15 +243,25 @@ $(document).ready(function() {
 
 	$("#noteaza-modal").on("show.bs.modal", function(e) {
 
-		var elev_id = $(e.relatedTarget).data("elev-id");
+		var related = $(e.relatedTarget);
+
+		var elev_id = related.data("elev-id");
 		$("#noteaza-form [name='elev-id']")
 			.val(elev_id);
 		$("#noteaza-modal-body span[data-for='nume']")
-			.html($(e.relatedTarget).data("elev-nume"));
+			.html(related.data("elev-nume"));
 		hideFormErrors("noteaza");
 
-		elevToUpdate.id = $(e.relatedTarget).closest(".elev-row").data("elev-id");
-		elevToUpdate.index = $(e.relatedTarget).closest(".elev-row").data("elev-index");
+		if (related.data("elev-has-teza") == true) {
+			$("#noteaza-modal-teza")
+				.removeClass("d-none");
+		} else {
+			$("#noteaza-modal-teza")
+				.addClass("d-none");
+		}
+
+		elevToUpdate.id = related.closest(".elev-row").data("elev-id");
+		elevToUpdate.index = related.closest(".elev-row").data("elev-index");
 
 	});
 
@@ -315,6 +387,19 @@ $(document).ready(function() {
 			}
 		
 		});	
+
+	});
+
+	// preferinte teza
+	createModalForm({
+		modal: $("#preferinte-teza-modal"),
+		form: $("#preferinte-teza-form"),
+		action: "/portal/clase/post",
+		on_open: ajax_updatePreferinteTezaModal,
+		on_ajax_success: function(result, modal) {
+			ajax_updateElevi();
+			modal.modal("hide");
+		}
 
 	});
 

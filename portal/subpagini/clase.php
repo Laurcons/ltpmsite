@@ -36,6 +36,7 @@ include("clase.phphead.php");
 			<?php
 				$clasa = $db->retrieve_clasa_where_id("*", $predare["IdClasa"]);
 				$materie = $db->retrieve_materie_where_id("*", $predare["IdMaterie"]);
+				$diriginte = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
 			?>
 
 			<div class="row">
@@ -52,8 +53,51 @@ include("clase.phphead.php");
 				<div class="col-md-4">
 
 					<h2 class="text-center">Clasa <?= $clasa["Nivel"] . " " . $clasa["Sufix"] ?> - <?= $materie["Nume"] ?></h2>
-					<h4 class="text-center">SEMESTRUL 1</h4>
-					<h4 class="text-center mb-3">Profesor: <?= $prof["Nume"] . " " . $prof["Prenume"] ?></h4>
+					<h4 class="text-center">
+						<?php if ($semestru == "2") : ?>
+							<a href="?sem=1" class="text-decoration-none">&lt;</a>
+						<?php endif; ?>
+						SEMESTRUL <?= $semestru ?>
+						<?php if ($semestru == "1") : ?>
+							<a href="?sem=2" class="text-decoration-none">&gt;</a>
+						<?php endif; ?>
+					</h4>
+					<!--<h5 class="text-center">Profesor: <?= $prof["Nume"] . " " . $prof["Prenume"] ?></h5>-->
+					<h5 class="text-center mb-3">Diriginte: <?= $diriginte["Nume"] . " " . $diriginte["Prenume"] ?></h5>
+
+				</div>
+
+			</div>
+
+			<button type="button" data-toggle="collapse" data-target="#clasa-options-collapse" class="btn btn-default btn-sm border-info mb-1">
+				Detalii clasa
+			</button>
+
+			<div class="collapse border p-3" id="clasa-options-collapse">
+
+				<div class="d-flex">
+
+					<div class="mx-1">
+
+						<?php
+							$tezaString = "";
+							switch ($predare["TipTeza"]) {
+								case "nu": $tezaString = "Clasa nu da teza;"; break;
+								case "optional": $tezaString = "Teza este la alegere;"; break;
+								case "obligatoriu": $tezaString = "Teza este obligatorie;"; break;
+							}
+						?>
+						<?= $tezaString ?>
+
+					</div>
+
+					<?php if ($predare["TipTeza"] == "optional") : ?>
+
+						<button type="button" data-toggle="modal" data-target="#preferinte-teza-modal" class="btn btn-default btn-sm border-info mx-1">
+							Seteaza preferinte teza
+						</button>
+
+					<?php endif; ?>
 
 				</div>
 
@@ -62,7 +106,7 @@ include("clase.phphead.php");
 			<?php $elevi = $db->retrieve_elevi_where_clasa("*", $clasa["Id"]); ?>
 
 			<!-- randul de antet, doar pe md -->
-			<div class="d-none d-md-block">
+			<div class="d-none d-md-block mt-3">
 
 				<div class="row border p-2" style="border-bottom-width: 2px !important;">
 
@@ -232,7 +276,7 @@ include("clase.phphead.php");
 
 								</div>
 
-								<div class="form-check form-check-inline">
+								<div class="form-check form-check-inline" id="noteaza-modal-teza">
 
 									<input class="form-check-input"
 										   type="radio"
@@ -498,11 +542,73 @@ include("clase.phphead.php");
 		
 		</div>
 
+		<div class="modal fade" id="preferinte-teza-modal">
+		
+			<div class="modal-dialog">
+		
+				<div class="modal-content">
+		
+					<div class="modal-header">
+		
+						<h4 class="modal-title">
+							Preferinte teza
+						</h4>
+		
+					</div>
+		
+					<div class="modal-body">
+
+						<p>Precizati care dintre urmatorii elevi sustin teza la <?= $materie["Nume"] ?>.</p>
+		
+						<div class="form-row font-weight-bold">
+
+							<div class="col-6">
+								Elevul
+							</div>
+
+							<div class="col-3">
+								DA
+							</div>
+
+							<div class="col-3">
+								NU
+							</div>
+
+						</div>
+
+						<div id="preferinte-teza-modal-table">
+						</div>
+		
+					</div>
+		
+					<div class="modal-footer">
+		
+						<div class="btn-group">
+		
+							<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+		
+							<button type="submit"
+									form="preferinte-teza-form"
+									class="btn btn-primary">
+								Actualizeaza
+							</button>
+		
+						</div>
+		
+					</div>
+		
+				</div>
+		
+			</div>
+		
+		</div>
+
 		<form id="noteaza-form">
 
 			<input type="hidden" name="elev-id">
 			<input type="hidden" name="predare-id" value="<?= $predare_id ?>">
 			<input type="hidden" name="form-id">
+			<input type="hidden" name="semestru" value="<?= $semestru ?>">
 			<input type="hidden" name="noteaza">
 
 		</form>
@@ -520,6 +626,7 @@ include("clase.phphead.php");
 			<input type="hidden" name="form-id"> <!-- value="わたしはウィーブです！" -->
 			<input type="hidden" name="elev-id">
 			<input type="hidden" name="predare-id" value="<?= $predare_id ?>">
+			<input type="hidden" name="semestru" value="<?= $semestru ?>">
 			<input type="hidden" name="adauga-absenta">
 
 		</form>
@@ -534,14 +641,25 @@ include("clase.phphead.php");
 
 		<form id="anuleaza-absenta-form">
 
-			<input type="hidden" id="anuleaza-absenta-form-elev-id" name="elev-id" value="banea the best">
-			<input type="hidden" id="anuleaza-absenta-form-absenta-id" name="absenta-id" value="badu the best">
-			<input type="hidden" id="anuleaza-absenta-form-form-id" name="form-id" value="ltpm the best">
-			<input type="hidden" name="anuleaza-absenta" value="WooHoo(tm)">
+			<input type="hidden" name="elev-id">
+			<input type="hidden" name="absenta-id">
+			<input type="hidden" name="form-id">
+			<input type="hidden" name="anuleaza-absenta">
+
+		</form>
+
+		<form id="preferinte-teza-form">
+
+			<input type="hidden" name="form-id">
+			<input type="hidden" name="predare-id" value="<?= $predare_id ?>">
+			<input type="hidden" name="preferinte-teza">
 
 		</form>
 
 	 	<script src="/portal/clase/js/one"></script>
+	 	<script>
+	 		var semestru = urlGet("sem") ?? <?= getCurrentSemestru() ?>;
+	 	</script>
 	 	<?php include("clase.one.templ.php"); ?>
 
 	<?php endif; ?>
