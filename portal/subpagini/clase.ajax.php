@@ -60,6 +60,37 @@ if ($request != "") {
 
 		$response->status = "success";
 
+	} else if ($request == "teze") {
+
+		$teze = $db->retrieve_teze_where_predare("*", $_GET["pid"])
+			->fetch_all(MYSQLI_ASSOC);
+		$predare = $db->retrieve_predare_where_id("*", $_GET["pid"]);
+		$elevi = $db->retrieve_elevi_where_clasa("Id,Nume,Prenume", $predare["IdClasa"]);
+
+		$teze = array_map(function($item) {
+			return $item["IdElev"];
+		}, $teze);
+
+		$response->elevi = array();
+
+		while ($elev = $elevi->fetch_assoc()) {
+
+			if (array_search($elev["Id"], $teze) === false) {
+
+				$elev["teza"] = false;
+				$response->elevi[] = $elev;
+
+			} else {
+
+				$elev["teza"] = true;
+				$response->elevi[] = $elev;
+
+			}
+
+		}
+
+		$response->status = "success";
+
 	} else {
 
 		$response->status = "request-not-found";
@@ -95,6 +126,7 @@ function elevi_getAdditional($db, $elev, $predare, $semestru) {
 
 	}
 
+	$elev["hasTeza"] = $db->has_elev_teza_in_predare($elev["Id"], $predare["Id"]);
 	$elev["media"] = averageNoteWithTeza($elev["note"]);
 	sortBySchoolDate($elev["note"]);
 	sortBySchoolDate($elev["absente"]);

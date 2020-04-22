@@ -161,6 +161,32 @@ if (isset($_POST["form-id"])) {
 
 			}
 
+		} else if (isset($_POST["preferinte-teza"])) {
+
+			$teze = array();
+
+			$teze_post = array_map(function($key, $value) {
+				return array(
+					"id" => $key,
+					"teza" => $value
+				);
+			}, array_keys($_POST["elev"]), $_POST["elev"]);
+
+			foreach ($teze_post as $teza) {
+
+				$teze[] = array(
+					"IdElev" => $teza["id"],
+					"IdPredare" => $_POST["predare-id"],
+					"Teza" => $teza["teza"]
+				);
+
+			}
+
+			$db->update_teze($teze);
+
+			$response->teze = $teze_post;
+			$response->status = "success";
+
 		} else {
 
 			$response->status = "action-not-found";

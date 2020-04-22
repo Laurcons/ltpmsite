@@ -72,7 +72,8 @@
 					 data-toggle="modal"
 					 data-target="#noteaza-modal"
 					 data-elev-id="{{Id}}"
-					 data-elev-nume="{{Nume}} {{Prenume}}">
+					 data-elev-nume="{{Nume}} {{Prenume}}"
+					 data-elev-has-teza="{{hasTeza}}">
 					<h4>+</h4>
 				</div>
 
@@ -137,6 +138,44 @@
 				<div class="d-md-none d-block font-weight-bold">
 					Optiuni:
 				</div>
+
+			</div>
+
+		</div>
+
+	</template>
+
+	<template id="preferinte-teza-row-template">
+
+		<div class="form-row">
+
+			<div class="col-6">
+
+				<span class="badge badge-primary">{{nrcrt}}</span>
+				<!--<span class="badge badge-danger">{{Id}}</span>-->
+				{{Nume}} {{Prenume}}
+
+			</div>
+
+			<div class="col-3">
+
+				<input type="checkbox"
+					   form="preferinte-teza-form"
+					   id="preferinta-teza-modal-elev-{{Id}}-da"
+					   onchange="$('#preferinta-teza-modal-elev-{{Id}}-nu').prop('checked', !$(this).prop('checked'))"
+					   name="elev[{{Id}}]"
+					   value="da">
+
+			</div>
+
+			<div class="col-3">
+
+				<input type="checkbox"
+					   form="preferinte-teza-form"
+					   id="preferinta-teza-modal-elev-{{Id}}-nu"
+					   onchange="$('#preferinta-teza-modal-elev-{{Id}}-da').prop('checked', !$(this).prop('checked'))"
+					   name="elev[{{Id}}]"
+					   value="nu">
 
 			</div>
 

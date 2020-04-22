@@ -647,6 +647,77 @@ class db_connection {
 
 	}
 
+	// array of type
+	//  "IdElev" => ..
+	//  "IdPredare" => ..
+	//  "Teza" => "da", "nu"
+	public function update_teze($teze_data) {
+
+		foreach ($teze_data as $teza) {
+
+			if ($teza["Teza"] == "nu") {
+
+				$stmt = $this->conn->prepare("DELETE FROM elevi_teze WHERE IdElev=? AND IdPredare=?;");
+				$stmt->bind_param("ii",
+					$teza["IdElev"],
+					$teza["IdPredare"]);
+				$stmt->execute();
+
+			} else {
+
+				$stmt = $this->conn->prepare("INSERT IGNORE INTO elevi_teze (IdElev, IdPredare) VALUES (?,?);");
+				$stmt->bind_param("ii",
+					$teza["IdElev"],
+					$teza["IdPredare"]);
+				$stmt->execute();
+
+			}
+
+		}
+
+	}
+
+	public function retrieve_teze_where_predare($columns, $predare_id) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM elevi_teze WHERE IdPredare=?;");
+		$stmt->bind_param("i",
+			$predare_id);
+		$stmt->execute();
+
+		return $stmt->get_result();
+
+	}
+
+	public function has_elev_teza_in_predare($elev_id, $predare_id) {
+
+		$predare = $this->retrieve_predare_where_id("*", $predare_id);
+
+		if ($predare["TipTeza"] == "optional") {
+
+			$stmt = $this->conn->prepare("SELECT * FROM elevi_teze WHERE IdElev=? AND IdPredare=?;");
+			$stmt->bind_param("ii",
+				$elev_id,
+				$predare_id);
+			$stmt->execute();
+			$result = $stmt->get_result();
+
+			if ($result->num_rows == 0) {
+				return false;
+			} else {
+				return true;
+			}
+
+		} else {
+
+			if ($predare["TipTeza"] == "nu")
+				return false;
+			if ($predare["TipTeza"] == "obligatoriu")
+				return true;
+
+		}
+
+	}
+
 	public function insert_citat($citat_data) {
 
 		$stmt = $this->conn->prepare("INSERT INTO citate (Text, Autor, IdUser, Comentariu, Status) VALUES (?, ?, ?, ?, ?);");
