@@ -31,7 +31,7 @@ $(document).ready(function() {
 		var form = $(this);
 
 		$.ajax({
-			url: "?p=admin:materii&post",
+			url: "/portal/admin/materii/post",
 			method: "POST",
 			data: form.serialize(),
 			success: function() {
@@ -55,7 +55,7 @@ $(document).ready(function() {
 		hideFormErrors("sterge-materie");
 
 		$.ajax({
-			url: "?p=admin:materii&post",
+			url: "/portal/admin/materii/post",
 			method: "POST",
 			data: $(this).serialize(),
 			dataType: "json",
@@ -105,7 +105,7 @@ function ajax_updateMaterii() {
 		"<div class=\"row border p-2\"><div class=\"col-md-12\"><span class=\"spinner-border text-dark\"></span></div></div>");
 
 	$.ajax({
-		url: "?p=admin:materii&ajax&r=materii",
+		url: "/portal/admin/materii/ajax/materii",
 		dataType: "json",
 		success: function(response) {
 

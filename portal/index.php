@@ -4,7 +4,7 @@ session_start();
 
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/loginchecks.php");
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/dbinit.php");
-include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/note-style.php");
+include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/utility.php");
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/security.php");
 
 $CONFIG = include("include/config.php");
@@ -62,6 +62,9 @@ if ($pagina == "" || $pagina == "prima") {
 	if ($js_redir) {
 		header("Content-type: application/javascript");
 		include("include/utility.js");
+	} else if (isset($_GET["css"])) {
+		header("Content-type: text/css");
+		include("include/additions.css");
 	}
 	else include("subpagini/primapagina.php");
 
@@ -102,7 +105,10 @@ if ($pagina == "" || $pagina == "prima") {
 		include("subpagini/clase.post.php");
 	else if ($ajax_redir)
 		include("subpagini/clase.ajax.php");
-	else include("subpagini/clase.php");
+	else if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("subpagini/clase." . $_GET["js"] . ".js");
+	} else include("subpagini/clase.php");
 
 } else if ($pagina == "citate") {
 

@@ -1,8 +1,4 @@
 
-function getId() {
-	var get = new URLSearchParams(location.search);
-	return get.get("id");
-}
 
 $(document).ready(function() {
 
@@ -37,7 +33,7 @@ $(document).ready(function() {
 					.addClass("spinner-border spinner-border-sm"));
 
 		$.ajax({
-			url: "?p=admin:clase&post",
+			url: "/portal/admin/clase/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -78,7 +74,7 @@ $(document).ready(function() {
 					.addClass("spinner-border spinner-border-sm"));
 
 		$.ajax({
-			url: "?p=admin:clase&post",
+			url: "/portal/admin/clase/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -125,7 +121,7 @@ $(document).ready(function() {
 					.addClass("spinner-border spinner-border-sm"));
 
 		$.ajax({
-			url: "?p=admin:clase&post",
+			url: "/portal/admin/clase/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -170,7 +166,7 @@ $(document).ready(function() {
 		appendLoadingIndicator("[form='sterge-predare-form'][type='submit']");
 
 		$.ajax({
-			url: "?p=admin:clase&post",
+			url: "/portal/admin/clase/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -214,7 +210,7 @@ $(document).ready(function() {
 		appendLoadingIndicator("[form='schimba-diriginte-form'][type='submit']");
 
 		$.ajax({
-			url: "?p=admin:clase&post",
+			url: "/portal/admin/clase/post",
 			method: "POST",
 			dataType: "json",
 			data: $(this).serialize(),
@@ -252,10 +248,10 @@ function ajax_updateElevi() {
 	// pune aia rotitoare ca se incarca
 	$("#elevi-div").html("<div class='spinner-border m-2'></div>");
 
-	var idClasa = getId();
+	var idClasa = urlId();
 
 	$.ajax({
-		url: "?p=admin:clase&ajax&r=elevi-clasa&id=" + idClasa,
+		url: "/portal/admin/clase/ajax/elevi-clasa?id=" + idClasa,
 		dataType: "json",
 		success: function(result) {
 
@@ -293,10 +289,10 @@ function ajax_updatePredari() {
 	// pune aia rotitoare ca se incarca
 	$("#predari-div").html("<div class='spinner-border m-2'></div>");
 
-	var idClasa = getId();
+	var idClasa = urlId();
 
 	$.ajax({
-		url: "?p=admin:clase&ajax&r=predari&id=" + idClasa,
+		url: "/portal/admin/clase/ajax/predari?id=" + idClasa,
 		dataType: "json",
 		success: function(result) {
 
@@ -340,7 +336,7 @@ function ajax_updateAdaugaElevModal() {
 		.empty();
 
 	$.ajax({
-		url: "?p=admin:clase&ajax&r=elevi-disponibili",
+		url: "/portal/admin/clase/ajax/elevi-disponibili",
 		method: "GET",
 		dataType: "json",
 		//data: ,
@@ -398,7 +394,7 @@ function ajax_updateAdaugaPredareModal() {
 		.prop("disabled", true);
 
 	$.ajax({
-		url: "?p=admin:clase&ajax&r=adauga-predare-data",
+		url: "/portal/admin/clase/ajax/adauga-predare-data",
 		method: "GET",
 		dataType: "json",
 		//data: ,
@@ -453,7 +449,7 @@ function ajax_updateSchimbaDiriginteModal() {
 		.empty();
 
 	$.ajax({
-		url: "?p=admin:clase&ajax&r=diriginti-disponibili",
+		url: "/portal/admin/clase/ajax/diriginti-disponibili",
 		method: "GET",
 		dataType: "json",
 		//data: ,

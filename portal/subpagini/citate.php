@@ -4,12 +4,12 @@
 <head>
 
 	<title>Citate - Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 
 </head>
 
 <body>
-	<?php $header_cpage = "citate"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "citate"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 	<div class="container">
 
@@ -27,7 +27,7 @@
 
 			<p>
 
-				Pe unele pagini ale Portalului (momentan doar <a href="?p=panou">panoul</a>) este afisat cate un citat al zilei, care contine cate o vorba "celebra" a profesorilor din scoala. Doresti sa contribui la colectia noastra de citate?
+				Pe unele pagini ale Portalului (momentan doar <a href="/portal/panou">panoul</a>) este afisat cate un citat al zilei, care contine cate o vorba "celebra" a profesorilor din scoala. Doresti sa contribui la colectia noastra de citate?
 
 			</p>
 
@@ -39,7 +39,7 @@
 
 				<div class="h4 mb-3">Propune un citat!</div>
 
-				<form id="citat-form" action="?p=citate&post" method="POST">
+				<form id="citat-form" action="/portal/citate/post" method="POST">
 
 					<input type="hidden" id="citat-form-form-id" name="form-id" value="eh">
 					<input type="hidden" name="citat-form" value="whatever">
@@ -74,7 +74,7 @@
 
 				<p class="lead">Nu-ti face griji, propunerea citatelor se face in mod anonim, dar aceasta masura exista pentru a preveni spamul.</p>
 
-				<a class="btn btn-lg btn-primary text-light" href="?p=logare&redir=<?= urlencode("?p=citate"); ?>">Autentificare</a>
+				<a class="btn btn-lg btn-primary text-light" href="/portal/logare&redir=<?= urlencode("/portal/citate"); ?>">Autentificare</a>
 
 			</div>
 

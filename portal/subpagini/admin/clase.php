@@ -16,12 +16,12 @@ if (isset($_GET["id"])) {
 <head>
 
 	<title>Administrare clase - Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 
 </head>
 
 <body>
-	<?php $header_cpage = "admin:clase"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "admin:clase"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 <div class="container">
 
@@ -104,14 +104,14 @@ if (isset($_GET["id"])) {
 
 		</div>
 
-		<form id="creeaza-clasa-form" method="POST" action="?p=admin:clase&post">
+		<form id="creeaza-clasa-form" method="POST" action="/portal/admin/clase/post">
 
 			<input type="hidden" id="creeaza-clasa-form-form-id" name="form-id" value="fillwithjs please">
 			<input type="hidden" name="creeaza-clasa" value="whatever">
 
 		</form>
 
-		<form id="sterge-clasa-form" method="POST" action="?p=admin:clase&post">
+		<form id="sterge-clasa-form" method="POST" action="/portal/admin/clase/post">
 
 			<input type="hidden" id="sterge-clasa-form-form-id" name="form-id" value="fillwithjs please">
 			<input type="hidden" id="sterge-clasa-form-clasa-id" name="clasa-id" value="fillwithjs please">
@@ -130,7 +130,7 @@ if (isset($_GET["id"])) {
 
 			<div class="col-sm-4">
 
-				<a class="btn btn-default border-primary" href="?p=admin:clase">Inapoi la clase</a>
+				<a class="btn btn-default border-primary" href="/portal/admin/clase">Inapoi la clase</a>
 
 			</div>
 
@@ -150,7 +150,7 @@ if (isset($_GET["id"])) {
 
 			<?= $diriginte["Nume"] . " " . $diriginte["Prenume"] ?>
 
-			<a href="?p=admin:utilizatori&id=<?= $diriginte['Id'] ?>" class="btn btn-sm bg-white border-info">Detalii</a>
+			<a href="/portal/admin/utilizatori/<?= $diriginte['Id'] ?>" class="btn btn-sm bg-white border-info">Detalii</a>
 
 			<button class="btn btn-sm bg-white border-warning"
 					data-toggle="modal"
@@ -583,11 +583,11 @@ if (isset($_GET["id"])) {
 <footer>
 	<?php if ($current_id == -1) : ?>
 
-		<script src="?p=admin:clase&js=list"></script>
+		<script src="/portal/admin/clase/js/list"></script>
 
 	<?php else : // current_id == -1 ?>
 
-		<script src="?p=admin:clase&js=one"></script>
+		<script src="/portal/admin/clase/js/one"></script>
 
 	<?php endif; ?>
 

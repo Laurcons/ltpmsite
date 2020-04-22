@@ -87,7 +87,7 @@ function ajax_updateClase() {
 			<div class="spinner-border text-primary"></div>');
 
 	$.ajax({
-		url: "?p=admin:clase&ajax&r=clase",
+		url: "/portal/admin/clase/ajax/clase",
 		dataType: "json",
 		success: function(result) {
 
@@ -139,7 +139,7 @@ function ajax_updateClase() {
 
 	// actualizeaza tot ce tine de profesorii disponibili (din #creeaza-clasa-modal)
 	$.ajax({
-		url: "?p=admin:clase&ajax&r=profesori-disponibili",
+		url: "/portal/admin/clase/ajax/profesori-disponibili",
 		dataType: "json",
 		success: function(result) {
 

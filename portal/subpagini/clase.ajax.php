@@ -5,6 +5,7 @@
 include("clase.phphead.php");
 
 $request = "";
+$response = new stdClass();
 
 if (isset($_GET["r"])) {
 	$request = $_GET["r"];
@@ -12,52 +13,94 @@ if (isset($_GET["r"])) {
 
 if ($request != "") {
 
-	$user_id = 0;
-	$materie_id = 0;
-	$semestru = "";
+	if ($request == "elevi") {
 
-	if (isset($_GET["uid"]))
-		$user_id = $_GET["uid"];
-	if (isset($_GET["mid"]))
-		$materie_id = $_GET["mid"];
-	if (isset($_GET["sem"]))
-		$semestru = $_GET["sem"];
+		$semestru = "1";
 
-	if ($request == "note") {
+		$predare = $db->retrieve_predare_where_id("*", $_GET["id"]);
+		$elevi = $db->retrieve_elevi_where_clasa("Id,Nume,Prenume,Username", $predare["IdClasa"]);
+		$response->elevi = array();
 
-		if ($user_id == 0 || $materie_id == 0 || $semestru == "") {
-			header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
-		} else {
+		while ($elev = $elevi->fetch_assoc()) {
 
-			$data = $db->retrieve_note_where_utilizator_and_materie_and_semestru("*", $user_id, $materie_id, $semestru);
-
-			echo json_encode($data->fetch_all(MYSQLI_ASSOC));
+			$response->elevi[] = elevi_getAdditional($db, $elev, $predare, $semestru);
 
 		}
 
-	} else if ($request = "absente") {
+		$response->status = "success";
 
-		if ($user_id == 0 || $materie_id == 0 || $semestru == "") {
-			header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
-		} else {
+	} else if ($request == "elev") {
 
-			$data = $db->retrieve_absente_where_utilizator_and_materie_and_semestru("*", $user_id, $materie_id, $semestru);
+		$semestru = "1";
 
-			echo json_encode($data->fetch_all(MYSQLI_ASSOC));
+		$predare = $db->retrieve_predare_where_id("*", $_GET["pid"]);
+		$elev = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $_GET["uid"]);
+
+		$response->elev = elevi_getAdditional($db, $elev, $predare, $semestru);
+		$response->status = "success";
+
+	} else if ($request == "predari") {
+
+		$profesor = $db->retrieve_utilizator_where_username("Id", $_SESSION["logatca"]);
+
+		$predari = $db->retrieve_predari_where_profesor("*", $profesor["Id"]);
+
+		$response->predari = array();
+		while ($predare = $predari->fetch_assoc()) {
+
+			$predare["clasa"] = $db->retrieve_clasa_where_id("*", $predare["IdClasa"]);
+			$predare["materia"] = $db->retrieve_materie_where_id("*", $predare["IdMaterie"]);
+			if ($predare["clasa"]["IdDiriginte"] == $profesor["Id"])
+				$predare["calitateDe"] = "diriginte";
+			else $predare["calitateDe"] = "profesor";
+			$predare["nrelevi"] = $db->retrieve_count_elevi_where_clasa($predare["IdClasa"]);
+			$response->predari[] = $predare;
 
 		}
+
+		$response->status = "success";
 
 	} else {
 
-	header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
+		$response->status = "request-not-found";
 
 	}
 
 } else {
 
-	header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
+	$response->status = "request-empty";
 
 }
 
+echo(json_encode($response));
+
+function elevi_getAdditional($db, $elev, $predare, $semestru) {
+
+	$note = $db->retrieve_note_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
+	$elev["note"] = array();
+	while ($nota = $note->fetch_assoc()) {
+
+		$nota["profesor"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $nota["IdProfesor"]);
+		$elev["note"][] = $nota;
+
+	}
+	sortBySchoolDate($elev["note"]);
+
+	$absente = $db->retrieve_absente_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
+	$elev["absente"] = array();
+	while ($absenta = $absente->fetch_assoc()) {
+
+		$absenta["profesor"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $absenta["IdProfesor"]);
+		$elev["absente"][] = $absenta;
+
+	}
+
+	$elev["media"] = averageNoteWithTeza($elev["note"]);
+	sortBySchoolDate($elev["note"]);
+	sortBySchoolDate($elev["absente"]);
+
+	return $elev;
+
+}
 
 ?>

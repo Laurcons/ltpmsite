@@ -1,6 +1,6 @@
 <?php
 
-redirect_if_logged_in("/portal/?p=panou&src=prima");
+redirect_if_logged_in("/portal/panou?src=prima");
 
 ?>
 
@@ -11,13 +11,13 @@ redirect_if_logged_in("/portal/?p=panou&src=prima");
 <head>
 
 	<title>Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 
 </head>
 
 <body>
 
-	<?php $header_cpage = "prima"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "prima"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 	<div class="container">
 
