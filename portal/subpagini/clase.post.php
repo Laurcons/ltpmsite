@@ -15,13 +15,13 @@ if (isset($_POST["form-id"])) {
 
 		if (isset($_POST["noteaza"])) {
 
-			$predare = $db->retrieve_predare_where_id("*", $_POST["predare-id"]);
+			$materie = $db->retrieve_materie_where_id("*", $_POST["materie-id"]);
 
 			$nota_data = array();
 			$nota_data["IdElev"] = $_POST["elev-id"];
 			$nota_data["Nota"] = $_POST["nota"];
-			$nota_data["IdMaterie"] = $predare["IdMaterie"];
-			$nota_data["IdClasa"] = $predare["IdClasa"];
+			$nota_data["IdMaterie"] = $materie["Id"];
+			$nota_data["IdClasa"] = $materie["IdClasa"];
 			$nota_data["IdProfesor"] = $_SESSION["logatid"];
 			$nota_data["Semestru"] = $_POST["semestru"];
 			$nota_data["Ziua"] = $_POST["ziua"];
@@ -139,12 +139,12 @@ if (isset($_POST["form-id"])) {
 
 		} else if (isset($_POST["adauga-absenta"])) {
 
-			$predare = $db->retrieve_predare_where_id("*", $_POST["predare-id"]);
+			$materie = $db->retrieve_materie_where_id("*", $_POST["materie-id"]);
 
 			$ab = array();
 			$ab["IdElev"] = $_POST["elev-id"];
-			$ab["IdMaterie"] = $predare["IdMaterie"];
-			$ab["IdClasa"] = $predare["IdClasa"];
+			$ab["IdMaterie"] = $materie["Id"];
+			$ab["IdClasa"] = $materie["IdClasa"];
 			$ab["IdProfesor"] = $_SESSION["logatid"];
 			$ab["Ziua"] = $_POST["ziua"];
 			$ab["Luna"] = $_POST["luna"];
@@ -178,7 +178,7 @@ if (isset($_POST["form-id"])) {
 
 				$teze[] = array(
 					"IdElev" => $teza["id"],
-					"IdPredare" => $_POST["predare-id"],
+					"IdMaterie" => $_POST["materie-id"],
 					"Teza" => $teza["teza"]
 				);
 

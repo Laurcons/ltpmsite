@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 	updateFormIds();
 	ajax_updateElevi();
-	ajax_updatePredari();
+	ajax_updateMaterii();
 
 	$("#atribuie-utilizator-modal").on("show.bs.modal", function() {
 
@@ -104,18 +104,18 @@ $(document).ready(function() {
 
 	});
 
-	$("#adauga-predare-modal").on("show.bs.modal", function() {
+	$("#adauga-materie-modal").on("show.bs.modal", function() {
 
-		ajax_updateAdaugaPredareModal();
+		ajax_updateAdaugaMaterieModal();
 
 	});
 
-	$("#adauga-predare-form").submit(function(e) {
+	$("#adauga-materie-form").submit(function(e) {
 
 		e.preventDefault();
 
 		// loading indicator
-		$("[form='adauga-predare-form'][type='submit']")
+		$("[form='adauga-materie-form'][type='submit']")
 			.append(
 				$("<span>")
 					.addClass("spinner-border spinner-border-sm"));
@@ -129,8 +129,8 @@ $(document).ready(function() {
 		
 				if (result.status == "success") {
 		
-					$("#adauga-predare-modal").modal("hide");
-					ajax_updatePredari();
+					$("#adauga-materie-modal").modal("hide");
+					ajax_updateMaterii();
 		
 				} else {
 					console.error("AJAX status: " + result.status);
@@ -142,7 +142,7 @@ $(document).ready(function() {
 			},
 			complete: function() {
 				updateFormIds();
-				$("[form='adauga-predare-form'][type='submit']")
+				$("[form='adauga-materie-form'][type='submit']")
 					.children("span")
 						.remove();
 			}
@@ -151,19 +151,19 @@ $(document).ready(function() {
 
 	});
 
-	$("#sterge-predare-modal").on("show.bs.modal", function(e) {
+	$("#sterge-materie-modal").on("show.bs.modal", function(e) {
 
-		$("#sterge-predare-form input[name='predare-id']")
-			.val($(e.relatedTarget).data("predare-id"));
+		$("#sterge-materie-form input[name='materie-id']")
+			.val($(e.relatedTarget).data("materie-id"));
 
 	});
 
-	$("#sterge-predare-form").submit(function(e) {
+	$("#sterge-materie-form").submit(function(e) {
 
 		e.preventDefault();
 
 		// loading indicator
-		appendLoadingIndicator("[form='sterge-predare-form'][type='submit']");
+		appendLoadingIndicator("[form='sterge-materie-form'][type='submit']");
 
 		$.ajax({
 			url: "/portal/admin/clase/post",
@@ -174,8 +174,8 @@ $(document).ready(function() {
 		
 				if (result.status == "success") {
 		
-					$("#sterge-predare-modal").modal("hide");
-					ajax_updatePredari();
+					$("#sterge-materie-modal").modal("hide");
+					ajax_updateMaterii();
 		
 				} else {
 					console.error("AJAX status: " + result.status);
@@ -187,7 +187,7 @@ $(document).ready(function() {
 			},
 			complete: function() {
 				updateFormIds();
-				$("[form='sterge-predare-form'][type='submit']")
+				$("[form='sterge-materie-form'][type='submit']")
 					.children("span")
 						.remove();
 			}
@@ -284,40 +284,46 @@ function ajax_updateElevi() {
 
 }
 
-function ajax_updatePredari() {
+function ajax_updateMaterii() {
 
 	// pune aia rotitoare ca se incarca
-	$("#predari-div").html("<div class='spinner-border m-2'></div>");
+	$("#materii-div").html("<div class='spinner-border m-2'></div>");
 
 	var idClasa = urlId();
 
 	$.ajax({
-		url: "/portal/admin/clase/ajax/predari?id=" + idClasa,
+		url: "/portal/admin/clase/ajax/materii?id=" + idClasa,
 		dataType: "json",
 		success: function(result) {
 
 			// pune datele auxiliare
-			for (var i = 0; i < result.predari.length; i++) {
+			for (var i = 0; i < result.materii.length; i++) {
 
-				result.predari[i].first = (i == 0) ? true : false;
-				result.predari[i].nrcrt = i + 1; 
+				result.materii[i].first = (i == 0) ? true : false;
+				result.materii[i].nrcrt = i + 1; 
 
 			}
 
 			// pune prin mustache
 			var output = "";
-			result.predari.forEach(function(item, index) {
+			result.materii.forEach(function(item, index) {
 
-				var rendered = Mustache.render($("#predare-template").html(), item);
+				switch (item.TipTeza) {
+					case "nu": item.tipTeza = "Nu se da teza"; break;
+					case "optional": item.tipTeza = "Teza e la alegere"; break;
+					case "obligatoriu": item.tipTeza = "Teza e obligatorie"; break;
+				}
+
+				var rendered = Mustache.render($("#materie-template").html(), item);
 				output += rendered;
 
 			});
 
-			if (result.predari.length == 0) {
-				output = "<div class='row border p-2'><div class='col-md-12'>Nu exista predari in clasa!</div></div>";
+			if (result.materii.length == 0) {
+				output = "<div class='row border p-2'><div class='col-md-12'>Nu exista materii in clasa!</div></div>";
 			}
 
-			$("#predari-div").html(output);
+			$("#materii-div").html(output);
 
 		}
 
@@ -384,17 +390,17 @@ function ajax_updateAdaugaElevModal() {
 
 }
 
-function ajax_updateAdaugaPredareModal() {
+function ajax_updateAdaugaMaterieModal() {
 
-	$("#adauga-predare-modal-spinner")
+	$("#adauga-materie-modal-spinner")
 		.removeClass("d-none");
-	$("select[form='adauga-predare-form']")
+	$("select[form='adauga-materie-form'][name!='tip-teza']")
 		.empty();
-	$("[form='adauga-predare-form'][type='submit']")
+	$("[form='adauga-materie-form'][type='submit']")
 		.prop("disabled", true);
 
 	$.ajax({
-		url: "/portal/admin/clase/ajax/adauga-predare-data",
+		url: "/portal/admin/clase/ajax/adauga-materie-data",
 		method: "GET",
 		dataType: "json",
 		//data: ,
@@ -402,20 +408,10 @@ function ajax_updateAdaugaPredareModal() {
 	
 			if (result.status == "success") {
 	
-				// fill selects
-				result.materii.forEach(function(item, index) {
-
-					$("[form='adauga-predare-form'][name='materie']")
-						.append(
-							$("<option>")
-								.attr("value", item.Id)
-								.html(item.Nume));
-
-				});
-
+				// fill select
 				result.profesori.forEach(function(item, index) {
 
-					$("[form='adauga-predare-form'][name='profesor']")
+					$("[form='adauga-materie-form'][name='profesor']")
 						.append(
 							$("<option>")
 								.attr("value", item.Id)
@@ -423,7 +419,7 @@ function ajax_updateAdaugaPredareModal() {
 
 				});
 
-				$("[form='adauga-predare-form'][type='submit']")
+				$("[form='adauga-materie-form'][type='submit']")
 					.prop("disabled", false);
 	
 			} else {
@@ -435,7 +431,7 @@ function ajax_updateAdaugaPredareModal() {
 			console.error("AJAX error: " + err);
 		},
 		complete: function() {
-			$("#adauga-predare-modal-spinner")
+			$("#adauga-materie-modal-spinner")
 				.addClass("d-none");
 		}
 	

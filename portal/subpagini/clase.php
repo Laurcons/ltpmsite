@@ -21,7 +21,7 @@ include("clase.phphead.php");
 
 	<div class="container">
 
-		<?php if ($predare_id == -1) : ?>
+		<?php if ($is_list) : ?>
 
 			<h2>Clasele mele</h2>
 
@@ -31,11 +31,10 @@ include("clase.phphead.php");
 
 			</div>
 
-		<?php else : // predare_id == -1 ?>
+		<?php else : // is_list ?>
 
 			<?php
-				$clasa = $db->retrieve_clasa_where_id("*", $predare["IdClasa"]);
-				$materie = $db->retrieve_materie_where_id("*", $predare["IdMaterie"]);
+				$clasa = $db->retrieve_clasa_where_id("*", $materie["IdClasa"]);
 				$diriginte = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
 			?>
 
@@ -81,7 +80,7 @@ include("clase.phphead.php");
 
 						<?php
 							$tezaString = "";
-							switch ($predare["TipTeza"]) {
+							switch ($materie["TipTeza"]) {
 								case "nu": $tezaString = "Clasa nu da teza;"; break;
 								case "optional": $tezaString = "Teza este la alegere;"; break;
 								case "obligatoriu": $tezaString = "Teza este obligatorie;"; break;
@@ -91,7 +90,7 @@ include("clase.phphead.php");
 
 					</div>
 
-					<?php if ($predare["TipTeza"] == "optional") : ?>
+					<?php if ($materie["TipTeza"] == "optional") : ?>
 
 						<button type="button" data-toggle="modal" data-target="#preferinte-teza-modal" class="btn btn-default btn-sm border-info mx-1">
 							Seteaza preferinte teza
@@ -136,7 +135,7 @@ include("clase.phphead.php");
 
 			</div>
 
-		<?php endif; // predare_id == -1 ?>
+		<?php endif; // is_list ?>
 
 	</div>
 
@@ -145,7 +144,7 @@ include("clase.phphead.php");
 
  <footer>
 
- 	<?php if ($predare_id == -1) : ?>
+ 	<?php if ($is_list) : ?>
 
  		<script src="/portal/clase/js/list"></script>
  		<?php include("clase.list.templ.php"); ?>
@@ -606,7 +605,7 @@ include("clase.phphead.php");
 		<form id="noteaza-form">
 
 			<input type="hidden" name="elev-id">
-			<input type="hidden" name="predare-id" value="<?= $predare_id ?>">
+			<input type="hidden" name="materie-id" value="<?= $materie_id ?>">
 			<input type="hidden" name="form-id">
 			<input type="hidden" name="semestru" value="<?= $semestru ?>">
 			<input type="hidden" name="noteaza">
@@ -625,7 +624,7 @@ include("clase.phphead.php");
 
 			<input type="hidden" name="form-id"> <!-- value="わたしはウィーブです！" -->
 			<input type="hidden" name="elev-id">
-			<input type="hidden" name="predare-id" value="<?= $predare_id ?>">
+			<input type="hidden" name="materie-id" value="<?= $materie_id ?>">
 			<input type="hidden" name="semestru" value="<?= $semestru ?>">
 			<input type="hidden" name="adauga-absenta">
 
@@ -651,7 +650,7 @@ include("clase.phphead.php");
 		<form id="preferinte-teza-form">
 
 			<input type="hidden" name="form-id">
-			<input type="hidden" name="predare-id" value="<?= $predare_id ?>">
+			<input type="hidden" name="materie-id" value="<?= $materie_id ?>">
 			<input type="hidden" name="preferinte-teza">
 
 		</form>

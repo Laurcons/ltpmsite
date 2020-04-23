@@ -494,10 +494,10 @@ $autoritati = $CONFIG["autoritati"];
 			<?php if ($utilizator["Functie"] == "profesor") : ?>
 
 				<div class="d-none d-md-block h2 mt-3">
-					Predari profesor
+					Materii predate de profesor
 				</div>
 				<div class="d-block d-md-none text-right h2 mt-3">
-					Predari profesor
+					Materii predate de profesor
 				</div>
 
 				<div class="d-none d-md-block"> <!-- header row -->
@@ -516,7 +516,13 @@ $autoritati = $CONFIG["autoritati"];
 
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-2">
+
+							<div class="font-weight-bold">Tip teza</div>
+
+						</div>
+
+						<div class="col-md-4">
 
 							<div class="font-weight-bold">Optiuni</div>
 
@@ -526,7 +532,7 @@ $autoritati = $CONFIG["autoritati"];
 
 				</div> <!-- header row -->
 
-				<div id="predari-rows">
+				<div id="materii-rows">
 
 					<!-- filled with javascript -->
 
@@ -538,7 +544,7 @@ $autoritati = $CONFIG["autoritati"];
 
 						<button class="btn btn-default border-primary btn-sm"
 								data-toggle="modal"
-								data-target="#adauga-predare-modal">
+								data-target="#adauga-materie-modal">
 							Adauga predare
 						</button>
 
@@ -761,7 +767,7 @@ $autoritati = $CONFIG["autoritati"];
 
 	<?php else : // current_id == -1 ?>
 
-		<div class="modal fade" id="adauga-predare-modal">
+		<div class="modal fade" id="adauga-materie-modal">
 
 			<div class="modal-dialog">
 
@@ -770,26 +776,23 @@ $autoritati = $CONFIG["autoritati"];
 					<div class="modal-header">
 
 						<h4 class="modal-title">
-							Adauga predare
+							Adauga materie
 						</h4>
 
 					</div>
 
 					<div class="modal-body">
 
-						<p>Selecteaza materia ce se va preda, si clasa.</p>
+						<p>Precizeaza materia ce se va preda, si clasa.</p>
 
 						<div class="form-group">
 
 							<label class="font-weight-bold">Materia predata:</label>
 
-							<select class="form-control"
-									name="materie"
-									form="adauga-predare-form">
-
-								<!-- filled with javascript -->
-
-							</select>
+							<input type="text"
+								   class="form-control"
+								   form="adauga-materie-form"
+								   name="materie">
 
 						</div>
 
@@ -799,7 +802,7 @@ $autoritati = $CONFIG["autoritati"];
 
 							<select class="form-control"
 									name="clasa"
-									form="adauga-predare-form">
+									form="adauga-materie-form">
 
 								<!-- filled with javascript -->
 
@@ -807,20 +810,42 @@ $autoritati = $CONFIG["autoritati"];
 
 						</div>
 
+						<div class="form-group form-row">
+
+							<div class="col-3 col-form-label">
+								<label class="font-weight-bold">Tip teza:</label>
+							</div>
+
+							<div class="col-9">
+
+								<select class="form-control"
+										name="tip-teza"
+										form="adauga-materie-form">
+
+									<option value="nu">Nu se da teza</option>
+									<option value="optional">Teza e la alegere</option>
+									<option value="obligatoriu">Teza e obligatorie</option>
+
+								</select>
+
+							</div>
+
+						</div>
+
 					</div>
 
 					<div class="modal-footer">
 
-						<span class="spinner-border spinner-border-sm text-primary" id="adauga-predare-modal-spinner"></span>
+						<span class="spinner-border spinner-border-sm text-primary" id="adauga-materie-modal-spinner"></span>
 
 						<div class="btn-group">
 
 							<button class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
 
 							<button type="submit"
-									form="adauga-predare-form"
+									form="adauga-materie-form"
 									class="btn btn-primary">
-								Adauga predare
+								Adauga materie
 							</button>
 
 						</div>
@@ -833,7 +858,7 @@ $autoritati = $CONFIG["autoritati"];
 
 		</div>
 
-		<div class="modal fade" id="sterge-predare-modal">
+		<div class="modal fade" id="sterge-materie-modal">
 		
 			<div class="modal-dialog">
 		
@@ -842,16 +867,16 @@ $autoritati = $CONFIG["autoritati"];
 					<div class="modal-header bg-danger text-white">
 		
 						<h4 class="modal-title">
-							Sterge predare
+							Sterge materie
 						</h4>
 		
 					</div>
 		
 					<div class="modal-body">
 		
-						<p>Sunteti sigur ca doriti sa stergeti predarea?</p>
+						<p>Sunteti sigur ca doriti sa stergeti materia?</p>
 
-						<p>In afara de predare, nimic altceva nu va fi afectat!</p>
+						<p>Toate notele, absentele si punctele de activitate ce tin de materie vor fi sterse!</p>
 		
 					</div>
 		
@@ -862,9 +887,9 @@ $autoritati = $CONFIG["autoritati"];
 							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
 		
 							<button type="submit"
-									form="sterge-predare-form"
+									form="sterge-materie-form"
 									class="btn btn-danger">
-								Sterge predare
+								Sterge materie
 							</button>
 		
 						</div>
@@ -985,19 +1010,19 @@ $autoritati = $CONFIG["autoritati"];
 
 		</form>
 
-		<form id="adauga-predare-form">
+		<form id="adauga-materie-form">
 
 			<input type="hidden" name="form-id" value="initial">
 			<input type="hidden" name="user-id" value="<?= $current_id ?>">
-			<input type="hidden" name="adauga-predare" value="trash">
+			<input type="hidden" name="adauga-materie" value="trash">
 
 		</form>
 
-		<form id="sterge-predare-form">
+		<form id="sterge-materie-form">
 
 			<input type="hidden" name="form-id" value="initial">
 			<input type="hidden" name="predare-id">
-			<input type="hidden" name="sterge-predare" value="trash">
+			<input type="hidden" name="sterge-materie" value="trash">
 
 		</form>
 

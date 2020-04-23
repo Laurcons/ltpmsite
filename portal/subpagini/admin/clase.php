@@ -199,14 +199,14 @@ if (isset($_GET["id"])) {
 
 		</div>
 
-		<div class="d-block d-md-none h4 text-right">Predarile clasei</div>
-		<div class="d-none d-md-block h4">Predarile clasei</div>
+		<div class="d-block d-md-none h4 text-right">Materiile clasei</div>
+		<div class="d-none d-md-block h4">Materiile clasei</div>
 
 		<div class="d-none d-md-block"> <!-- header row -->
 
 			<div class="row border p-2">
 
-				<div class="col-md-4">
+				<div class="col-md-3">
 
 					<span class="font-weight-bold">Materia predata</span>	
 
@@ -218,7 +218,13 @@ if (isset($_GET["id"])) {
 
 				</div>
 
-				<div class="col-md-5">
+				<div class="col-md-2">
+
+					<span class="font-weight-bold">Tip teza</span>
+
+				</div>
+
+				<div class="col-md-4">
 
 					<span class="font-weight-bold">Optiuni</span>	
 
@@ -228,7 +234,7 @@ if (isset($_GET["id"])) {
 
 		</div> <!-- header row -->
 
-		<div id="predari-div">
+		<div id="materii-div">
 
 			<!-- filled with js -->
 
@@ -240,7 +246,7 @@ if (isset($_GET["id"])) {
 
 				<button class="btn btn-sm border-primary"
 						data-toggle="modal"
-						data-target="#adauga-predare-modal">
+						data-target="#adauga-materie-modal">
 					Adauga predare
 				</button>
 
@@ -373,7 +379,7 @@ if (isset($_GET["id"])) {
 	
 	</div>
 
-	<div class="modal fade" id="adauga-predare-modal">
+	<div class="modal fade" id="adauga-materie-modal">
 	
 		<div class="modal-dialog">
 	
@@ -382,24 +388,23 @@ if (isset($_GET["id"])) {
 				<div class="modal-header">
 	
 					<h4 class="modal-title">
-						Adauga predare
+						Adauga materie
 					</h4>
 	
 				</div>
 	
 				<div class="modal-body">
 		
-					<p>Selecteaza materia predata, si profesorul care o preda.</p>
+					<p>Precizeaza materia predata, si profesorul care o preda.</p>
 
 					<div class="form-group">
 
 						<label class="font-weight-bold">Materia predata:</label>
 
-						<select class="form-control"
-								form="adauga-predare-form"
-								name="materie">
-
-						</select>
+						<input type="text"
+							   class="form-control"
+							   form="adauga-materie-form"
+							   name="materie">
 
 					</div>
 
@@ -408,10 +413,30 @@ if (isset($_GET["id"])) {
 						<label class="font-weight-bold">Profesorul care o preda:</label>
 
 						<select class="form-control"
-								form="adauga-predare-form"
+								form="adauga-materie-form"
 								name="profesor">
 
 						</select>
+
+					</div>
+
+					<div class="form-group form-row">
+
+						<label class="col-3 col-form-label font-weight-bold">Tip teza:</label>
+
+						<div class="col-9">
+
+							<select class="form-control"
+									form="adauga-materie-form"
+									name="tip-teza">
+
+								<option value="nu" selected>Nu se da teza</option> 
+								<option value="optional">Teza e optionala</option>
+								<option value="obligatoriu">Teza e obligatorie</option>
+
+							</select>
+
+						</div>
 
 					</div>
 	
@@ -419,14 +444,14 @@ if (isset($_GET["id"])) {
 	
 				<div class="modal-footer">
 
-					<span class="spinner-border text-primary d-none" id="adauga-predare-modal-spinner"></span>
+					<span class="spinner-border text-primary d-none" id="adauga-materie-modal-spinner"></span>
 	
 					<div class="btn-group">
 	
 						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
 	
 						<button type="submit"
-								form="adauga-predare-form"
+								form="adauga-materie-form"
 								class="btn btn-primary">
 							Adauga predare
 						</button>
@@ -441,7 +466,7 @@ if (isset($_GET["id"])) {
 	
 	</div>
 
-	<div class="modal fade" id="sterge-predare-modal">
+	<div class="modal fade" id="sterge-materie-modal">
 	
 		<div class="modal-dialog">
 	
@@ -450,14 +475,14 @@ if (isset($_GET["id"])) {
 				<div class="modal-header bg-danger">
 	
 					<h4 class="modal-title text-white">
-						Sterge predare
+						Sterge materie
 					</h4>
 	
 				</div>
 	
 				<div class="modal-body">
 	
-					Sunteti sigur ca doriti sa stergeti aceasta predare? Nimic altceva, in afara de predare, nu va fi afectat!
+					Sunteti sigur ca doriti sa stergeti aceasta materie? Toate notele, absentele si punctele de activitate ce tin de aceasta materie vor fi sterse!
 	
 				</div>
 	
@@ -468,9 +493,9 @@ if (isset($_GET["id"])) {
 						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
 	
 						<button type="submit"
-								form="sterge-predare-form"
+								form="sterge-materie-form"
 								class="btn btn-danger">
-							Sterge predare
+							Sterge materie
 						</button>
 	
 					</div>
@@ -553,19 +578,19 @@ if (isset($_GET["id"])) {
 
 	</form>
 
-	<form id="adauga-predare-form">
+	<form id="adauga-materie-form">
 
 		<input type="hidden" name="form-id">
 		<input type="hidden" name="clasa-id" value="<?= $current_id ?>">
-		<input type="hidden" name="adauga-predare">
+		<input type="hidden" name="adauga-materie">
 
 	</form>
 
-	<form id="sterge-predare-form">
+	<form id="sterge-materie-form">
 
 		<input type="hidden" name="form-id">
-		<input type="hidden" name="predare-id">
-		<input type="hidden" name="sterge-predare">
+		<input type="hidden" name="materie-id">
+		<input type="hidden" name="sterge-materie">
 
 	</form>
 
