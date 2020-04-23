@@ -29,6 +29,8 @@ Vei putea, dar nu încă. Doresc să pun la punct modul în care se poate contri
 * [x] Confirmarea parolei pentru accesarea datelor sensibile din baza de date
 * [ ] Crearea unui API (Portal API) pentru uz din afară (ar facilita crearea de aplicații de către elevi, sau idk)
 * [ ] Sistem pentru a raporta probleme și bugs
+#### Securitate
+* [ ] Securizare sesiuni si form IDs asa cum e mentionat [aici](https://www.moesif.com/blog/technical/restful-apis/Authorization-on-RESTful-APIs/#cookies)
 #### TODO Minore
 * [x] (16.04.2020) Filtrare in portal/admin:clase
 ### Site principal
