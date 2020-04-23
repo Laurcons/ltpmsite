@@ -4,7 +4,7 @@ $(document).ready(function() {
 	updateFormIds();
 
 	if (utilizator_functie == "profesor")
-		ajax_updatePredari();
+		ajax_updateMaterii();
 
 	// alea de "modificari nesalvate"
 	$("[data-unsave]").change(function() {
@@ -127,18 +127,18 @@ $(document).ready(function() {
 
 	});
 
-	$("#adauga-predare-modal").on("show.bs.modal", function() {
+	$("#adauga-materie-modal").on("show.bs.modal", function() {
 
-		ajax_updatePredareModal();
+		ajax_updateAdaugaMaterieModal();
 
 	});
 
-	$("#adauga-predare-form").submit(function(e) {
+	$("#adauga-materie-form").submit(function(e) {
 
 		e.preventDefault();
 
 		// loading indicator
-		$("[type='submit'][form='adauga-predare-form']")
+		$("[type='submit'][form='adauga-materie-form']")
 			.append(
 				$("<span>")
 					.addClass("spinner-border spinner-border-sm"));
@@ -152,8 +152,8 @@ $(document).ready(function() {
 		
 				if (result.status == "success") {
 		
-					$("#adauga-predare-modal").modal("hide");
-					ajax_updatePredari();
+					$("#adauga-materie-modal").modal("hide");
+					ajax_updateMaterii();
 		
 				} else {
 					console.error("AJAX status: " + result.status);
@@ -165,7 +165,7 @@ $(document).ready(function() {
 			},
 			complete: function() {
 				updateFormIds();
-				$("[type='submit'][form='adauga-predare-form']")
+				$("[type='submit'][form='adauga-materie-form']")
 					.children("span")
 						.remove();
 			}
@@ -174,22 +174,22 @@ $(document).ready(function() {
 
 	});
 
-	$("#sterge-predare-modal").on("show.bs.modal", function(e) {
+	$("#sterge-materie-modal").on("show.bs.modal", function(e) {
 
 		var button = $(e.relatedTarget);
-		var predareid = button.data("predare-id");
-		$("#sterge-predare-form")
-			.children("[name='predare-id']")
+		var predareid = button.data("materie-id");
+		$("#sterge-materie-form")
+			.children("[name='materie-id']")
 				.val(predareid);
 
 	});
 
-	$("#sterge-predare-form").submit(function(e) {
+	$("#sterge-materie-form").submit(function(e) {
 
 		e.preventDefault();
 
 		// loading indicator
-		$("[type='submit'][form='sterge-predare-form']")
+		$("[type='submit'][form='sterge-materie-form']")
 			.append(
 				$("<span>")
 					.addClass("spinner-border spinner-border-sm"));
@@ -203,8 +203,8 @@ $(document).ready(function() {
 		
 				if (result.status == "success") {
 		
-					$("#sterge-predare-modal").modal("hide");
-					ajax_updatePredari();
+					$("#sterge-materie-modal").modal("hide");
+					ajax_updateMaterii();
 
 				} else {
 					console.error("AJAX status: " + result.status);
@@ -217,7 +217,7 @@ $(document).ready(function() {
 			complete: function() {
 				updateFormIds();
 				// sterge loading indicatoru
-				$("[type='submit'][form='sterge-predare-form']")
+				$("[type='submit'][form='sterge-materie-form']")
 					.children("span")
 						.remove();
 			}
@@ -290,19 +290,19 @@ $(document).ready(function() {
 
 });
 
-function ajax_updatePredari() {
+function ajax_updateMaterii() {
 
-	$("#predari-rows")
+	$("#materii-rows")
 		.html(
 			$("<div>")
 				.addClass("row border border-bottom-0 p-3")
-				.css("height", ($("#predari-rows").height() > 0) ? $("#predari-rows").height() : "auto")
+				.css("height", ($("#materii-rows").height() > 0) ? $("#materii-rows").height() : "auto")
 				.html(
 					$("<span>")
 						.addClass("spinner-border text-primary")));
 
 	$.ajax({
-		url: "/portal/admin/utilizatori/ajax/predari?id=" + urlId(),
+		url: "/portal/admin/utilizatori/ajax/materii?id=" + urlId(),
 		method: "GET",
 		dataType: "json",
 		//data: ,
@@ -311,41 +311,30 @@ function ajax_updatePredari() {
 			if (result.status == "success") {
 
 				// creeaza obiectul cu mustache
-				var template = $("#predare-row-template").html();
+				var template = $("#materie-row-template").html();
 				var output = "";
-				var rowCounter = 0;
 
-				result.materii.forEach(function(materie, i_materie) {
+				result.materii.forEach(function(materie, i) {
 
-					materie.clase.forEach(function(clasa, i_clasa) {
+					materie.nrcrt = i + 1;
+					switch (materie.TipTeza) {
+						case "nu": materie.tipTeza = "Nu se da teza"; break;
+						case "optional": materie.tipTeza = "Teza e la alegere"; break;
+						case "obligatoriu": materie.tipTeza = "Teza e obligatorie"; break;
+					}
 
-						var row = {};
-
-						row.nrcrt = ++rowCounter;
-
-						row.hasMaterie = i_clasa == 0;
-						row.materie = materie;
-						row.clasa = clasa;
-						switch (clasa.predare.TipTeza) {
-							case "nu": clasa.predare.tipTeza = "Nu se da teza"; break;
-							case "optional": clasa.predare.tipTeza = "Teza e la alegere"; break;
-							case "obligatoriu": clasa.predare.tipTeza = "Teza e obligatorie"; break;
-						}
-
-						output += Mustache.render(template, row);
-
-					});
+					output += Mustache.render(template, materie);
 
 				});
 
 				if (result.materii.length == 0) {
-					$("#predari-rows")
+					$("#materii-rows")
 						.html(
 							$("<div>")
 								.addClass("row border border-bottom-0 p-2 px-3")
 								.html("Profesorul nu preda la nicio clasa."));
 				} 
-				else $("#predari-rows").html(output);
+				else $("#materii-rows").html(output);
 	
 			} else {
 				console.error("AJAX status: " + result.status);
@@ -363,40 +352,30 @@ function ajax_updatePredari() {
 
 }
 
-function ajax_updatePredareModal() {
+function ajax_updateAdaugaMaterieModal() {
 
-	$("#adauga-predare-modal-spinner").removeClass("d-none");
+	$("#adauga-materie-modal-spinner").removeClass("d-none");
 
 	// memoreaza pozitiile curente din selecturi
-	var selectedMaterie = $("[form='adauga-predare-form'][name='materie'] option:selected").val();
-	var selectedClasa = $("[form='adauga-predare-form'][name='clasa'] option:selected").val();
+	var selectedClasa = $("[form='adauga-materie-form'][name='clasa'] option:selected").val();
+	if (selectedClasa == null)
+		selectedClasa = 0;
 
 	// sterge toate intrarile
-	$("[form='adauga-predare-form'][name='materie']").empty();
-	$("[form='adauga-predare-form'][name='clasa']").empty();
+	$("[form='adauga-materie-form'][name='materie']").empty();
+	$("[form='adauga-materie-form'][name='clasa']").empty();
 
 	$.ajax({
-		url: "/portal/admin/utilizatori/ajax/adauga-predare-data",
+		url: "/portal/admin/utilizatori/ajax/adauga-materie-data",
 		dataType: "json",
 		success: function(result) {
 	
 			if (result.status == "success") {
 	
-				// populeaza materiile
-				result.materii.forEach(function(item, index) {
-
-					$("[form='adauga-predare-form'][name='materie']")
-						.append(
-							$("<option>")
-								.attr("value", item.Id)
-								.html(item.Nume));
-
-				});
-
 				// populeaza clasele
 				result.clase.forEach(function(item, index) {
 
-					$("[form='adauga-predare-form'][name='clasa']")
+					$("[form='adauga-materie-form'][name='clasa']")
 						.append(
 							$("<option>")
 								.attr("value", item.Id)
@@ -405,9 +384,7 @@ function ajax_updatePredareModal() {
 				});
 
 				// pune selectiile de dinainte de request
-				$("[form='adauga-predare-form'][name='materie']")
-					.val(selectedMaterie);
-				$("[form='adauga-predare-form'][name='clasa']")
+				$("[form='adauga-materie-form'][name='clasa']")
 					.val(selectedClasa);
 	
 			} else {
@@ -419,7 +396,7 @@ function ajax_updatePredareModal() {
 			console.error("AJAX error: " + err);
 		},
 		complete: function() {
-			$("#adauga-predare-modal-spinner").addClass("d-none");
+			$("#adauga-materie-modal-spinner").addClass("d-none");
 		}
 	
 	});

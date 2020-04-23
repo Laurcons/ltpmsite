@@ -38,8 +38,6 @@
 
 									<a class="dropdown-item bg-dark text-light" href="/portal/admin/clase">Clasele liceului</a>
 
-									<a class="dropdown-item bg-dark text-light" href="/portal/admin/materii">Materiile liceului</a>
-
 									<a class="dropdown-item bg-dark text-light" href="/portal/admin/utilizatori">Utilizatori</a>
 
 								</div>

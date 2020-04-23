@@ -141,7 +141,7 @@ function ajax_updatePreferinteTezaModal() {
 				.addClass("spinner-border text-primary"));
 
 	$.ajax({
-		url: "/portal/clase/ajax/teze?pid=" + urlId(),
+		url: "/portal/clase/ajax/teze?mid=" + urlId(),
 		method: "GET",
 		dataType: "json",
 		//data: ,

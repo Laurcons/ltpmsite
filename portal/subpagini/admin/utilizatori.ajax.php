@@ -69,71 +69,27 @@ if ($request == "utilizatori") {
 
 	$response->status = "success";
 
-} else if ($request == "predari") {
+} else if ($request == "materii") {
 
-	$predari = $db->retrieve_predari_where_profesor("*", $_GET["id"])->fetch_all(MYSQLI_ASSOC);
-
-	$materii_ids = 
-		array_unique(
-			array_map(
-				function($item) {
-					return $item["IdMaterie"];
-				},
-				$predari));
+	$materii = $db->retrieve_materii_where_profesor("*", $_GET["id"]);
 
 	$response->materii = array();
 
-	foreach ($materii_ids as $materie_id) {
+	while ($materie = $materii->fetch_assoc()) {
 
-		$materie = $db->retrieve_materie_where_id("*", $materie_id);
+		$clasa = $db->retrieve_clasa_where_id("*", $materie["IdClasa"]);
 
-		$func = function($item) use ($materie_id) {
-					//echo ($item["IdMaterie"] . " " . $materie_id . " " . (($item["IdMaterie"] == $materie_id)?"true":"false") . "\n");
-					return ($item["IdMaterie"] == $materie_id);
-				};
+		$clasa["diriginte"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
 
-		// obtine toate predarile cu materia data
-		$filtered_predari = 
-			array_filter($predari,
-				$func);
-
-		// pune toate clasele predarilor alora
-		$materie["clase"] = array();
-		foreach ($filtered_predari as $predare) {
-
-			$clasa = $db->retrieve_clasa_where_id("*", $predare["IdClasa"]);
-
-			$clasa["diriginte"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
-			$clasa["predare"] = $predare;
-
-			$materie["clase"][] = $clasa;
-
-		}
-
-		// sorteaza clasele
-		usort($materie["clase"],
-			function($a, $b) {
-				if ($a["Nivel"] == $b["Nivel"])
-					return strcmp($a["Sufix"], $b["Sufix"]);
-				else return $a["Nivel"] - $b["Nivel"];
-			});
+		$materie["clasa"] = $clasa;
 
 		$response->materii[] = $materie;
 
 	}
 
-	usort($response->materii,
-		function($a, $b) {
-			return strcmp($a["Nume"], $b["Nume"]);
-		});
-
 	$response->status = "success";
 
-} else if ($request == "adauga-predare-data") {
-
-	$materii = $db->retrieve_materii("*");
-
-	$response->materii = $materii->fetch_all(MYSQLI_ASSOC);
+} else if ($request == "adauga-materie-data") {
 
 	$clase = $db->retrieve_clase("*");
 	$response->clase = array();
@@ -141,10 +97,9 @@ if ($request == "utilizatori") {
 	// ia detalii aditionale pentru fiecare
 	while ($clasa = $clase->fetch_assoc()) {
 
-		$newobj = $clasa;
-		$newobj["diriginte"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
-		$newobj["nr_elevi"] = $db->retrieve_count_elevi_where_clasa($clasa["Id"]);
-		$response->clase[] = $newobj;
+		$clasa["diriginte"] = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $clasa["IdDiriginte"]);
+		$clasa["nr_elevi"] = $db->retrieve_count_elevi_where_clasa($clasa["Id"]);
+		$response->clase[] = $clasa;
 
 	}
 

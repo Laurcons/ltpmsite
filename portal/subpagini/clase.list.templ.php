@@ -6,7 +6,7 @@
 
 			<div class="card-body">
 
-				<h4 class="card-title">Clasa {{clasa.Nivel}}-{{clasa.Sufix}} - {{materia.Nume}}</h4>
+				<h4 class="card-title">Clasa {{clasa.Nivel}}-{{clasa.Sufix}} - {{Nume}}</h4>
 
 			</div>
 

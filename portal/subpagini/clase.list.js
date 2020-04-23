@@ -17,7 +17,7 @@ function ajax_updatePredari() {
 						.addClass("spinner-border text-primary ml-5")));
 
 	$.ajax({
-		url: "/portal/clase/ajax/predari",
+		url: "/portal/clase/ajax/materii",
 		method: "GET",
 		dataType: "json",
 		//data: ,
@@ -29,7 +29,7 @@ function ajax_updatePredari() {
 	
 				// pune cu mustache
 				var template = $("#clasa-card-template").html();
-				result.predari.forEach(function(item, index) {
+				result.materii.forEach(function(item, index) {
 
 					$("#clase-cards")
 						.append(

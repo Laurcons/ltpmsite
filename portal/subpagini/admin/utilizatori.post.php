@@ -72,19 +72,20 @@ if (isset($_POST["form-id"])) {
 
 			} else $response->status = "username-taken";
 
-		} else if (isset($_POST["adauga-predare"])) {
+		} else if (isset($_POST["adauga-materie"])) {
 
-			$db->insert_predare(array(
+			$db->insert_materie(array(
 				"IdProfesor" => $_POST["user-id"],
 				"IdClasa" => $_POST["clasa"],
-				"IdMaterie" => $_POST["materie"]
+				"Nume" => $_POST["materie"],
+				"TipTeza" => $_POST["tip-teza"]
 			));
 
 			$response->status = "success";
 
-		} else if (isset($_POST["sterge-predare"])) {
+		} else if (isset($_POST["sterge-materie"])) {
 
-			$db->delete_predare($_POST["predare-id"]);
+			$db->delete_materie($_POST["materie-id"]);
 
 			$response->status = "success";
 
