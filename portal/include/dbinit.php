@@ -311,8 +311,12 @@ class db_connection {
 
 	public function insert_materie($materie_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO materii (Nume) VALUES (?);");
-		$stmt->bind_param('s', $materie_data["Nume"]);
+		$stmt = $this->conn->prepare("INSERT INTO materii (Nume, IdClasa, IdProfesor, TipTeza) VALUES (?,?,?,?);");
+		$stmt->bind_param('siis',
+			$materie_data["Nume"],
+			$materie_data["IdClasa"],
+			$materie_data["IdProfesor"],
+			$materie_data["TipTeza"]);
 		$stmt->execute();
 
 	}
@@ -338,7 +342,7 @@ class db_connection {
 		else return $result->fetch_assoc();
 
 	}
-
+/*
 	public function retrieve_predare_where_id($columns, $id_predare) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM predari WHERE Id=?;");
@@ -350,7 +354,7 @@ class db_connection {
 			return null;
 		else return $result->fetch_assoc();
 
-	}
+	}*/
 
 	// alias
 	public function retrieve_predari_where_materie($columns, $id_materie) {
@@ -365,9 +369,9 @@ class db_connection {
 
 	}
 
-	public function retrieve_predari_where_profesor($columns, $id_profesor) {
+	public function retrieve_materii_where_profesor($columns, $id_profesor) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM predari WHERE IdProfesor=?;");
+		$stmt = $this->conn->prepare("SELECT $columns FROM materii WHERE IdProfesor=? ORDER BY Nume ASC;");
 		$stmt->bind_param("i", $id_profesor);
 		$stmt->execute();
 
@@ -403,9 +407,9 @@ class db_connection {
 
 	}
 
-	public function retrieve_predari_where_clasa($columns, $id_clasa) {
+	public function retrieve_materii_where_clasa($columns, $id_clasa) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM predari WHERE IdClasa=?;");
+		$stmt = $this->conn->prepare("SELECT $columns FROM materii WHERE IdClasa=?;");
 		$stmt->bind_param('i', $id_clasa);
 		$stmt->execute();
 
@@ -524,10 +528,10 @@ class db_connection {
 
 	public function insert_nota($nota_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO note (IdElev, IdClasa, IdMaterie, IdProfesor, Teza, Tip, Semestru, Nota, Ziua, Luna) VALUES (?,?,?,?,?,?,?,?,?,?);");
-		$stmt->bind_param("iiiisssiii",
+		$stmt = $this->conn->prepare("INSERT INTO note (IdElev, IdMaterie, IdProfesor, Teza, Tip, Semestru, Nota, Ziua, Luna) VALUES (?,?,?,?,?,?,?,?,?);");
+		$stmt->bind_param("iiisssiii",
 			$nota_data["IdElev"],
-			$nota_data["IdClasa"],
+			//$nota_data["IdClasa"],
 			$nota_data["IdMaterie"],
 			$nota_data["IdProfesor"],
 			$nota_data["Teza"],
@@ -601,11 +605,11 @@ class db_connection {
 
 	public function insert_absenta($absenta_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO absente (IdElev, IdMaterie, IdClasa, IdProfesor, Semestru, Ziua, Luna) VALUES (?, ?, ?, ?, ?, ?, ?);");
-		$stmt->bind_param("iiiisii",
+		$stmt = $this->conn->prepare("INSERT INTO absente (IdElev, IdMaterie, IdProfesor, Semestru, Ziua, Luna) VALUES (?, ?, ?, ?, ?, ?);");
+		$stmt->bind_param("iiisii",
 			$absenta_data["IdElev"],
 			$absenta_data["IdMaterie"],
-			$absenta_data["IdClasa"],
+			//$absenta_data["IdClasa"],
 			$absenta_data["IdProfesor"],
 			$absenta_data["Semestru"],
 			$absenta_data["Ziua"],
@@ -645,6 +649,77 @@ class db_connection {
 		if ($row["Count(Id)"] == 1)
 			return true;
 		else return false;
+
+	}
+
+	// array of type
+	//  "IdElev" => ..
+	//  "IdMaterie" => ..
+	//  "Teza" => "da", "nu"
+	public function update_teze($teze_data) {
+
+		foreach ($teze_data as $teza) {
+
+			if ($teza["Teza"] == "nu") {
+
+				$stmt = $this->conn->prepare("DELETE FROM elevi_teze WHERE IdElev=? AND IdMaterie=?;");
+				$stmt->bind_param("ii",
+					$teza["IdElev"],
+					$teza["IdMaterie"]);
+				$stmt->execute();
+
+			} else {
+
+				$stmt = $this->conn->prepare("INSERT IGNORE INTO elevi_teze (IdElev, IdMaterie) VALUES (?,?);");
+				$stmt->bind_param("ii",
+					$teza["IdElev"],
+					$teza["IdMaterie"]);
+				$stmt->execute();
+
+			}
+
+		}
+
+	}
+
+	public function retrieve_teze_where_materie($columns, $materie_id) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM elevi_teze WHERE IdMaterie=?;");
+		$stmt->bind_param("i",
+			$materie_id);
+		$stmt->execute();
+
+		return $stmt->get_result();
+
+	}
+
+	public function has_elev_teza_in_materie($elev_id, $materie_id) {
+
+		$materie = $this->retrieve_materie_where_id("*", $materie_id);
+
+		if ($materie["TipTeza"] == "optional") {
+
+			$stmt = $this->conn->prepare("SELECT * FROM elevi_teze WHERE IdElev=? AND IdMaterie=?;");
+			$stmt->bind_param("ii",
+				$elev_id,
+				$materie_id);
+			$stmt->execute();
+			$result = $stmt->get_result();
+
+			if ($result->num_rows == 0) {
+				return false;
+			} else {
+				return true;
+			}
+
+		} else {
+
+			if ($materie["TipTeza"] == "nu")
+				return false;
+			if ($materie["TipTeza"] == "obligatoriu")
+				return true;
+
+		}
 
 	}
 

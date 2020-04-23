@@ -15,15 +15,15 @@ if ($request != "") {
 
 	if ($request == "elevi") {
 
-		$semestru = "1";
+		$semestru = $_GET["sem"] ?? getCurrentSemestru();
 
-		$predare = $db->retrieve_predare_where_id("*", $_GET["id"]);
-		$elevi = $db->retrieve_elevi_where_clasa("Id,Nume,Prenume,Username", $predare["IdClasa"]);
+		$materie = $db->retrieve_materie_where_id("*", $_GET["id"]);
+		$elevi = $db->retrieve_elevi_where_clasa("Id,Nume,Prenume,Username", $materie["IdClasa"]);
 		$response->elevi = array();
 
 		while ($elev = $elevi->fetch_assoc()) {
 
-			$response->elevi[] = elevi_getAdditional($db, $elev, $predare, $semestru);
+			$response->elevi[] = elevi_getAdditional($db, $elev, $materie, $semestru);
 
 		}
 
@@ -31,30 +31,60 @@ if ($request != "") {
 
 	} else if ($request == "elev") {
 
-		$semestru = "1";
+		$semestru = $_GET["sem"] ?? getCurrentSemestru();
 
-		$predare = $db->retrieve_predare_where_id("*", $_GET["pid"]);
+		$materie = $db->retrieve_materie_where_id("*", $_GET["pid"]);
 		$elev = $db->retrieve_utilizator_where_id("Id,Nume,Prenume,Username", $_GET["uid"]);
 
-		$response->elev = elevi_getAdditional($db, $elev, $predare, $semestru);
+		$response->elev = elevi_getAdditional($db, $elev, $materie, $semestru);
 		$response->status = "success";
 
-	} else if ($request == "predari") {
+	} else if ($request == "materii") {
 
 		$profesor = $db->retrieve_utilizator_where_username("Id", $_SESSION["logatca"]);
 
-		$predari = $db->retrieve_predari_where_profesor("*", $profesor["Id"]);
+		$materii = $db->retrieve_materii_where_profesor("*", $profesor["Id"]);
 
-		$response->predari = array();
-		while ($predare = $predari->fetch_assoc()) {
+		$response->materii = array();
+		while ($materie = $materii->fetch_assoc()) {
 
-			$predare["clasa"] = $db->retrieve_clasa_where_id("*", $predare["IdClasa"]);
-			$predare["materia"] = $db->retrieve_materie_where_id("*", $predare["IdMaterie"]);
-			if ($predare["clasa"]["IdDiriginte"] == $profesor["Id"])
-				$predare["calitateDe"] = "diriginte";
-			else $predare["calitateDe"] = "profesor";
-			$predare["nrelevi"] = $db->retrieve_count_elevi_where_clasa($predare["IdClasa"]);
-			$response->predari[] = $predare;
+			$materie["clasa"] = $db->retrieve_clasa_where_id("*", $materie["IdClasa"]);
+			if ($materie["clasa"]["IdDiriginte"] == $profesor["Id"])
+				$materie["calitateDe"] = "diriginte";
+			else $materie["calitateDe"] = "profesor";
+			$materie["nrelevi"] = $db->retrieve_count_elevi_where_clasa($materie["IdClasa"]);
+			$response->materii[] = $materie;
+
+		}
+
+		$response->status = "success";
+
+	} else if ($request == "teze") {
+
+		$teze = $db->retrieve_teze_where_materie("*", $_GET["mid"])
+			->fetch_all(MYSQLI_ASSOC);
+		$materie = $db->retrieve_materie_where_id("*", $_GET["mid"]);
+		$elevi = $db->retrieve_elevi_where_clasa("Id,Nume,Prenume", $materie["IdClasa"]);
+
+		$teze = array_map(function($item) {
+			return $item["IdElev"];
+		}, $teze);
+
+		$response->elevi = array();
+
+		while ($elev = $elevi->fetch_assoc()) {
+
+			if (array_search($elev["Id"], $teze) === false) {
+
+				$elev["teza"] = false;
+				$response->elevi[] = $elev;
+
+			} else {
+
+				$elev["teza"] = true;
+				$response->elevi[] = $elev;
+
+			}
 
 		}
 
@@ -74,9 +104,9 @@ if ($request != "") {
 
 echo(json_encode($response));
 
-function elevi_getAdditional($db, $elev, $predare, $semestru) {
+function elevi_getAdditional($db, $elev, $materie, $semestru) {
 
-	$note = $db->retrieve_note_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
+	$note = $db->retrieve_note_where_elev_and_materie_and_semestru("*", $elev["Id"], $materie["Id"], $semestru);
 	$elev["note"] = array();
 	while ($nota = $note->fetch_assoc()) {
 
@@ -84,9 +114,8 @@ function elevi_getAdditional($db, $elev, $predare, $semestru) {
 		$elev["note"][] = $nota;
 
 	}
-	sortBySchoolDate($elev["note"]);
 
-	$absente = $db->retrieve_absente_where_elev_and_materie_and_semestru("*", $elev["Id"], $predare["IdMaterie"], $semestru);
+	$absente = $db->retrieve_absente_where_elev_and_materie_and_semestru("*", $elev["Id"], $materie["Id"], $semestru);
 	$elev["absente"] = array();
 	while ($absenta = $absente->fetch_assoc()) {
 
@@ -95,9 +124,20 @@ function elevi_getAdditional($db, $elev, $predare, $semestru) {
 
 	}
 
-	$elev["media"] = averageNoteWithTeza($elev["note"]);
+	$elev["hasTeza"] = $db->has_elev_teza_in_materie($elev["Id"], $materie["Id"]);
+	//$elev["media"] = averageNoteWithTeza($elev["note"]);
 	sortBySchoolDate($elev["note"]);
 	sortBySchoolDate($elev["absente"]);
+
+	// vezi mediile pe toate semestrele
+	$note_sem1 = $db->retrieve_note_where_elev_and_materie_and_semestru("Nota", $elev["Id"], $materie["Id"], "1")->fetch_all(MYSQLI_ASSOC);
+	$note_sem2 = $db->retrieve_note_where_elev_and_materie_and_semestru("Nota", $elev["Id"], $materie["Id"], "2")->fetch_all(MYSQLI_ASSOC);
+	$elev["media_sem1"] = averageNoteWithTeza($note_sem1);
+	$elev["media_sem2"] = averageNoteWithTeza($note_sem2);
+	$elev["media_gen"] = 
+		($elev["media_sem1"] != 0 && $elev["media_sem2"] != 0) ?
+		truncMedie(($elev["media_sem1"] + $elev["media_sem2"]) / 2) :
+		0;
 
 	return $elev;
 

@@ -41,24 +41,21 @@ if ($request == "clase") {
 
 	$response->status = "success";
 
-} else if ($request == "predari") {
+} else if ($request == "materii") {
 
 	$id = $_GET["id"];
 
-	$predari = $db->retrieve_predari_where_clasa("*", $id);
+	$materii = $db->retrieve_materii_where_clasa("*", $id);
 
-	$response->predari = array();
+	$response->materii = array();
 
 	// ia si celelalte date
-	while ($predare = $predari->fetch_assoc()) {
+	while ($materie = $materii->fetch_assoc()) {
 
-		$materie = $db->retrieve_materie_where_id("*", $predare["IdMaterie"]);
-		$profesor = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $predare["IdProfesor"]);
+		$profesor = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $materie["IdProfesor"]);
 
-		$pred = $predare;
-		$pred["materie"] = $materie;
-		$pred["profesor"] = $profesor;
-		$response->predari[] = $pred;
+		$materie["profesor"] = $profesor;
+		$response->materii[] = $materie;
 
 	}
 
@@ -71,11 +68,9 @@ if ($request == "clase") {
 	$response->elevi = $elevi;
 	$response->status = "success";
 
-} else if ($request == "adauga-predare-data") {
+} else if ($request == "adauga-materie-data") {
 
-	// returneaza toate materiile si profesorii
-	$response->materii = $db->retrieve_materii("Id,Nume")->fetch_all(MYSQLI_ASSOC);
-
+	// returneaza toti profesorii
 	$response->profesori = $db->retrieve_profesori("Id,Nume,Prenume,Username")->fetch_all(MYSQLI_ASSOC);
 
 	$response->status = "success";
