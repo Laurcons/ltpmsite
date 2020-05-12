@@ -7,81 +7,28 @@ $conn = (new db_connection())->get_conn();
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="ro">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.6">
-    <title>Carousel Template · Bootstrap</title>
+    <title>LTPM Ocna Mureș</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/carousel/">
+    <?php require("snips/bootstrap-head.php"); ?>
 
-    <!-- Bootstrap core CSS -->
-<link href="http://getbootstrap.com/docs/4.4/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="icon" href="http://laurcons.ddns.net/media/favicon-16x16.ico">
+    <link rel="stylesheet" href="style/index.css">
 
-<link rel="stylesheet" href="bs-additions.css">
-<link rel="icon" href="http://laurcons.ddns.net/media/favicon-16x16.ico">
-
-
-    <style>
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/4.4/examples/carousel/carousel.css" rel="stylesheet">
   </head>
-  <body>
-    <header>
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand text-wrap" href="#">
-      <img src="http://laurcons.ddns.net/media/favicon-32x32.png">
-      Liceul Teoretic "Petru Maior"
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav mr-auto">
-
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Acasă</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="#">Despre noi</a>
-        </li>
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Formulare</a>
-          <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Înscrierea în învățământul primar</a>
-              <a class="dropdown-item" href="#">Înscrierea în învățământul gimnazial</a>
-              <a class="dropdown-item" href="#">Cerere de înscriere în învățământul liceal</a>
-          </div>
-
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="#">Noutăți</a>
-        </li>
-
-      </ul>
-      <form class="form-inline mt-2 mt-md-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Căutare" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Căutare</button>
-      </form>
-    </div>
-  </nav>
+<body>
+<header>
+  <?php require("snips/navbar.php"); ?>
 </header>
 
 <main role="main">
 
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <div id="main-carousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
+      <li data-target="#main-carousel" data-slide-to="0" class="active"></li>
+      <li data-target="#main-carousel" data-slide-to="1"></li>
+      <li data-target="#main-carousel" data-slide-to="2"></li>
     </ol>
     <div class="carousel-inner">
       <div class="carousel-item active">
@@ -115,10 +62,10 @@ $conn = (new db_connection())->get_conn();
         </div>
       </div>
     </div>
-    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+    <a class="carousel-control-prev" href="#main-carousel" role="button" data-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     </a>
-    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+    <a class="carousel-control-next" href="#main-carousel" role="button" data-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
     </a>
   </div>
@@ -204,11 +151,7 @@ $conn = (new db_connection())->get_conn();
 
 
   <!-- FOOTER -->
-  <footer class="container">
-    <p class="float-right"><a href="#">Înapoi sus</a></p>
-    <p>&copy; <?= date('Y') ?> Echipa IT a liceului &middot; <a href="#">Despre Echipa IT</a> &middot; <a href="http://getbootstrap.com" target="_blank">Construit cu Bootstrap</a></p>
-  </footer>
+  <?php require("snips/footer.php"); ?>
 </main>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-      <script>feather.replace(); window.jQuery || document.write('<script src="http://getbootstrap.com/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="http://getbootstrap.com/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script></body>
+</body>
 </html>

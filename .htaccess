@@ -16,3 +16,6 @@ RewriteRule ^portal/([a-z]+)/([a-z]+)/ajax/([a-z-]+)/? /portal?p=$1:$2\&ajax\&r=
 RewriteRule ^portal/([a-z]+)/([a-z]+)/?$ /portal/?p=$1:$2 [QSA,L]
 RewriteRule ^portal/([a-z]+)/([a-z]+)/([0-9]+)/?$ /portal/?p=$1:$2\&id=$3 [QSA,L]
 
+#rescrieri pentru site
+
+RewriteRule ^([a-z-]+)$ $1.php
