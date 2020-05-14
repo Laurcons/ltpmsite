@@ -10,7 +10,7 @@
 <!-- mustache -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.min.js"></script>
 <!-- favicon in portal -->
-<link rel="icon" href="http://laurcons.ddns.net/media/favicon.portal.ico">
+<link rel="icon" href="https://laurcons.ddns.net/media/favicon.portal.ico">
 <!-- css-ul scris de bub -->
 <link rel="stylesheet" type="text/css" href="/portal/css">
 <!-- custom utilities file -->
