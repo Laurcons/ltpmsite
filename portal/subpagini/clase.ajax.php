@@ -90,6 +90,48 @@ if ($request != "") {
 
 		$response->status = "success";
 
+	} else if ($request == "motivari") {
+
+		$materie_id = $_GET["id"];
+		$materie = $db->retrieve_materie_where_id("*", $materie_id);
+
+		$elevi = $db->retrieve_elevi_where_clasa("Id,Nume,Prenume", $materie["IdClasa"]);
+
+		$response->elevi = array();
+
+		while ($elev = $elevi->fetch_assoc()) {
+
+			$abs = $db->retrieve_absente_count_where_elev_and_materie($elev["Id"], $materie["Id"]);
+			$elev["absenteMotivate"] = $abs["Motivate"];
+			$elev["absenteNemotivate"] = $abs["Nemotivate"];
+			$elev["nr_motivari"] = $db->retrieve_motivari_where_elev("Id", $elev["Id"])->num_rows;
+			$response->elevi[] = $elev;
+
+		}
+
+		$response->status = "success";
+
+	} else if ($request == "motivari-elev") {
+
+		$materie_id = $_GET["id"];
+		$materie = $db->retrieve_materie_where_id("*", $materie_id);
+
+		$elev = $db->retrieve_utilizator_where_id("Id,Nume,Prenume", $_GET["uid"]);
+
+		$motivari = $db->retrieve_motivari_where_elev("*", $elev["Id"]);
+		$elev["motivari"] = array();
+
+		while ($motivare = $motivari->fetch_assoc()) {
+
+			if ($motivare["Tip"] == "materie")
+				$motivare["materie"] = $db->retrieve_materie_where_id("Id,Nume", $motivare["IdMaterie"]);
+			$elev["motivari"][] = $motivare;
+
+		}
+
+		$response->elev = $elev;
+		$response->status = "success";
+
 	} else {
 
 		$response->status = "request-not-found";
@@ -102,6 +144,7 @@ if ($request != "") {
 
 }
 
+header("Content-type: application/json");
 echo(json_encode($response));
 
 function elevi_getAdditional($db, $elev, $materie, $semestru) {
