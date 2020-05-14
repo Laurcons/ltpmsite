@@ -38,6 +38,10 @@ function validateAdaugaAbsentaModal() {
 
 function ajax_updateElevi(elev_id = "all", elev_index = 0) {
 
+	if ($("#motivari-collapse").hasClass("show")) {
+		ajax_updateMotivari();
+	}
+
 	var updatedElement = (elev_id != "all" ? $("div.row[data-elev-id='" + elev_id + "']") : $("#elevi-rows"));
 
 	updatedElement
@@ -180,6 +184,115 @@ function ajax_updatePreferinteTezaModal() {
 			$("#preferinte-teza-modal-table")
 				.children("span")
 					.remove();
+		}
+	
+	});
+
+}
+
+function ajax_updateMotivari(is_button_load = false) {
+
+	if (is_button_load)
+		appendLoadingIndicator("#motivari-button");
+	else {
+
+		$("#motivari-table")
+			.append(
+				$("<div>")
+					.css("height", ($("#motivari-table").height() > 0) ? $("#motivari-table").height() - $("#motivari-table thead").height() : "auto")
+					.html(
+						$("<span>")
+							.addClass("spinner-border text-primary")));
+
+	}
+
+	$("#motivari-table tbody")
+		.children("tr")
+			.remove();
+
+	$.ajax({
+		url: "/portal/clase/ajax/motivari?id=" + urlId(),
+		method: "GET",
+		dataType: "json",
+		//data: ,
+		success: function(result) {
+	
+			if (result.status == "success") {
+
+				$("#motivari-button span")
+						.remove();
+				$("#motivari-table div")
+						.remove();
+	
+				var template = $("#motivare-row-template").html();
+
+				result.elevi.forEach(function(elev, index) {
+
+					elev.nrcrt = index + 1;
+
+					$("#motivari-table tbody")
+						.append(
+							Mustache.render(template, elev));
+
+				});
+
+				if (is_button_load)
+					$("#motivari-collapse").collapse("show");
+	
+			} else {
+				console.error("AJAX status: " + result.status);
+			}
+	
+		},
+		error: function(req, err) {
+			console.error("AJAX error: " + err);
+		},
+		complete: function() {
+	
+		}
+	
+	});
+
+}
+
+function ajax_updateMotivariModal(elev_id) {
+
+	$("#motivari-modal-spinner").removeClass("d-none");
+	$("#motivari-modal-body").html("");
+
+	$.ajax({
+		url: "/portal/clase/ajax/motivari-elev?id=" + urlId() + "&uid=" + elev_id,
+		method: "GET",
+		dataType: "json",
+		//data: ,
+		success: function(result) {
+	
+			if (result.status == "success") {
+	
+				var template = $("#motivari-modal-template").html();
+
+				result.elev.motivari.forEach(function(item, index) {
+
+					item.nrcrt = index + 1;
+					item.isPerioada = item.Tip == "perioada";
+					item.isMaterie = item.Tip == "materie";
+					item.elevId = result.elev.Id;
+
+				});
+
+				$("#motivari-modal-body").html(
+					Mustache.render(template, result.elev));
+	
+			} else {
+				console.error("AJAX status: " + result.status);
+			}
+	
+		},
+		error: function(req, err) {
+			console.error("AJAX error: " + err);
+		},
+		complete: function() {
+			$("#motivari-modal-spinner").addClass("d-none");
 		}
 	
 	});
@@ -403,4 +516,58 @@ $(document).ready(function() {
 
 	});
 
-});	
+	$("#motivari-button").click(function() {
+		if ($("#motivari-collapse").hasClass("collapsing"))
+			return;
+
+		if (!$("#motivari-collapse").hasClass("show")) // note the !
+			ajax_updateMotivari(true);
+		else $("#motivari-collapse").collapse("hide");
+	});
+
+	$("#motivari-modal").on("show.bs.modal", function(e) {
+
+		var button = $(e.relatedTarget);
+		var uid = button.data("elev-id");
+		ajax_updateMotivariModal(uid);
+
+	});
+
+});	// on document ready
+
+function attachMotivariModalEventHandlers() {
+	
+	$("button[data-action='sterge-motivare-btn']").click(function(e) {
+
+		$("#sterge-motivare-form input[name='motivare-id']")
+			.val($(e.target).data("motivare-id"));
+		var uid = $(e.target).data("elev-id");
+		appendLoadingIndicator(e.target);
+
+		$.ajax({
+			url: "/portal/clase/post/",
+			data: $("#sterge-motivare-form").serialize(),
+			method: "POST",
+			dataType: "json"})
+		.done(function(result) {
+			if (result.status == "success") {
+				
+				ajax_updateMotivariModal(uid);
+
+			} else {
+				console.error("AJAX status: " + result.status);
+			}
+		})
+		.fail(function(req, err) {
+			console.error("AJAX error: " + err);
+		})
+		.always(function() {
+			$(e.target)
+				.children("span")
+					.remove();
+			updateFormIds();
+		});
+
+	});
+
+}

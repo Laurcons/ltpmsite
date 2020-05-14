@@ -603,6 +603,27 @@ class db_connection {
 
 	}
 
+	public function retrieve_absente_count_where_elev_and_materie($elev_id, $materie_id) {
+
+		// un singur query ca suntem bastani si ajunge
+		$stmt = $this->conn->prepare("SELECT 'Mot',COUNT(Id) FROM absente WHERE Motivata=1 AND IdElev=? AND IdMaterie=? UNION ALL SELECT 'Nem',COUNT(Id) FROM absente WHERE Motivata=0 AND IdElev=? AND IdMaterie=?;");
+		$stmt->bind_param("iiii",
+			$elev_id, $materie_id,
+			$elev_id, $materie_id); // nu cred ca pot altcumva, fara sa repet
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		$ret = array();
+
+		$row = $result->fetch_assoc();
+		$ret["Motivate"] = $row["COUNT(Id)"];
+		$row = $result->fetch_assoc();
+		$ret["Nemotivate"] = $row["COUNT(Id)"];
+
+		return $ret;
+
+	}
+
 	public function insert_absenta($absenta_data) {
 
 		$stmt = $this->conn->prepare("INSERT INTO absente (IdElev, IdMaterie, IdProfesor, Semestru, Ziua, Luna) VALUES (?, ?, ?, ?, ?, ?);");
@@ -720,6 +741,16 @@ class db_connection {
 				return true;
 
 		}
+
+	}
+
+	public function retrieve_motivari_where_elev($columns, $elev_id) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM motivari WHERE IdElev=?;");
+		$stmt->bind_param("i", $elev_id);
+		$stmt->execute();
+
+		return $stmt->get_result();
 
 	}
 

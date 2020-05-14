@@ -187,4 +187,113 @@
 
 	</template>
 
+	<template id="motivare-row-template">
+
+		<tr>
+
+			<td class="text-nowrap">
+				<span class="badge badge-primary">{{nrcrt}}</span>
+				{{Nume}} {{Prenume}}
+			</td>
+
+			<td>
+				{{absenteMotivate}}
+			</td>
+
+			<td>
+				{{absenteNemotivate}}
+			</td>
+
+			<td class="text-nowrap">
+				<button type="button"
+						class="btn btn-sm btn-default border-primary"
+						data-toggle="modal"
+						data-target="#motivari-modal"
+						data-elev-id="{{Id}}">
+					{{nr_motivari}} motivari
+				</button>
+			</td>
+
+		</tr>
+
+	</template>
+
+	<template id="motivari-modal-template">
+
+		<p>Lista cu motivările elevului <b>{{Nume}} {{Prenume}}</b>.</p>
+
+		<button type="button"
+				class="btn btn-default border-primary btn-sm mb-3">
+			Adaugă motivare
+		</button>
+
+		<div class="collapse" id="motivari-modal-collapse">
+
+			<div class="form-row">
+
+				
+
+			</div>
+
+		</div>
+
+		<div class="table-responsive">
+
+			<table class="table table-sm table-hover">
+
+				<thead>
+
+					<th>Detalii</th>
+					<th>Opțiuni</th>
+
+				</thead>
+
+				<tbody>
+
+					<!--{{#motivari}}-->
+ 
+						<tr>
+
+							<td>
+
+								<span class="badge badge-primary">{{nrcrt}}</span>
+								<span class="badge badge-danger">{{Id}}</span>
+								{{Motiv}}
+								<br>
+
+								Tip: <span class="text-capitalize">{{Tip}}</span><br>
+								{{#isPerioada}}
+									Perioada: ..
+								{{/isPerioada}}
+								{{#isMaterie}}
+									La materia: {{materie.Nume}}
+								{{/isMaterie}}
+
+							</td>
+
+							<td>
+								<button class="btn btn-sm border-danger btn-default"
+										data-action="sterge-motivare-btn"
+										data-motivare-id="{{Id}}"
+										data-elev-id="{{elevId}}">
+									Șterge motivare
+								</button>
+							</td>
+
+						</tr>
+
+					<!--{{/motivari}}-->
+
+				</tbody>
+
+			</table>
+
+		</div>
+
+		<script>
+			attachMotivariModalEventHandlers();
+		</script>
+
+	</template>
+
 </templates>
