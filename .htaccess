@@ -1,18 +1,18 @@
 RewriteEngine on
 # rescrieri pentru Portal
 
-RewriteRule ^portal/js$ /portal/?js [L,QSA]
-RewriteRule ^portal/css$ /portal/?css [L,QSA]
+RewriteRule ^portal/js$ /portal/?js [PT,L,QSA]
+RewriteRule ^portal/css$ /portal/?css [PT,L,QSA]
 
-RewriteRule ^portal/([a-z]+)/(js|post)/?([a-z]+)? /portal/?p=$1\&$2=$3 [QSA,L]
-RewriteRule ^portal/([a-z]+)/ajax/([a-z-]+)/? /portal?p=$1\&ajax\&r=$2 [QSA,L]
+RewriteRule ^portal/([a-z]+)/(js|post)/?([a-z]+)? /portal/?p=$1\&$2=$3 [PT,QSA,L]
+RewriteRule ^portal/([a-z]+)/ajax/([a-z-]+)/? /portal?p=$1\&ajax\&r=$2 [PT,QSA,L]
 
-RewriteRule ^portal/([a-z]+)/?$ /portal/?p=$1 [QSA,L]
-RewriteRule ^portal/([a-z]+)/([0-9]+)/?$ /portal/?p=$1\&id=$2 [QSA,L]
+RewriteRule ^portal/([a-z]+)/?$ /portal/?p=$1 [PT,QSA,L]
+RewriteRule ^portal/([a-z]+)/([0-9]+)/?$ /portal/?p=$1\&id=$2 [PT,QSA,L]
 
-RewriteRule ^portal/([a-z]+)/([a-z]+)/(js|post)/?([a-z]+)? /portal/?p=$1:$2\&$3=$4 [QSA,L]
-RewriteRule ^portal/([a-z]+)/([a-z]+)/ajax/([a-z-]+)/? /portal?p=$1:$2\&ajax\&r=$3 [QSA,L]
+RewriteRule ^portal/([a-z]+)/([a-z]+)/(js|post)/?([a-z]+)? /portal/?p=$1:$2\&$3=$4 [PT,QSA,L]
+RewriteRule ^portal/([a-z]+)/([a-z]+)/ajax/([a-z-]+)/? /portal?p=$1:$2\&ajax\&r=$3 [PT,QSA,L]
 
-RewriteRule ^portal/([a-z]+)/([a-z]+)/?$ /portal/?p=$1:$2 [QSA,L]
-RewriteRule ^portal/([a-z]+)/([a-z]+)/([0-9]+)/?$ /portal/?p=$1:$2\&id=$3 [QSA,L]
+RewriteRule ^portal/([a-z]+)/([a-z]+)/?$ /portal/?p=$1:$2 [PT,QSA,L]
+RewriteRule ^portal/([a-z]+)/([a-z]+)/([0-9]+)/?$ /portal/?p=$1:$2\&id=$3 [PT,QSA,L]
 

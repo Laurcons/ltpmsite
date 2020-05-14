@@ -189,6 +189,13 @@ if (isset($_POST["form-id"])) {
 			$response->teze = $teze_post;
 			$response->status = "success";
 
+		
+		
+		} else if (isset($_POST["sterge-motivare"])) {
+
+			$motivare_id = $_POST["id"];
+			$response->status = "success";
+
 		} else {
 
 			$response->status = "action-not-found";
