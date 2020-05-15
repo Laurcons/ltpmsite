@@ -104,6 +104,10 @@ if ($pagina == "" || $pagina == "prima") {
 
 	include("subpagini/situatia.php");
 
+} else if ($pagina == "topsecret") {
+
+	echo "<img src='https://laurcons.ddns.net/media/dickbutt.jpg'>";
+
 } else if ($pagina == "clase") {
 
 	if ($post_redir)
