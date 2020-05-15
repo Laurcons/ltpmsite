@@ -70,7 +70,12 @@ if ($pagina == "" || $pagina == "prima") {
 
 } else if ($pagina == "logare") {
 
-	include("subpagini/logare.php");
+	if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("subpagini/logare.js");
+	} else if ($post_redir) {
+		include("subpagini/logare.post.php");
+	} else include("subpagini/logare.php");
 
 } else if ($pagina == "inreg") {
 

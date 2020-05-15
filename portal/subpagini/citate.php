@@ -74,7 +74,7 @@
 
 				<p class="lead">Nu-ti face griji, propunerea citatelor se face in mod anonim, dar aceasta masura exista pentru a preveni spamul.</p>
 
-				<a class="btn btn-lg btn-primary text-light" href="/portal/logare&redir=<?= urlencode("/portal/citate"); ?>">Autentificare</a>
+				<a class="btn btn-lg btn-primary text-light" href="/portal/logare?redir=<?= urlencode("/portal/citate"); ?>">Autentificare</a>
 
 			</div>
 
