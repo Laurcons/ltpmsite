@@ -26,7 +26,7 @@
 
 						<?php if (is_functie("elev")) : ?>
 
-							<li class="nav-item <?= ($header_cpage == 'situatia' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/situatia">Situatia</a></li>
+							<li class="nav-item <?= ($header_cpage == 'situatia' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/situatia">Situația</a></li>
 
 						<?php endif; if (is_autoritate("admin")) : ?>
 
@@ -87,10 +87,10 @@
 						<span class="d-none d-md-block">
 							<i class="fas fa-sign-out-alt"
 								data-toggle="tooltip" data-placement="left" title="Iesire din cont"></i>
-							Iesire cont
+							Ieșire cont
 						</span>
 						<span class="d-md-none">
-							<i class="fas fa-sign-out-alt"></i> Iesire din cont
+							<i class="fas fa-sign-out-alt"></i> Ieșire din cont
 						</span>
 
 					</a></li>
@@ -113,7 +113,7 @@
 
 							<span class="d-md-none d-lg-block">
 								<i class="fas fa-user-plus"></i>
-								Inregistrare 
+								Înregistrare 
 							</span>
 							<span class="d-none d-md-block d-lg-none">
 								<i class="fas fa-user-plus"></i>
