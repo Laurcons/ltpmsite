@@ -28,7 +28,7 @@
 				{{#mediaAlert}}
 				<div class="alert alert-danger p-1 px-2">
 
-					<strong>Atentie!</strong> Media semestriala a elevului se termina in .49! Va rugam sa ii mai acordati inca o nota pentru a-i definitiva media!
+					<strong>Atenție!</strong> Media semestriala a elevului se termina in .49! Va rugam sa ii mai acordati inca o nota pentru a-i definitiva media!
 
 				</div>
 				{{/mediaAlert}}
@@ -53,7 +53,7 @@
 
 						<div class="dropdown-menu">
 
-							<a class="dropdown-item bg-info text-white cursor-default">Nota <b>{{#isTeza}}la teza{{/isTeza}}{{#isOral}}la oral{{/isOral}}{{#isTest}}la test{{/isTest}}</b> adaugata de <b>{{profesor.Nume}} {{profesor.Prenume}}</b></a>
+							<a class="dropdown-item bg-info text-white cursor-default">Nota <b>{{#isTeza}}la teză{{/isTeza}}{{#isOral}}la oral{{/isOral}}{{#isTest}}la test{{/isTest}}</b> adaugată de <b>{{profesor.Nume}} {{profesor.Prenume}}</b></a>
 							<a class="dropdown-item bg-info text-white cursor-default">la data de <b>{{Timestamp}}</b></a>
 
 							<div class="dropdown-divider"></div>
@@ -63,7 +63,7 @@
 							   href="#anuleaza-nota-modal"
 							   data-nota-id="{{Id}}"
 							   data-nota-json="{{json}}">
-								Anuleaza nota
+								Anulează nota
 							</a>
 
 						</div>
@@ -81,7 +81,7 @@
 					<h4>+</h4>
 				</div>
 
-				<br><b>Absente:</b><br>
+				<br><b>Absențe:</b><br>
 
 				{{#absente}}
 
@@ -97,7 +97,7 @@
 
 						<div class="dropdown-menu">
 
-							<a class="dropdown-item bg-info text-white cursor-default">Absenta trecuta de <b>{{profesor.Nume}} {{profesor.Prenume}}</b></a>
+							<a class="dropdown-item bg-info text-white cursor-default">Absentă trecută de <b>{{profesor.Nume}} {{profesor.Prenume}}</b></a>
 							<a class="dropdown-item bg-info text-white cursor-default">la data de <b>{{Timestamp}}</b></a>
 
 							<div class="dropdown-divider"></div>
@@ -106,8 +106,8 @@
 							   data-action="motiveaza-absenta"
 							   data-absenta-id="{{Id}}"
 							   href="#">
-							   	{{#Motivata}}Demotiveaza absenta{{/Motivata}}
-								{{^Motivata}}Motiveaza absenta{{/Motivata}}
+							   	{{#Motivata}}Demotivează absența{{/Motivata}}
+								{{^Motivata}}Motivează absența{{/Motivata}}
 							</a>
 
 							<div class="dropdown-divider"></div>
@@ -118,7 +118,7 @@
 							   data-absenta-id="{{Id}}"
 							   data-absenta-data="{{Ziua}} {{Luna}}"
 							   href="#">
-								Anuleaza absenta
+								Anulează absența
 							</a>
 
 						</div>
@@ -140,7 +140,7 @@
 			<div class="col-md">
 
 				<div class="d-md-none d-block font-weight-bold">
-					Optiuni:
+					Opțiuni:
 				</div>
 
 			</div>

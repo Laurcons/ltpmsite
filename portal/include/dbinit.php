@@ -342,32 +342,6 @@ class db_connection {
 		else return $result->fetch_assoc();
 
 	}
-/*
-	public function retrieve_predare_where_id($columns, $id_predare) {
-
-		$stmt = $this->conn->prepare("SELECT $columns FROM predari WHERE Id=?;");
-		$stmt->bind_param('i', $id_predare);
-		$stmt->execute();
-		$result = $stmt->get_result();
-
-		if ($result->num_rows == 0)
-			return null;
-		else return $result->fetch_assoc();
-
-	}*/
-
-	// alias
-	public function retrieve_predari_where_materie($columns, $id_materie) {
-		return $this->retrieve_predari_where_idmaterie($columns, $id_materie); }
-	public function retrieve_predari_where_idmaterie($columns, $id_materie) {
-
-		$stmt = $this->conn->prepare("SELECT $columns FROM predari WHERE IDMaterie=?;");
-		$stmt->bind_param('i', $id_materie);
-		$stmt->execute();
-
-		return $stmt->get_result();
-
-	}
 
 	public function retrieve_materii_where_profesor($columns, $id_profesor) {
 

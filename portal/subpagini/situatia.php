@@ -1,349 +1,74 @@
-<?php 
+<?php
 
 redirect_if_not_logged_in("/portal");
+
 $db = new db_connection();
 
-$tab = "note";
-
-if (isset($_GET["tab"])) {
-	$tab = $_GET["tab"];
-}
-
-$semestru = "1";
-
+$sem = getCurrentSemestru();
 if (isset($_GET["sem"])) {
-	$semestru = $_GET["sem"];
+	$sem = $_GET["sem"];
+	if ($sem != "1" && $sem != "2")
+		header("Location: /portal/situatia/?sem=" . getCurrentSemestru());
 }
 
-$prevclase_index = 0;
-
-if (isset($_GET["an"])) {
-	$prevclase_index = $_GET["an"];
-}
-
-$user = $db->retrieve_utilizator_where_username("Id,IdClasa", $_SESSION["logatca"]);
-
-$prevclase = $db->retrieve_utilizator_where_id("PrevClase", $user['Id'])["PrevClase"];
-if ($prevclase != null)
-	$prevclase = explode(",", $prevclase);
-
-$prevclasa = null;
-
-if ($prevclase_index != 0) {
-
-	// ia id-ul clasei
-	$nr = count($prevclase);
-	$index = $nr - $prevclase_index;
-	$prevclasa = $db->retrieve_clasa_where_id("*", $prevclase[$index]);
-
-}
+$elev = $db->retrieve_utilizator_where_username("Id,IdClasa", $_SESSION["logatca"]);
+$clasa = $db->retrieve_clasa_where_id("*", $elev["IdClasa"]);
 
 ?>
 
- <!DOCTYPE html>
- <html>
+<!DOCTYPE html>
 
- <head>
+<html>
 
- 	<title>Situatia elevului - Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
+	<head>
 
- </head>
+		<title>Situația elevului - Portal LTPM</title>
+ 		<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 
- <body>
+	</head>
 
- 	<header>
-	<?php $header_cpage = "situatia"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
-	<script>
-		// asta e aici ca sa mearga tooltipurile
-		$(function () {
-			$('[data-toggle="tooltip"]').tooltip()
-		});
-
-	</script>
-	</header>
+<body>
+<?php $header_cpage = "situatia"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 	<div class="container">
-
-		<?php
-
-			if ($prevclase_index == 0)
-				$clasa = $db->retrieve_clasa_where_id("*", $user["IdClasa"]);
-			else $clasa = $prevclasa;
-
-		?>
-
-		<center>
-
-			<h3>
-
-				<!--<?php if ($prevclase == null || $prevclase_index == count($prevclase)) : ?>
-					<a class="text-muted">
-				<?php else : ?>
-					<a href="?p=situatia&an=<?= $prevclase_index + 1 ?>" style="text-decoration: none;">
-				<?php endif; ?>
-
-						<i class="far fa-caret-square-left"></i>
-					</a>
-				-->
-
-				&nbsp;
-				<?php echo "CLASA " . $clasa["Nivel"] . " " . $clasa["Sufix"]; ?>
-				&nbsp;
-
-				<!--<?php if ($prevclase_index == 0) : ?>
-					<a class="text-muted">
-				<?php else : ?>
-					<a href="?p=situatia&an=<?= $prevclase_index - 1 ?>" style="text-decoration: none;">
-				<?php endif; ?>
-
-						<i class="far fa-caret-square-right" disabled></i>
-					</a>
-				-->
-
-			</h3>
-
-			<h5 class="mb-1">
-				<?php if ($semestru == "2") : ?>
-					<a href="/portal/situatia?tab=<?= $tab ?>&sem=1" style="text-decoration: none;">
-				<?php else : ?>
-					<a class="text-muted">
-				<?php endif; ?>
-
-						<i class="far fa-caret-square-left"></i>
-					</a>
-
-				&nbsp;
-				SEMESTRUL <?= $semestru ?>
-				&nbsp;
-
-				<?php if ($semestru == "1") : ?>
-					<a href="/portal/situatia?tab=<?= $tab ?>&sem=2" style="text-decoration: none;">
-				<?php else : ?>
-					<a class="text-muted">
-				<?php endif; ?>
-
-						<i class="far fa-caret-square-right" disabled></i>
-					</a>
-
-			</h5>
-			<h5>
-
-				<?php echo $clasa["AnScolar"] . " - " . ($clasa["AnScolar"] + 1); ?>
-					
-			</h5>
-
-		</center>
-
-		<div class="nav nav-tabs">
-
-			<li class="nav-item"><a class="nav-link<?= ($tab == 'note' ? ' active' : '') ?>" href="/portal/situatia?tab=note&sem=<?= $semestru ?>">
-				Note
-			</a></li>
-
-			<li class="nav-item"><a class="nav-link<?= ($tab == 'absente' ? ' active' : '') ?>" href="/portal/situatia?tab=absente&sem=<?= $semestru ?>">
-				Absente
-			</a></li>
-
+	
+		<div class="text-center h1">
+			CLASA <?= $clasa["Nivel"] ?>-<?= $clasa["Sufix"] ?>
+		</div>
+		<div class="text-center h2 mb-3">
+			<?php if ($sem == "2") : ?>
+				<a href="?sem=1">&lt;</a>
+			<?php endif; ?>
+			SEMESTRUL <?= $sem ?>
+			<?php if ($sem == "1") : ?>
+				<a href="?sem=2">&gt;</a>
+			<?php endif; ?>
 		</div>
 
-		<?php
-
-			$materii = $db->retrieve_materii_where_predare_elev("*", $user["Id"]);
-
-		?>
-
-		<?php if ($tab == "note") : ?>
-
-			<!-- randul de antet, doar pe md+ -->
-			<div class="d-none d-md-block">
-
-				<div class="row border p-2">
-
-					<div class="col-md-2 font-weight-bold">
-
-						Materia
-
-					</div>
-
-					<div class="col-md-6 font-weight-bold">
-						
-						Note
-
-					</div>
-
-					<div class="col-md-4 font-weight-bold">
-
-						Altele
-
-					</div>
-
-				</div>
-
-			</div> <!-- randul de antet -->
-
-			<?php $rowcount = 0; ?>
-			<?php while ($materie = $materii->fetch_assoc()) : ?>
-
-				<?php $rowcount++; ?>
-
-				<div class="row border-left border-bottom border-right <?= ($rowcount == 1 ? 'border-top' : '') ?> p-2">
-
-					<div class="col-md-2">
-
-						<span class="d-inline d-md-none font-weight-bold font-italic">Materia:</span>
-						<?= $materie["Nume"]; ?>
-
-					</div>
-
-					<div class="col-md-6">
-
-						<span class="d-md-none font-weight-bold">Note:</span>
-
-						<div class="row col">
-							<?php 
-
-								$note = $db->retrieve_note_where_utilizator_and_materie_and_semestru("Nota,Ziua,Luna", $user["Id"], $materie["Id"], $semestru);
-
-								if ($note->num_rows != 0) {
-
-									while ($nota = $note->fetch_assoc()) {
-
-										insert_nota($nota);
-
-									}
-
-								} else {
-
-									echo '<span>Nu exista</span>';
-
-								}
-
-							?>
-						</div>
-
-					</div>
-
-					<div class="col-md-4">
-
-						<div> <!-- inline-ul cu activitatea -->
-
-							<?php $activitate = $db->retrieve_activitate_where_utilizator_and_materie("*", $user["Id"], $materie["Id"]); ?>
-
-							<span class="d-inline font-weight-bold">Activitate:</span>
-
-							<div class="d-inline">
-								<i class="far fa-plus-square"></i>&nbsp;<?= $activitate["Plusuri"] == null ? 0 : $activitate["Plusuri"] ?>
-							</div>
-
-							<div class="d-inline">
-								<i class="far fa-minus-square"></i>&nbsp;<?= $activitate["Minusuri"] == null ? 0 : $activitate["Minusuri"] ?>
-							</div>
-
-						</div>
-
-						<div> <!-- inline-ul cu media -->
-
-							<?php $medie = $db->calculate_medie_where_utilizator_and_materie_and_semestru($user["Id"], $materie["Id"], $semestru); ?>
-
-							<span class="d-inline font-weight-bold">Media semestriala:</span>
-
-							<div class="d-inline"> <?= $medie != 0 ? $medie : "Nu exista" ?> </div>
-
-						</div>
-
-					</div>
-
-				</div>
-
-			<?php endwhile; ?>
-
-		<?php elseif ($tab == "absente") : ?>
-
-			<!-- randul de antet, doar pe md+ -->
-			<div class="d-none d-md-block">
-
-				<div class="row border p-2">
-
-					<div class="col-md-2 font-weight-bold">
-
-						Materia
-
-					</div>
-
-					<div class="col-md-6 font-weight-bold">
-						
-						Absente
-
-					</div>
-
-					<div class="col-md-4 font-weight-bold">
-
-						Altele
-
-					</div>
-
-				</div>
-
-			</div> <!-- randul de antet -->
-
-			<?php $rowcount = 0; ?>
-			<?php while ($materie = $materii->fetch_assoc()) : ?>
-
-				<?php $rowcount++; ?>
-
-				<div class="row border-left border-bottom border-right <?= ($rowcount == 1 ? 'border-top' : '') ?> p-2">
-
-					<div class="col-md-2">
-
-						<span class="d-inline d-md-none font-weight-bold font-italic">Materia:</span>
-						<?= $materie["Nume"]; ?>
-
-					</div>
-
-					<div class="col-md-6">
-
-						<span class="d-md-none font-weight-bold">Absente:</span>
-
-						<div class="row col">
-							<?php 
-
-								$note = $db->retrieve_absente_where_utilizator_and_materie_and_semestru("Ziua,Luna", $user["Id"], $materie["Id"], $semestru);
-
-								if ($note->num_rows != 0) {
-
-									while ($nota = $note->fetch_assoc()) {
-
-										insert_absenta($nota);
-
-									}
-
-								} else {
-
-									echo '<span>Nu exista</span>';
-
-								}
-
-							?>
-						</div>
-
-					</div>
-
-					<div class="col-md-4">
-
-
-
-					</div>
-
-				</div>
-
-			<?php endwhile; ?>
-
-		<?php endif ?> <!-- if note -->
-
+		<ul class="nav nav-tabs" id="materii-filter-tabs">
+			<li class="nav-item">
+				<a class="nav-link active" href data-filter="all">Toate</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href data-filter="note">Note</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href data-filter="absente">Absențe</a>
+			</li>
+		</ul>
+
+		<div id="materii-table"></div>
+		
 	</div>
 
- 
- </body>
+</body>
 
- </html>
+<?php include("situatia.templ.php"); ?>
+<script>
+	var _elevId = <?= $elev["Id"] ?>;
+	var _sem = "<?= $sem ?>";
+</script>
+<script src="/portal/js"></script>
+<script src="/portal/situatia/js"></script>
+
+</html>
