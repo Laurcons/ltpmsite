@@ -102,7 +102,14 @@ if ($pagina == "" || $pagina == "prima") {
 
 } else if ($pagina == "situatia") {
 
-	include("subpagini/situatia.php");
+	if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("subpagini/situatia.js");
+	} else if ($ajax_redir)
+		include("subpagini/situatia.ajax.php");
+	else if ($post_redir)
+		include("subpagini/situatia.post.php");
+	else include("subpagini/situatia.php");
 
 } else if ($pagina == "topsecret") {
 

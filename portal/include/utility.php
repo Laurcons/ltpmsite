@@ -27,6 +27,7 @@ function averageNote($nota_data_array) {
 
 // nota data should contain
 //  "Nota" => ...
+//  "Tip" => ...
 function averageNoteWithTeza($nota_data_array) {
 
 	$avg_oral = averageNote($nota_data_array);
@@ -60,6 +61,12 @@ function averageNoteWithTeza($nota_data_array) {
 
 }
 
+function roundMedie($medie) {
+	$decimal = $medie - (int)$medie;
+	if ($decimal < 0.5)
+		return (int)$medie;
+	else return (int)$medie + 1;
+}
 
 // array must contain "Ziua" and "Data" fields
 function sortBySchoolDate(&$objects) {
