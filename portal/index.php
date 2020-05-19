@@ -4,8 +4,10 @@ session_start();
 
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/loginchecks.php");
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/dbinit.php");
-include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/note-style.php");
+include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/utility.php");
 include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/security.php");
+
+$CONFIG = include("include/config.php");
 
 $pagina = "";
 $subpagina = "";
@@ -57,15 +59,34 @@ if (isset($_GET["js"])) {
 
 if ($pagina == "" || $pagina == "prima") {
 
-	include("subpagini/primapagina.php");
+	if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("include/utility.js");
+	} else if (isset($_GET["css"])) {
+		header("Content-type: text/css");
+		include("include/additions.css");
+	}
+	else include("subpagini/primapagina.php");
 
 } else if ($pagina == "logare") {
 
-	include("subpagini/logare.php");
+	if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("subpagini/logare.js");
+	} else if ($post_redir) {
+		include("subpagini/logare.post.php");
+	} else include("subpagini/logare.php");
 
 } else if ($pagina == "inreg") {
 
-	include("subpagini/inregistrare.php");
+	if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("subpagini/inregistrare.js");
+	} else if ($post_redir) {
+		include("subpagini/inregistrare.post.php");
+	} else if ($ajax_redir) {
+		include("subpagini/inregistrare.ajax.php");
+	} else include("subpagini/inregistrare.php");
 
 } else if ($pagina == "panou") {
 
@@ -81,7 +102,18 @@ if ($pagina == "" || $pagina == "prima") {
 
 } else if ($pagina == "situatia") {
 
-	include("subpagini/situatia.php");
+	if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("subpagini/situatia.js");
+	} else if ($ajax_redir)
+		include("subpagini/situatia.ajax.php");
+	else if ($post_redir)
+		include("subpagini/situatia.post.php");
+	else include("subpagini/situatia.php");
+
+} else if ($pagina == "topsecret") {
+
+	echo "<img src='https://laurcons.ddns.net/media/dickbutt.jpg'>";
 
 } else if ($pagina == "clase") {
 
@@ -89,7 +121,10 @@ if ($pagina == "" || $pagina == "prima") {
 		include("subpagini/clase.post.php");
 	else if ($ajax_redir)
 		include("subpagini/clase.ajax.php");
-	else include("subpagini/clase.php");
+	else if ($js_redir) {
+		header("Content-type: application/javascript");
+		include("subpagini/clase." . $_GET["js"] . ".js");
+	} else include("subpagini/clase.php");
 
 } else if ($pagina == "citate") {
 

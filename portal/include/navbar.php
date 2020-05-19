@@ -26,17 +26,19 @@
 
 						<?php if (is_functie("elev")) : ?>
 
-							<li class="nav-item <?= ($header_cpage == 'situatia' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/?p=situatia">Situatia</a></li>
+							<li class="nav-item <?= ($header_cpage == 'situatia' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/situatia">Situația</a></li>
 
 						<?php endif; if (is_autoritate("admin")) : ?>
 
 							<li class="nav-item dropdown">
 
-								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Administrare</a>
+								<a class="nav-link dropdown-toggle <?= (strpos($header_cpage, 'admin') !== false ? 'active' : '') ?>" href="#" data-toggle="dropdown">Administrare</a>
 
 								<div class="dropdown-menu bg-dark">
 
-									<a class="dropdown-item bg-dark text-light" href="?p=admin&sp=clase">Clasele scolii</a>
+									<a class="dropdown-item bg-dark text-light" href="/portal/admin/clase">Clasele liceului</a>
+
+									<a class="dropdown-item bg-dark text-light" href="/portal/admin/utilizatori">Utilizatori</a>
 
 								</div>
 
@@ -44,17 +46,17 @@
 
 						<?php endif; if (is_functie("profesor")) : ?>
 
-							<li class="nav-item <?= ($header_cpage == 'clase' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/?p=clase">Clasele mele</a></li>
+							<li class="nav-item <?= ($header_cpage == 'clase' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/clase">Clasele mele</a></li>
 
 						<?php endif; ?>
 
-						<!--<li class="nav-item <?= ($header_cpage == 'citate' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/?p=citate">Propune citat</a></li>-->
+						<!--<li class="nav-item <?= ($header_cpage == 'citate' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/citate">Propune citat</a></li>-->
 
-						<li class="nav-item <?= ($header_cpage == 'resurse' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/?p=resurse">Resurse</a></li>
+						<li class="nav-item <?= ($header_cpage == 'resurse' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/resurse">Resurse</a></li>
 
 					<?php else : ?>
 
-						<!--<li class="nav-item <?= ($header_cpage == 'citate' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/?p=citate">Citate celebre</a></li>-->
+						<!--<li class="nav-item <?= ($header_cpage == 'citate' ? 'active' : '') ?>" ><a class="nav-link" href="/portal/citate">Citate celebre</a></li>-->
 
 					<?php endif; ?>
 
@@ -80,21 +82,22 @@
 
 					</li>
 
-					<li class="nav-item"> <a class="nav-link" href="/portal/?pagina=logout">
+					<li class="nav-item"> <a class="nav-link" href="/portal/logout">
 						
 						<span class="d-none d-md-block">
 							<i class="fas fa-sign-out-alt"
 								data-toggle="tooltip" data-placement="left" title="Iesire din cont"></i>
+							Ieșire cont
 						</span>
 						<span class="d-md-none">
-							<i class="fas fa-sign-out-alt"></i> Iesire din cont
+							<i class="fas fa-sign-out-alt"></i> Ieșire din cont
 						</span>
 
 					</a></li>
 
 					<?php else : ?>
 
-						<li class="nav-item"> <a class="nav-link" href="/portal/?pagina=logare">
+						<li class="nav-item"> <a class="nav-link" href="/portal/logare">
 
 							<span class="d-md-none d-lg-block">
 								<i class="fas fa-sign-in-alt"></i>
@@ -106,11 +109,11 @@
 
 						</a></li>
 
-						<li class="nav-item"> <a class="nav-link" href="/portal/?pagina=inreg">
+						<li class="nav-item"> <a class="nav-link" href="/portal/inreg">
 
 							<span class="d-md-none d-lg-block">
 								<i class="fas fa-user-plus"></i>
-								Inregistrare 
+								Înregistrare 
 							</span>
 							<span class="d-none d-md-block d-lg-none">
 								<i class="fas fa-user-plus"></i>

@@ -1,15 +1,5 @@
 <?php
 
-// WRITTEN AND MAINTAINED BY BUBU
-
-// NAMING SCHEMES
-//
-// using_this_style_of_naming
-//
-// is_x_y : checks whether x is y
-// insert_user : function that inserts an user
-// delete_user_where_x : function that deletes users that satisfy the x condition
-
 // functie de utilitate ca sa mearga chestia cu utf-8 dracu s-o ia
 function utf8_for_xml($string) {
     return preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u',
@@ -23,10 +13,12 @@ class db_connection {
 
 	function __construct() {
 
-		$servername = "laurcons.ddns.net";
-		$username = "ltpmdb_user";
-		$password = "m5a2Yc0ztiVkd24b";
-		$dbname = "ltpmdb";
+		$conf = require("dbconfig.php"); // file is gitignored, you need to provide it for yourself
+
+		$servername = $conf["hostname"];
+		$username = $conf["username"];
+		$password = $conf["password"];
+		$dbname = $conf["database"];
 
 		error_reporting(0);
 		// Create connection
@@ -69,16 +61,23 @@ class db_connection {
 
 	public function insert_utilizator($utilizator_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO utilizatori (Username, Parola, Email, Autoritate, Functie, NrMatricol, Nume, Prenume) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param('ssssssss',
+		$stmt = $this->conn->prepare("INSERT INTO utilizatori (Parola, Username, Email, Autoritate, Functie, Nume, Prenume, IdClasa) VALUES ('notset', ?, ?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param('ssssssi',
 			$utilizator_data["Username"],
-			$utilizator_data["Parola"],
 			$utilizator_data["Email"],
 			$utilizator_data["Autoritate"],
 			$utilizator_data["Functie"],
-			$utilizator_data["NrMatricol"],
 			$utilizator_data["Nume"],
-			$utilizator_data["Prenume"]);
+			$utilizator_data["Prenume"],
+			$utilizator_data["IdClasa"]);
+		$stmt->execute();
+
+	}
+
+	public function delete_utilizator($utilizator_id) {
+
+		$stmt = $this->conn->prepare("DELETE FROM utilizatori WHERE Id=?;");
+		$stmt->bind_param("i", $utilizator_id);
 		$stmt->execute();
 
 	}
@@ -130,9 +129,41 @@ class db_connection {
 
 	}
 
-	public function retrieve_count_utilizatori() {
+	public function retrieve_utilizator_where_cod_inregistrare($columns, $cod) {
 
-		$stmt = $this->conn->prepare("SELECT count(Id) FROM utilizatori;");
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE CodInregistrare=?;");
+		$stmt->bind_param("i", $cod);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows == 0)
+			return null;
+		else return $result->fetch_assoc();
+
+	}
+
+	public function update_utilizator_cod_inregistrare($user_id, $cod) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET CodInregistrare=? WHERE Id=?;");
+		$stmt->bind_param("ii", $cod, $user_id);
+		$stmt->execute();
+
+	}
+
+	public function retrieve_count_utilizatori($filter = null) {
+
+		$filterSql = "";
+
+		if (in_array("profesori", $filter) && in_array("elevi", $filter)) {
+			$filterSql = "WHERE Functie='profesor' OR Functie='elev'";
+		} else {
+			if (in_array("profesori", $filter))
+				$filterSql = "WHERE Functie='profesor'";
+			if (in_array("elevi", $filter))
+				$filterSql = "WHERE Functie='elev'";
+		}
+
+		$stmt = $this->conn->prepare("SELECT count(Id) FROM utilizatori $filterSql;");
 		$stmt->execute();
 		$result = $stmt->get_result();
 
@@ -140,9 +171,20 @@ class db_connection {
 
 	}
 
-	public function retrieve_paged_utilizatori($columns, $entriesPerPage, $page) {
+	public function retrieve_paged_utilizatori($columns, $entriesPerPage, $page, $filter = null) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori ORDER BY Id ASC LIMIT ? OFFSET ?;");
+		$filterSql = "";
+
+		if (in_array("profesori", $filter) && in_array("elevi", $filter)) {
+			$filterSql = "WHERE Functie='profesor' OR Functie='elev'";
+		} else {
+			if (in_array("profesori", $filter))
+				$filterSql = "WHERE Functie='profesor'";
+			if (in_array("elevi", $filter))
+				$filterSql = "WHERE Functie='elev'";
+		}
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori $filterSql ORDER BY Nume,Prenume ASC LIMIT ? OFFSET ?;");
 		$offset = $page * $entriesPerPage;
 		$stmt->bind_param('ii',
 			$entriesPerPage,
@@ -151,6 +193,36 @@ class db_connection {
 		$result = $stmt->get_result();
 
 		return $result;
+
+	}
+
+	public function retrieve_utilizatori_pagination_titles($entriesPerPage, $filter = null) {
+
+		$count = $this->retrieve_count_utilizatori();
+		$remaining = $count;
+		$return = array();
+
+		while ($remaining > 0) {
+
+			$pag = ($count - $remaining) / $entriesPerPage;
+			$utiliz = $this->retrieve_paged_utilizatori("Nume,Prenume", $entriesPerPage, $pag, $filter);
+
+			$first = $utiliz->fetch_assoc();
+			$utiliz->data_seek($utiliz->num_rows - 1);
+			$last = $utiliz->fetch_assoc();
+
+			$return[] = array(
+				"page" => $pag,
+				"count" => $utiliz->num_rows,
+				"first" => $first["Nume"] . " " . $first["Prenume"],
+				"last" => $last["Nume"] . " " . $last["Prenume"]
+			);
+
+			$remaining -= $entriesPerPage;
+
+		}
+
+		return $return;
 
 	}
 
@@ -169,6 +241,45 @@ class db_connection {
 
 	}
 
+	public function update_utilizator_inregistrare($user_id, $data) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET Username=?,Email=?,Nume=?,Prenume=?,Parola=?,CodInregistrare=NULL,Activat=current_timestamp() WHERE Id=?;");
+		$stmt->bind_param("sssssi",
+			$data["Username"],
+			$data["Email"],
+			$data["Nume"],
+			$data["Prenume"],
+			$data["Parola"],
+			$user_id);
+		$stmt->execute();
+
+	}
+
+	public function update_utilizator_general_settings($user_id, $data) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET Username=?,Email=?,Nume=?,Prenume=?,Functie=?,Autoritate=? WHERE Id=?;");
+		$stmt->bind_param("ssssssi",
+			$data["Username"],
+			$data["Email"],
+			$data["Nume"],
+			$data["Prenume"],
+			$data["Functie"],
+			$data["Autoritate"],
+			$user_id);
+		$stmt->execute();
+
+	}
+
+	public function update_utilizator_set_clasa($user_id, $clasa_id) {
+
+		$stmt = $this->conn->prepare("UPDATE utilizatori SET IdClasa=? WHERE Id=?;");
+		$stmt->bind_param("ii",
+			$clasa_id,
+			$user_id);
+		$stmt->execute();
+
+	}
+
 	public function retrieve_profesori($columns) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE Functie='profesor';");
@@ -181,7 +292,7 @@ class db_connection {
 
 	public function retrieve_profesori_where_not_diriginte($columns) {
 
-		$stmt = $this->conn->prepare("SELECT * FROM utilizatori WHERE Functie='profesor' AND Id NOT IN (SELECT IdDiriginte FROM clase);");
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE Functie='profesor' AND Id NOT IN (SELECT IdDiriginte FROM clase);");
 		$stmt->execute();
 
 		return $stmt->get_result();
@@ -195,6 +306,18 @@ class db_connection {
 		$stmt->execute();
 
 		return $stmt->get_result()->fetch_assoc()["COUNT(Id)"];
+
+	}
+
+	public function insert_materie($materie_data) {
+
+		$stmt = $this->conn->prepare("INSERT INTO materii (Nume, IdClasa, IdProfesor, TipTeza) VALUES (?,?,?,?);");
+		$stmt->bind_param('siis',
+			$materie_data["Nume"],
+			$materie_data["IdClasa"],
+			$materie_data["IdProfesor"],
+			$materie_data["TipTeza"]);
+		$stmt->execute();
 
 	}
 
@@ -220,35 +343,9 @@ class db_connection {
 
 	}
 
-	public function retrieve_predare_where_id($columns, $id_predare) {
+	public function retrieve_materii_where_profesor($columns, $id_profesor) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM predari WHERE Id=?;");
-		$stmt->bind_param('i', $id_predare);
-		$stmt->execute();
-		$result = $stmt->get_result();
-
-		if ($result->num_rows == 0)
-			return null;
-		else return $result->fetch_assoc();
-
-	}
-
-	// alias
-	public function retrieve_predari_where_materie($columns, $id_materie) {
-		return $this->retrieve_predari_where_idmaterie($columns, $id_materie); }
-	public function retrieve_predari_where_idmaterie($columns, $id_materie) {
-
-		$stmt = $this->conn->prepare("SELECT $columns FROM predari WHERE IDMaterie=?;");
-		$stmt->bind_param('i', $id_materie);
-		$stmt->execute();
-
-		return $stmt->get_result();
-
-	}
-
-	public function retrieve_predari_where_profesor($columns, $id_profesor) {
-
-		$stmt = $this->conn->prepare("SELECT $columns FROM predari WHERE IdProfesor=?;");
+		$stmt = $this->conn->prepare("SELECT $columns FROM materii WHERE IdProfesor=? ORDER BY Nume ASC;");
 		$stmt->bind_param("i", $id_profesor);
 		$stmt->execute();
 
@@ -276,10 +373,57 @@ class db_connection {
 
 	}
 
+	public function delete_materie($materie_id) {
+
+		$stmt = $this->conn->prepare("DELETE FROM materii WHERE Id=?;");
+		$stmt->bind_param('i', $materie_id);
+		$stmt->execute();
+
+	}
+
+	public function retrieve_materii_where_clasa($columns, $id_clasa) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM materii WHERE IdClasa=?;");
+		$stmt->bind_param('i', $id_clasa);
+		$stmt->execute();
+
+		return $stmt->get_result();
+
+	}
+
+	public function insert_predare($predare_data) {
+
+		$stmt = $this->conn->prepare("INSERT INTO predari (IdClasa, IdMaterie, IdProfesor, TipTeza) VALUES (?, ?, ?, ?);");
+		$stmt->bind_param('iiis',
+			$predare_data["IdClasa"],
+			$predare_data["IdMaterie"],
+			$predare_data["IdProfesor"],
+			$predare_data["TipTeza"]);
+		$stmt->execute();
+
+	}
+
+	public function delete_predare($predare_id) {
+
+		$stmt = $this->conn->prepare("DELETE FROM predari WHERE Id=?;");
+		$stmt->bind_param('i', $predare_id);
+		$stmt->execute();
+
+	}
+
+	// $id_clasa poate fi NULL
 	public function retrieve_elevi_where_clasa($columns, $id_clasa) {
 
-		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE IdClasa=? ORDER BY Nume,Prenume DESC;");
-		$stmt->bind_param('i', $id_clasa);
+		$clasaSql = "";
+		if ($id_clasa == NULL) {
+			$clasaSql = "IdClasa IS NULL";
+		} else {
+			$clasaSql = "IdClasa=?";
+		}
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM utilizatori WHERE $clasaSql AND Functie='elev' ORDER BY Nume,Prenume DESC;");
+		if ($id_clasa != NULL)
+			$stmt->bind_param('i', $id_clasa);
 		$stmt->execute();
 
 		return $stmt->get_result();
@@ -290,6 +434,16 @@ class db_connection {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM clase WHERE Id=?;");
 		$stmt->bind_param('i', $id);
+		$stmt->execute();
+
+		return $stmt->get_result()->fetch_assoc();
+
+	}
+
+	public function retrieve_clasa_where_diriginte($columns, $diriginte_id) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM clase WHERE IdDiriginte=?;");
+		$stmt->bind_param('i', $diriginte_id);
 		$stmt->execute();
 
 		return $stmt->get_result()->fetch_assoc();
@@ -318,6 +472,16 @@ class db_connection {
 
 	}
 
+	public function update_clasa_set_diriginte($clasa_id, $diriginte_id) {
+
+		$stmt = $this->conn->prepare("UPDATE clase SET IdDiriginte=? WHERE Id=?;");
+		$stmt->bind_param("ii",
+			$diriginte_id,
+			$clasa_id);
+		$stmt->execute();
+
+	}
+
 	public function delete_clasa($clasa_id) {
 
 		$stmt = $this->conn->prepare("DELETE FROM clase WHERE Id=?");
@@ -326,7 +490,7 @@ class db_connection {
 
 	}
 
-	public function retrieve_note_where_utilizator_and_materie_and_semestru($columns, $user_id, $materie_id, $semestru) {
+	public function retrieve_note_where_elev_and_materie_and_semestru($columns, $user_id, $materie_id, $semestru) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM note WHERE IdElev=? AND IdMaterie=? AND Semestru=? ORDER BY Luna,Ziua DESC;");
 		$stmt->bind_param("iis", $user_id, $materie_id, $semestru);
@@ -338,11 +502,14 @@ class db_connection {
 
 	public function insert_nota($nota_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO note (IdElev, IdClasa, IdMaterie, Semestru, Nota, Ziua, Luna) VALUES (?,?,?,?,?,?,?);");
-		$stmt->bind_param("iiisiii",
+		$stmt = $this->conn->prepare("INSERT INTO note (IdElev, IdMaterie, IdProfesor, Teza, Tip, Semestru, Nota, Ziua, Luna) VALUES (?,?,?,?,?,?,?,?,?);");
+		$stmt->bind_param("iiisssiii",
 			$nota_data["IdElev"],
-			$nota_data["IdClasa"],
+			//$nota_data["IdClasa"],
 			$nota_data["IdMaterie"],
+			$nota_data["IdProfesor"],
+			$nota_data["Teza"],
+			$nota_data["Tip"],
 			$nota_data["Semestru"],
 			$nota_data["Nota"],
 			$nota_data["Ziua"],
@@ -390,7 +557,7 @@ class db_connection {
 
 	}
 
-	public function retrieve_absente_where_utilizator_and_materie_and_semestru($columns, $user_id, $materie_id, $semestru) {
+	public function retrieve_absente_where_elev_and_materie_and_semestru($columns, $user_id, $materie_id, $semestru) {
 
 		$stmt = $this->conn->prepare("SELECT $columns FROM absente WHERE IdElev=? AND IdMaterie=? AND Semestru=? ORDER BY Luna,Ziua ASC");
 		$stmt->bind_param("iii", $user_id, $materie_id, $semestru);
@@ -410,13 +577,35 @@ class db_connection {
 
 	}
 
+	public function retrieve_absente_count_where_elev_and_materie($elev_id, $materie_id) {
+
+		// un singur query ca suntem bastani si ajunge
+		$stmt = $this->conn->prepare("SELECT 'Mot',COUNT(Id) FROM absente WHERE Motivata=1 AND IdElev=? AND IdMaterie=? UNION ALL SELECT 'Nem',COUNT(Id) FROM absente WHERE Motivata=0 AND IdElev=? AND IdMaterie=?;");
+		$stmt->bind_param("iiii",
+			$elev_id, $materie_id,
+			$elev_id, $materie_id); // nu cred ca pot altcumva, fara sa repet
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		$ret = array();
+
+		$row = $result->fetch_assoc();
+		$ret["Motivate"] = $row["COUNT(Id)"];
+		$row = $result->fetch_assoc();
+		$ret["Nemotivate"] = $row["COUNT(Id)"];
+
+		return $ret;
+
+	}
+
 	public function insert_absenta($absenta_data) {
 
-		$stmt = $this->conn->prepare("INSERT INTO absente (IdElev, IdMaterie, IdClasa, Semestru, Ziua, Luna) VALUES (?, ?, ?, ?, ?, ?);");
+		$stmt = $this->conn->prepare("INSERT INTO absente (IdElev, IdMaterie, IdProfesor, Semestru, Ziua, Luna) VALUES (?, ?, ?, ?, ?, ?);");
 		$stmt->bind_param("iiisii",
 			$absenta_data["IdElev"],
 			$absenta_data["IdMaterie"],
-			$absenta_data["IdClasa"],
+			//$absenta_data["IdClasa"],
+			$absenta_data["IdProfesor"],
 			$absenta_data["Semestru"],
 			$absenta_data["Ziua"],
 			$absenta_data["Luna"]);
@@ -455,6 +644,87 @@ class db_connection {
 		if ($row["Count(Id)"] == 1)
 			return true;
 		else return false;
+
+	}
+
+	// array of type
+	//  "IdElev" => ..
+	//  "IdMaterie" => ..
+	//  "Teza" => "da", "nu"
+	public function update_teze($teze_data) {
+
+		foreach ($teze_data as $teza) {
+
+			if ($teza["Teza"] == "nu") {
+
+				$stmt = $this->conn->prepare("DELETE FROM elevi_teze WHERE IdElev=? AND IdMaterie=?;");
+				$stmt->bind_param("ii",
+					$teza["IdElev"],
+					$teza["IdMaterie"]);
+				$stmt->execute();
+
+			} else {
+
+				$stmt = $this->conn->prepare("INSERT IGNORE INTO elevi_teze (IdElev, IdMaterie) VALUES (?,?);");
+				$stmt->bind_param("ii",
+					$teza["IdElev"],
+					$teza["IdMaterie"]);
+				$stmt->execute();
+
+			}
+
+		}
+
+	}
+
+	public function retrieve_teze_where_materie($columns, $materie_id) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM elevi_teze WHERE IdMaterie=?;");
+		$stmt->bind_param("i",
+			$materie_id);
+		$stmt->execute();
+
+		return $stmt->get_result();
+
+	}
+
+	public function has_elev_teza_in_materie($elev_id, $materie_id) {
+
+		$materie = $this->retrieve_materie_where_id("*", $materie_id);
+
+		if ($materie["TipTeza"] == "optional") {
+
+			$stmt = $this->conn->prepare("SELECT * FROM elevi_teze WHERE IdElev=? AND IdMaterie=?;");
+			$stmt->bind_param("ii",
+				$elev_id,
+				$materie_id);
+			$stmt->execute();
+			$result = $stmt->get_result();
+
+			if ($result->num_rows == 0) {
+				return false;
+			} else {
+				return true;
+			}
+
+		} else {
+
+			if ($materie["TipTeza"] == "nu")
+				return false;
+			if ($materie["TipTeza"] == "obligatoriu")
+				return true;
+
+		}
+
+	}
+
+	public function retrieve_motivari_where_elev($columns, $elev_id) {
+
+		$stmt = $this->conn->prepare("SELECT $columns FROM motivari WHERE IdElev=?;");
+		$stmt->bind_param("i", $elev_id);
+		$stmt->execute();
+
+		return $stmt->get_result();
 
 	}
 

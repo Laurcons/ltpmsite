@@ -16,12 +16,12 @@ if (isset($_GET["id"])) {
 <head>
 
 	<title>Administrare clase - Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 
 </head>
 
 <body>
-	<?php $header_cpage = "admin:clase"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "admin:clase"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 <div class="container">
 
@@ -32,7 +32,7 @@ if (isset($_GET["id"])) {
 
 		?>
 
-		<h3 class="mb-3">Toate clasele liceului</h3>
+		<h1 class="mb-3">Toate clasele liceului</h1>
 
 		<a class="btn btn-default border-primary mb-3" href="#" data-toggle="modal" data-target="#creeaza-clasa-modal">Adauga clasa</a>
 
@@ -104,14 +104,14 @@ if (isset($_GET["id"])) {
 
 		</div>
 
-		<form id="creeaza-clasa-form" method="POST" action="?p=admin:clase&post">
+		<form id="creeaza-clasa-form" method="POST" action="/portal/admin/clase/post">
 
 			<input type="hidden" id="creeaza-clasa-form-form-id" name="form-id" value="fillwithjs please">
 			<input type="hidden" name="creeaza-clasa" value="whatever">
 
 		</form>
 
-		<form id="sterge-clasa-form" method="POST" action="?p=admin:clase&post">
+		<form id="sterge-clasa-form" method="POST" action="/portal/admin/clase/post">
 
 			<input type="hidden" id="sterge-clasa-form-form-id" name="form-id" value="fillwithjs please">
 			<input type="hidden" id="sterge-clasa-form-clasa-id" name="clasa-id" value="fillwithjs please">
@@ -126,33 +126,46 @@ if (isset($_GET["id"])) {
 			$diriginte = $db->retrieve_utilizator_where_id("*", $clasa["IdDiriginte"]);
 		?>
 
-		<div class="d-flex mb-3">
+		<div class="row">
 
-			<div>
-				<a class="btn btn-default border-primary" href="?p=admin:clase">Inapoi la clase</a>
+			<div class="col-sm-4">
+
+				<a class="btn btn-default border-primary" href="/portal/admin/clase">Inapoi la clase</a>
+
 			</div>
 
-			<div class="align-self-center flex-grow-1">
-				<span class="align-middle h3 ml-2">
-					Clasa <?= $clasa["Nivel"] . " " . $clasa["Sufix"] ?>
-				</span>
+			<div class="col-sm-4 text-center">
+
+				<div class="h1">
+					Clasa <?= $clasa["Nivel"] . "-" . $clasa["Sufix"] ?>
+				</div>
+
 			</div>
 
 		</div>
 
-		<p>
+		<p class="text-center mb-3">
 
-			<span class="font-weight-bold">Dirigintele clasei: </span>
+			<span class="font-weight-bold">Diriginte: </span>
 
 			<?= $diriginte["Nume"] . " " . $diriginte["Prenume"] ?>
 
+			<a href="/portal/admin/utilizatori/<?= $diriginte['Id'] ?>" class="btn btn-sm bg-white border-info">Detalii</a>
+
+			<button class="btn btn-sm bg-white border-warning"
+					data-toggle="modal"
+					data-target="#schimba-diriginte-modal">
+				Schimba
+			</button>
+
 		</p>
 
-		<div class="h4">Elevii clasei</div>
+		<div class="d-block d-md-none h4 text-right">Elevii clasei</div>
+		<div class="d-none d-md-block h4">Elevii clasei</div>
 
 		<div class="d-none d-md-block"> <!-- header row -->
 
-			<div class="row border">
+			<div class="row border p-2">
 
 				<div class="col-md-4">
 					
@@ -172,187 +185,439 @@ if (isset($_GET["id"])) {
 
 		<div id="elevi-div">
 
+			<!-- filled with js -->
+
+		</div>
+
+		<div class="row border border-top-0 p-2 mb-3">
+
+			<div class="col-md-12">
+
+				<button class="btn btn-sm border-primary" data-toggle="modal" data-target="#atribuie-utilizator-modal">Atribuie elev</button>
+
+			</div>
+
+		</div>
+
+		<div class="d-block d-md-none h4 text-right">Materiile clasei</div>
+		<div class="d-none d-md-block h4">Materiile clasei</div>
+
+		<div class="d-none d-md-block"> <!-- header row -->
+
+			<div class="row border p-2">
+
+				<div class="col-md-3">
+
+					<span class="font-weight-bold">Materia predata</span>	
+
+				</div>
+
+				<div class="col-md-3">
+
+					<span class="font-weight-bold">Profesorul care preda</span>	
+
+				</div>
+
+				<div class="col-md-2">
+
+					<span class="font-weight-bold">Tip teza</span>
+
+				</div>
+
+				<div class="col-md-4">
+
+					<span class="font-weight-bold">Optiuni</span>	
+
+				</div>
+
+			</div>
+
+		</div> <!-- header row -->
+
+		<div id="materii-div">
+
+			<!-- filled with js -->
+
+		</div>
+
+		<div class="row border border-top-0 p-2">
+
+			<div class="col-md-12">
+
+				<button class="btn btn-sm border-primary"
+						data-toggle="modal"
+						data-target="#adauga-materie-modal">
+					Adauga predare
+				</button>
+
+			</div>
+
 		</div>
 
 	<?php endif; // current_id == -1 ?>
 
 </div>
 
+<?php if ($current_id == -1) : ?>
+
+<?php else : ?>
+
+	<div class="modal fade" id="atribuie-utilizator-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header">
+	
+					<h4 class="modal-title">
+						Atribuie elev
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+
+					<div class="alert alert-info">
+
+						Din acest panou puteti selecta un utilizator si sa il atribuiti clasei.<br>
+						Daca utilizatorul pe care doriti sa il atribuiti nu exista si doriti sa il creati, va rugam sa accesati pagina de <a href="?p=admin:utilizatori" class="alert-link">administrare a utilizatorilor</a> si sa creati si sa atribuiti un nou utilizator de acolo.
+
+					</div>
+
+					<div class="alert alert-info">
+
+						In lista de mai jos apar doar utilizatorii care nu sunt atribuiti deja unor clase. Pentru a-i putea atribui aici, trebuie mai intai sa ii stergeti din clasele din care fac parte. Notele si absentele nu vor fi transferate.
+
+					</div>
+
+					<div class="form-group">
+
+						<label class="font-weight-bold">Alegeti utilizatorul:</label>
+
+						<select class="form-control"
+								name="user-id"
+								form="atribuie-utilizator-form">
+
+						</select>
+
+					</div>
+
+					<div class="alert alert-danger d-none" id="atribuie-utilizator-modal-unavailable">
+
+						Nu exista utilizatori disponibili! Va rugam sa creati utilizatori noi din pagina de administrare a utilizatorilor!
+
+					</div>
+	
+				</div>
+	
+				<div class="modal-footer">
+
+					<span class="spinner-border spinner-border-sm text-primary d-none" id="atribuie-utilizator-modal-spinner"></span>
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="atribuie-utilizator-form"
+								class="btn btn-primary">
+							Atribuie elev
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
+	<div class="modal fade" id="deatribuie-utilizator-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header bg-danger">
+	
+					<h4 class="modal-title text-white">
+						Sterge din clasa
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+	
+					<p>Sunteti sigur ca doriti sa stergeti elevul din clasa?</p>
+
+					<p>Retineti ca aceasta actiune nu are ca efect stergerea completa a utilizatorului, ci doar <strong>deatribuirea</strong> lui din cadrul clasei. Il puteti re-atribui oricand in cursul anului scolar curent, si isi va pastra toate notele si absentele.</p>
+	
+				</div>
+	
+				<div class="modal-footer">
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="deatribuie-utilizator-form"
+								class="btn btn-danger">
+							Sterge din clasa
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
+	<div class="modal fade" id="adauga-materie-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header">
+	
+					<h4 class="modal-title">
+						Adauga materie
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+		
+					<p>Precizeaza materia predata, si profesorul care o preda.</p>
+
+					<div class="form-group">
+
+						<label class="font-weight-bold">Materia predata:</label>
+
+						<input type="text"
+							   class="form-control"
+							   form="adauga-materie-form"
+							   name="materie">
+
+					</div>
+
+					<div class="form-group">
+
+						<label class="font-weight-bold">Profesorul care o preda:</label>
+
+						<select class="form-control"
+								form="adauga-materie-form"
+								name="profesor">
+
+						</select>
+
+					</div>
+
+					<div class="form-group form-row">
+
+						<label class="col-3 col-form-label font-weight-bold">Tip teza:</label>
+
+						<div class="col-9">
+
+							<select class="form-control"
+									form="adauga-materie-form"
+									name="tip-teza">
+
+								<option value="nu" selected>Nu se da teza</option> 
+								<option value="optional">Teza e optionala</option>
+								<option value="obligatoriu">Teza e obligatorie</option>
+
+							</select>
+
+						</div>
+
+					</div>
+	
+				</div>
+	
+				<div class="modal-footer">
+
+					<span class="spinner-border text-primary d-none" id="adauga-materie-modal-spinner"></span>
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="adauga-materie-form"
+								class="btn btn-primary">
+							Adauga predare
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
+	<div class="modal fade" id="sterge-materie-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header bg-danger">
+	
+					<h4 class="modal-title text-white">
+						Sterge materie
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+	
+					Sunteti sigur ca doriti sa stergeti aceasta materie? Toate notele, absentele si punctele de activitate ce tin de aceasta materie vor fi sterse!
+	
+				</div>
+	
+				<div class="modal-footer">
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="sterge-materie-form"
+								class="btn btn-danger">
+							Sterge materie
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
+	<div class="modal fade" id="schimba-diriginte-modal">
+	
+		<div class="modal-dialog">
+	
+			<div class="modal-content">
+	
+				<div class="modal-header">
+	
+					<h4 class="modal-title">
+						Schimba diriginte
+					</h4>
+	
+				</div>
+	
+				<div class="modal-body">
+	
+					<p>Selecteaza un profesor din lista pentru a face schimbul. Daca profesorul este deja diriginte al unei clase, dirigintii vor fi schimbati intre ei.</p>
+
+					<div class="form-group">
+
+						<label class="font-weight-bold">Profesorul cu care se va face schimbul:</label>
+
+						<select class="form-control"
+								name="profesor"
+								form="schimba-diriginte-form">
+
+						</select>
+
+					</div>
+	
+				</div>
+	
+				<div class="modal-footer">
+	
+					<div class="btn-group">
+	
+						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+	
+						<button type="submit"
+								form="schimba-diriginte-form"
+								class="btn btn-primary">
+							Schimba diriginte
+						</button>
+	
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+	
+	</div>
+
+	<form id="atribuie-utilizator-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="atribuie-utilizator">
+		<input type="hidden" name="clasa-id" value="<?= $current_id ?>">
+
+	</form>
+
+	<form id="deatribuie-utilizator-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="deatribuie-utilizator">
+		<input type="hidden" name="user-id">
+
+	</form>
+
+	<form id="adauga-materie-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="clasa-id" value="<?= $current_id ?>">
+		<input type="hidden" name="adauga-materie">
+
+	</form>
+
+	<form id="sterge-materie-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="materie-id">
+		<input type="hidden" name="sterge-materie">
+
+	</form>
+
+	<form id="schimba-diriginte-form">
+
+		<input type="hidden" name="form-id">
+		<input type="hidden" name="clasa-id" value="<?= $current_id ?>">
+		<input type="hidden" name="schimba-diriginte">
+
+	</form>
+
+<?php endif; // current_id == -1 ?>
+
 </body>
 <footer>
 	<?php if ($current_id == -1) : ?>
 
-	<script src="?p=admin:clase&js=list"></script>
-	<templates>
+		<script src="/portal/admin/clase/js/list"></script>
 
-		<template id="clasa-template">
+	<?php else : // current_id == -1 ?>
 
-			<div class="col-md-4 mb-2">
-
-					<div class="card"> 
-
-						<div class="card-header">
-
-							<div class="card-title h4">
-
-								Clasa {{Nivel}} {{Sufix}}
-
-								<button type="button" class="close" id="sterge-clasa-button-{{Id}}">
-									&times;
-								</button>
-
-							</div>
-
-						</div>
-
-						<ul class="list-group list-group-flush">
-
-							<li class="list-group-item"><b>Diriginte:</b> {{diriginte.Nume}} {{diriginte.Prenume}}</li>
-
-							<li class="list-group-item"><b>Numar elevi:</b> {{nrelevi}}</li>
-
-						</ul>
-
-						<div class="card-body">
-
-							<a class="btn btn-primary w-100" href="?p=admin:clase&id={{Id}}">Administreaza</a>
-
-						</div>
-
-					</div>
-
-				</div>
-
-		</template>
-
-		<template id="creeaza-clasa-modal-allowed-template">
-
-			<div class="modal-header">
-
-				<div class="modal-title h4">
-					Adaugare clasa
-				</div>
-
-			</div> <!-- modal-header -->
-
-			<div class="modal-body">
-
-				<p>Pentru inceput, vom avea nevoie de putine detalii despre clasa.</p>
-
-				<div class="form-group">
-
-					<label>Denumirea clasei:</label>
-
-					<div class="input-group">
-
-						<input id="creeaza-clasa-form-nivel"
-						       form="creeaza-clasa-form"
-						       name="nivel"
-						       class="form-control"
-						       type="text"
-						       placeholder="Nivelul (ex. 0, 1, 10, 12, etc.)">
-
-						<input id="creeaza-clasa-form-sufix"
-						       form="creeaza-clasa-form"
-						       name="sufix"
-						       class="form-control"
-						       type="text"
-						       placeholder="Sufixul (ex. A, B, C, etc.)">
-
-					</div>
-
-				</div>
-
-				<div class="form-group">
-
-					<label>Anul scolar:</label>
-
-					<div class="input-group">
-
-						<input id="creeaza-clasa-form-an"
-							   form="creeaza-clasa-form"
-							   name="an"
-							   class="form-control"
-							   type="number"
-							   min="<?= date('Y') - 10 ?>"
-							   max="<?= date('Y') + 10 ?>"
-							   placeholder="Anul de inceput">
-
-						<div class="input-group-append">
-
-							<div class="input-group-text" id="creeaza-clasa-modal-an-extra">
-
-								An invalid
-
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-
-				<div class="form-group">
-
-					<label>Profesorul diriginte:</label>
-
-					<select id="creeaza-clasa-form-idprofesor"
-							form="creeaza-clasa-form"
-							name="iddiriginte"
-							class="form-control">
-
-						<?php while ($prof = $profesori_disponibili->fetch_assoc()) : ?>
-
-							<option value="<?= $prof['Id'] ?>"><?= $prof["Nume"] . " " . $prof["Prenume"] ?></option>
-
-						<?php endwhile; ?>
-
-					</select>
-
-				</div>
-
-			</div> <!-- modal-body -->
-
-			<div class="modal-footer">
-
-				<div class="btn-group">
-
-					<button class="btn btn-default bg-white border-primary" data-dismiss="modal">Inapoi</button>
-
-					<input type="submit"
-						   form="creeaza-clasa-form"
-						   class="btn btn-primary"
-						   value="Adauga clasa">
-
-				</div>
-
-			</div>
-
-		<template id="creeaza-clasa-modal-disallowed-template">
-
-			<div class="modal-body">
-
-				<p>Nu puteti crea clase noi, deoarece nu aveti profesori disponibili care sa le fie diriginti!</p>
-
-				<p>Va rugam sa creati conturi noi pentru profesori, si incercati din nou.</p>
-
-			</div>
-
-			<div class="modal-footer">
-
-				<button class="btn btn-default bg-white border-primary" data-dismiss="modal">Inapoi</button>
-
-			</div>
-
-		</template>
-
-	</templates>
-
-	<?php else : ?>
-
-		<script src="?p=admin:clase&js=one"></script>
+		<script src="/portal/admin/clase/js/one"></script>
 
 	<?php endif; ?>
+
+	<?php include("clase.templ.php"); ?>
+
 </footer>
 
 </html>

@@ -2,9 +2,9 @@
 		
 		<ul id="menu_list">
 
-			<a href="/" id="logo_link"><img src="http://laurcons.ddns.net/media/logo.png" id="logo" /></a>
+			<a href="/" id="logo_link"><img src="https://laurcons.ddns.net/media/logo.png" id="logo" /></a>
 
-			<a href="/" id="logo_link"><img src="http://laurcons.ddns.net/media/logo_mobile.png" id="logo_mobile" /></a>
+			<a href="/" id="logo_link"><img src="https://laurcons.ddns.net/media/logo_mobile.png" id="logo_mobile" /></a>
 			
 			<div id="menu_links_list">
 				

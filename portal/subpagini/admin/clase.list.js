@@ -11,28 +11,33 @@ function generateKey(length = 10) {
    return result;
 }
 
+function validate_creeaza_clasa() {
+
+	var nivel = $("#creeaza-clasa-form-nivel").val();
+	var sufix = $("#creeaza-clasa-form-sufix").val();
+
+	if ((nivel < 0 || nivel > 12) || nivel.trim() == "") {
+		// invalid
+		showFormError("creeaza-clasa", "denumire", "Nivelul trebuie sa fie o cifra araba de la 0 la 12!");
+		return false;
+
+	}
+	if (sufix.trim() == "") {
+		showFormError("creeaza-clasa", "denumire", "Sufixul clasei nu poate fi gol!");
+		return false;
+	}
+	return true;
+
+}
+
 $(document).ready(function() {
-
-	$("#creeaza-clasa-form-an").on("input", function() {
-
-		var currentyear = new Date().getFullYear();
-		var value = $("#creeaza-clasa-form-an").val();
-
-		if (value > currentyear - 10 && value < currentyear + 10) {
-
-			$("#creeaza-clasa-modal-an-extra").html("An scolar " + value + " - " + (parseInt(value) + 1));
-
-		} else {
-
-			$("#creeaza-clasa-modal-an-extra").html("An invalid");
-
-		}
-
-	});
 
 	$("#creeaza-clasa-form").submit(function(e) {
 
 		e.preventDefault();
+		if (!validate_creeaza_clasa())
+			return false;
+		hideFormErrors();
 		var form = $(this);
 		$("#creeaza-clasa-form-form-id").val(generateKey());
 
@@ -82,7 +87,7 @@ function ajax_updateClase() {
 			<div class="spinner-border text-primary"></div>');
 
 	$.ajax({
-		url: "?p=admin:clase&ajax&r=clase",
+		url: "/portal/admin/clase/ajax/clase",
 		dataType: "json",
 		success: function(result) {
 
@@ -132,19 +137,27 @@ function ajax_updateClase() {
 
 	});
 
-	// actualizeaza creeaza-clasa-modal
+	// actualizeaza tot ce tine de profesorii disponibili (din #creeaza-clasa-modal)
 	$.ajax({
-
-		url: "?p=admin:clase&ajax&r=profesori-disponibili",
+		url: "/portal/admin/clase/ajax/profesori-disponibili",
 		dataType: "json",
 		success: function(result) {
 
-			console.log(result.profesori_disponibili.length);
+			//console.log(result.profesori_disponibili.length);
 			if (result.profesori_disponibili.length != 0) {
 
 				$("#creeaza-clasa-modal-content").html(
 					$("#creeaza-clasa-modal-allowed-template").html()
 				);
+
+				// completeaza profesorii disponibili
+				result.profesori_disponibili.forEach(function(item, index) {
+
+					$("#creeaza-clasa-form-idprofesor").append(
+						"<option value=\"" + item.Id + "\">" + item.Nume + " " + item.Prenume + "</option>"
+					);
+
+				});
 
 			} else {
 

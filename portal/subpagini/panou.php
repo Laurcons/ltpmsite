@@ -16,7 +16,7 @@ redirect_if_not_logged_in("/portal/");
 
 <head>
 	<title>Panou control - Portal LTPM</title>
- 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-head.php"); ?>
+ 	<?php include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/html-include.php"); ?>
 </head>
 
 	<script>
@@ -43,7 +43,7 @@ redirect_if_not_logged_in("/portal/");
 
 <body style="background-color: #f5f5f5;">
 
-	<?php $header_cpage = "panou"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/header.php"); ?>
+	<?php $header_cpage = "panou"; include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/navbar.php"); ?>
 
 	<div class="container">
 
@@ -77,7 +77,7 @@ redirect_if_not_logged_in("/portal/");
 
 				<div class="blockquote text-center mt-sm-2">
 
-					<div class="text-muted font-italic mb-2">Citatul zilei <small><span class="text-muted">// </span><a href="?p=citate">propune un citat</a></small></div>
+					<div class="text-muted font-italic mb-2">Citatul zilei <small><span class="text-muted">// </span><a href="/portal/citate">propune un citat</a></small></div>
 
 					<p class="mb-0"><?= utf8_for_xml($citat["Text"]); //$citat["Text"] ?></p>
 					<footer class="blockquote-footer"><?= $citat["Autor"] ?></footer>
@@ -90,7 +90,7 @@ redirect_if_not_logged_in("/portal/");
 
 					<p>Inca nu avem citate celebre ale profesorilor in baza de date.</p>
 
-					<a href="?p=citate">Propune unul!</a>
+					<a href="/portal/citate">Propune unul!</a>
 
 				</div>
 

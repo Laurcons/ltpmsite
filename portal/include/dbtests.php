@@ -1,14 +1,24 @@
 <?php 
 
 // DEBUG FILE
+////
+
 require_once($_SERVER["DOCUMENT_ROOT"] . "/portal/include/dbinit.php");
 
-$dbconn = new db_connection();
+$db = new db_connection();
 
-$res = $dbconn->retrieve_paged_profesori(15, 0);
-while ($row = $res->fetch_assoc()) {
-	var_dump($row);
-	echo '<br>';
-}
+$teze = array(
+	array(
+		"IdElev" => 7,
+		"IdPredare" => 33),
+	array(
+		"IdElev" => 14,
+		"IdPredare" => 33,
+		"Teza" => "nu")
+);
+
+$res = $db->update_teze($teze);
+
+echo(json_encode($res));
 
 ?>
