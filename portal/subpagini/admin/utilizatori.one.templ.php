@@ -29,11 +29,16 @@
 
 				<a href="/portal/admin/clase/{{clasa.Id}}" class="btn btn-default border-dark btn-sm">Gestionare {{clasa.Nivel}}-{{clasa.Sufix}}</a>
 
+				<button class="btn btn-default border-primary btn-sm"
+						onclick="alert('Neimplementat!');">
+					Redenumește
+				</button>
+
 				<button class="btn btn-sm btn-default border-danger"
 						data-toggle="modal"
 						data-target="#sterge-materie-modal"
 						data-materie-id="{{Id}}">
-					Sterge materie
+					Șterge materie
 				</button>
 
 			</div>

@@ -238,7 +238,7 @@
 
 				<div class="col-md-3">
 
-					<span class="d-block d-md-none"><b>Predata de:</b> {{profesor.Nume}} {{profesor.Prenume}}</span>
+					<span class="d-block d-md-none"><b>Predată de:</b> {{profesor.Nume}} {{profesor.Prenume}}</span>
 					<span class="d-none d-md-block">{{profesor.Nume}} {{profesor.Prenume}}</span>
 
 				</div>
@@ -257,7 +257,7 @@
 							data-materie-id="{{Id}}"
 							data-toggle="modal"
 							data-target="#sterge-materie-modal">
-						Sterge materie
+						Șterge materie
 					</button>
 
 				</div>

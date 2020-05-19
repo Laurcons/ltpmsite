@@ -43,7 +43,7 @@ $autoritati = $CONFIG["autoritati"];
 		<?php if ($current_id == -1) : ?>
 
 			<div class="h1 text-center mb-4">
-				Toti utilizatorii
+				Toți utilizatorii
 			</div>
 
 			<div data-tag="table-aux">
@@ -59,7 +59,7 @@ $autoritati = $CONFIG["autoritati"];
 					<div class="col-md-3">
 						<span class="badge badge-primary">Nr</span>
 						<span class="badge badge-danger">ID</span>
-						Nume si prenume
+						Nume și prenume
 					</div>
 
 					<div class="col-md-5">
@@ -67,7 +67,7 @@ $autoritati = $CONFIG["autoritati"];
 					</div>
 
 					<div class="col-md-4">
-						Optiuni
+						Opțiuni
 					</div>
 
 				</div> 
@@ -92,7 +92,7 @@ $autoritati = $CONFIG["autoritati"];
 
 				<div class="col-sm-3">
 
-					<a class="btn btn-default border-primary" href="/portal/admin/utilizatori">Inapoi la utilizatori</a>
+					<a class="btn btn-default border-primary" href="/portal/admin/utilizatori">Înapoi la utilizatori</a>
 
 				</div>
 
@@ -506,7 +506,7 @@ $autoritati = $CONFIG["autoritati"];
 
 						<div class="col-md-3">
 
-							<div class="font-weight-bold">Materia predata</div>
+							<div class="font-weight-bold">Materia predată</div>
 
 						</div>
 
@@ -518,13 +518,13 @@ $autoritati = $CONFIG["autoritati"];
 
 						<div class="col-md-2">
 
-							<div class="font-weight-bold">Tip teza</div>
+							<div class="font-weight-bold">Tip teză</div>
 
 						</div>
 
 						<div class="col-md-4">
 
-							<div class="font-weight-bold">Optiuni</div>
+							<div class="font-weight-bold">Opțiuni</div>
 
 						</div>
 
@@ -545,13 +545,8 @@ $autoritati = $CONFIG["autoritati"];
 						<button class="btn btn-default border-primary btn-sm"
 								data-toggle="modal"
 								data-target="#adauga-materie-modal">
-							Adauga predare
+							Adaugă materie
 						</button>
-
-						<a class="btn btn-default border-dark btn-sm"
-						   href="/portal/admin/materii">
-						   Gestionare materii
-						</a>
 
 					</div>
 
@@ -595,7 +590,7 @@ $autoritati = $CONFIG["autoritati"];
 
 					<div class="modal-header">
 
-						<h4 class="modal-title">Adauga utilizator</h4>
+						<h4 class="modal-title">Adaugă utilizator</h4>
 
 					</div>
 
@@ -605,7 +600,7 @@ $autoritati = $CONFIG["autoritati"];
 
 						<div class="form-group">
 
-							<label class="font-weight-bold">Nume si prenume:</label>
+							<label class="font-weight-bold">Nume și prenume:</label>
 
 							<div class="input-group">
 
@@ -624,7 +619,6 @@ $autoritati = $CONFIG["autoritati"];
 							</div>
 
 							<div class="alert alert-danger py-1 px-3 d-none" data-form="adauga-utilizator" data-for="nume">
-								error
 							</div>
 
 						</div>
@@ -640,7 +634,6 @@ $autoritati = $CONFIG["autoritati"];
 								   placeholder="Doar litere, numere si '_'">
 
 							<div class="alert alert-danger py-1 px-3 d-none" data-form="adauga-utilizator" data-for="username">
-								error
 							</div>
 
 						</div>
@@ -662,7 +655,7 @@ $autoritati = $CONFIG["autoritati"];
 
 						<div class="form-group">
 
-							<label class="font-weight-bold">Functia si autoritatea:</label>
+							<label class="font-weight-bold">Funcția și autoritatea:</label>
 
 							<div class="input-group">
 
@@ -710,7 +703,7 @@ $autoritati = $CONFIG["autoritati"];
 									   checked>
 
 								<label class="font-weight-bold font-check-label" for="adauga-utilizator-form-is-inserted-into-class">
-									Insereaza in clasa:
+									Insereaza în clasă:
 
 									<span class="spinner-border spinner-border-sm text-primary mx-2 d-none"
 										  id="adauga-utilizator-modal-clase-spinner">
@@ -739,13 +732,13 @@ $autoritati = $CONFIG["autoritati"];
 						<div class="btn-group">
 
 							<button type="button" data-dismiss="modal" class="btn btn-default border-primary">
-								Inapoi
+								Înapoi
 							</button>
 
 							<button type="submit"
 									form="adauga-utilizator-form"
 									class="btn btn-primary">
-								Adauga utilizator
+								Adaugă utilizator
 							</button>
 
 						</div>
@@ -840,7 +833,7 @@ $autoritati = $CONFIG["autoritati"];
 
 						<div class="btn-group">
 
-							<button class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+							<button class="btn btn-default border-primary" data-dismiss="modal">Înapoi</button>
 
 							<button type="submit"
 									form="adauga-materie-form"
@@ -884,7 +877,7 @@ $autoritati = $CONFIG["autoritati"];
 		
 						<div class="btn-group">
 		
-							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Înapoi</button>
 		
 							<button type="submit"
 									form="sterge-materie-form"
@@ -975,7 +968,7 @@ $autoritati = $CONFIG["autoritati"];
 		
 						<div class="btn-group">
 		
-							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+							<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Înapoi</button>
 		
 							<button type="submit"
 									form="sterge-utilizator-form"
