@@ -318,7 +318,7 @@ function ajax_updateMaterii() {
 
 					materie.nrcrt = i + 1;
 					switch (materie.TipTeza) {
-						case "nu": materie.tipTeza = "Nu se da teza"; break;
+						case "nu": materie.tipTeza = "Nu se dă teza"; break;
 						case "optional": materie.tipTeza = "Teza e la alegere"; break;
 						case "obligatoriu": materie.tipTeza = "Teza e obligatorie"; break;
 					}

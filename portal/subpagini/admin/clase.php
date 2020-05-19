@@ -87,7 +87,7 @@ if (isset($_GET["id"])) {
 
 						<div class="btn-group">
 
-							<button class="btn btn-default bg-white border-danger" data-dismiss="modal">Inapoi</button>
+							<button class="btn btn-default bg-white border-danger" data-dismiss="modal">Înapoi</button>
 
 							<input type="submit"
 								   form="sterge-clasa-form"
@@ -130,7 +130,7 @@ if (isset($_GET["id"])) {
 
 			<div class="col-sm-4">
 
-				<a class="btn btn-default border-primary" href="/portal/admin/clase">Inapoi la clase</a>
+				<a class="btn btn-default border-primary" href="/portal/admin/clase">Înapoi la clase</a>
 
 			</div>
 
@@ -155,7 +155,7 @@ if (isset($_GET["id"])) {
 			<button class="btn btn-sm bg-white border-warning"
 					data-toggle="modal"
 					data-target="#schimba-diriginte-modal">
-				Schimba
+				Schimbă
 			</button>
 
 		</p>
@@ -175,7 +175,7 @@ if (isset($_GET["id"])) {
 
 				<div class="col-md-6">
 
-					<span class="font-weight-bold">Detalii si optiuni</span>	
+					<span class="font-weight-bold">Detalii și opțiuni</span>	
 
 				</div>
 
@@ -208,25 +208,25 @@ if (isset($_GET["id"])) {
 
 				<div class="col-md-3">
 
-					<span class="font-weight-bold">Materia predata</span>	
+					<span class="font-weight-bold">Materia predată</span>	
 
 				</div>
 
 				<div class="col-md-3">
 
-					<span class="font-weight-bold">Profesorul care preda</span>	
+					<span class="font-weight-bold">Profesorul care predă</span>	
 
 				</div>
 
 				<div class="col-md-2">
 
-					<span class="font-weight-bold">Tip teza</span>
+					<span class="font-weight-bold">Tip teză</span>
 
 				</div>
 
 				<div class="col-md-4">
 
-					<span class="font-weight-bold">Optiuni</span>	
+					<span class="font-weight-bold">Opțiuni</span>	
 
 				</div>
 
@@ -247,7 +247,7 @@ if (isset($_GET["id"])) {
 				<button class="btn btn-sm border-primary"
 						data-toggle="modal"
 						data-target="#adauga-materie-modal">
-					Adauga predare
+					Adaugă materie
 				</button>
 
 			</div>
@@ -317,7 +317,7 @@ if (isset($_GET["id"])) {
 	
 					<div class="btn-group">
 	
-						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Înapoi</button>
 	
 						<button type="submit"
 								form="atribuie-utilizator-form"
@@ -361,7 +361,7 @@ if (isset($_GET["id"])) {
 	
 					<div class="btn-group">
 	
-						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Înapoi</button>
 	
 						<button type="submit"
 								form="deatribuie-utilizator-form"
@@ -448,12 +448,12 @@ if (isset($_GET["id"])) {
 	
 					<div class="btn-group">
 	
-						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Înapoi</button>
 	
 						<button type="submit"
 								form="adauga-materie-form"
 								class="btn btn-primary">
-							Adauga predare
+							Adaugă materie
 						</button>
 	
 					</div>
@@ -475,14 +475,14 @@ if (isset($_GET["id"])) {
 				<div class="modal-header bg-danger">
 	
 					<h4 class="modal-title text-white">
-						Sterge materie
+						Șterge materie
 					</h4>
 	
 				</div>
 	
 				<div class="modal-body">
 	
-					Sunteti sigur ca doriti sa stergeti aceasta materie? Toate notele, absentele si punctele de activitate ce tin de aceasta materie vor fi sterse!
+					Sunteți sigur că doriți să ștergeți această materie? Toate notele, absențele și punctele de activitate ce țin de această materie vor fi șterse!
 	
 				</div>
 	
@@ -490,12 +490,12 @@ if (isset($_GET["id"])) {
 	
 					<div class="btn-group">
 	
-						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Inapoi</button>
+						<button type="button" class="btn btn-default border-danger" data-dismiss="modal">Înapoi</button>
 	
 						<button type="submit"
 								form="sterge-materie-form"
 								class="btn btn-danger">
-							Sterge materie
+							Șterge materie
 						</button>
 	
 					</div>
@@ -544,7 +544,7 @@ if (isset($_GET["id"])) {
 	
 					<div class="btn-group">
 	
-						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Inapoi</button>
+						<button type="button" class="btn btn-default border-primary" data-dismiss="modal">Înapoi</button>
 	
 						<button type="submit"
 								form="schimba-diriginte-form"
