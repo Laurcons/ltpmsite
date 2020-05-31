@@ -28,42 +28,9 @@ html, body {
 	position: relative;
 	margin-left: 15%;
 	margin-top: 2%
+
 }
 
-
-#pustai {
-
-	height: 20vw;
-	width: 20vw;
-	margin-left: 13.5%;
-	margin-top: 3%;
-}
-
-#pustai_mesaj	{
-	margin-left: 14%;
-	position:fixed;
-  	top: 8%;
-	left: 20%;
-	background-color: white;
-	font-family: RO Cabin;
-}
-
-
-#petru{
-		height: 20vw;
-		width: 20vw;
-		margin-left: 76.5%;
-		margin-top: 3%;
-}
-
-#petru_mesaj	{
-	margin-left: 5%;
-	font-style: italic;
-	position:	fixed;
-  top: 68%;
-	left: 8.5%;
-	background-color: white;
-}
 
 #menu_div {
 
@@ -307,4 +274,86 @@ html, body {
 
 	position: relative;
 
+}
+
+
+/*PAGINA DESPRE BY DARIUS, PLS DONT KILL ME EDI*/
+.box {
+
+	position: absolute;
+	top: 10%;
+	left: 15%;
+	padding: 1vw;
+	background: #fff;
+	display: flex;
+	transition: .15s;
+	box-sizing: border-box;
+	width: 70%;
+	overflow: auto;
+	height: 70%;
+
+}
+
+::-webkit-scrollbar {
+
+	display: none;
+
+}
+
+.box:hover {
+
+	box-shadow: 0px 15px 30px #000000;
+
+}
+
+.box .image {
+
+	display: block;
+	width: 150px;
+	flex: 0 0 150px;
+	background: inherit;
+
+
+}
+
+.box .image img {
+
+	max-width: 100%;
+	margin-left: 10px;
+	margin-top: 10px;
+	background-color: inherit;
+
+}
+
+
+.box .mesaj {
+
+	padding-left: 10px;
+	background: inherit;
+
+}
+
+#h1_id {
+
+	margin: 0;
+	padding-left: 0;
+	margin-top: 4px;
+	background: inherit;
+
+}
+
+#mesaj_paraghraps {
+
+	margin: 0;
+	padding: 10px 0 0;
+	text-align: justify;
+	font-size: 95%;
+	font-family: arial;
+	background: inherit;
+
+}
+
+#image{
+	
+	display: none;
 }
