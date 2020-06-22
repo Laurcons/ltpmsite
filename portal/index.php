@@ -2,12 +2,12 @@
 
 session_start();
 
-include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/loginchecks.php");
-include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/dbinit.php");
-include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/utility.php");
-include($_SERVER["DOCUMENT_ROOT"] . "/portal/include/security.php");
+require($_SERVER["DOCUMENT_ROOT"] . "/portal/include/loginchecks.php");
+require($_SERVER["DOCUMENT_ROOT"] . "/portal/include/dbinit.php");
+require($_SERVER["DOCUMENT_ROOT"] . "/portal/include/utility.php");
+require($_SERVER["DOCUMENT_ROOT"] . "/portal/include/security.php");
 
-$CONFIG = include("include/config.php");
+$CONFIG = require("include/config.php");
 
 $pagina = "";
 $subpagina = "";
@@ -61,55 +61,55 @@ if ($pagina == "" || $pagina == "prima") {
 
 	if ($js_redir) {
 		header("Content-type: application/javascript");
-		include("include/utility.js");
+		require("include/utility.js");
 	} else if (isset($_GET["css"])) {
 		header("Content-type: text/css");
-		include("include/additions.css");
+		require("include/additions.css");
 	}
-	else include("subpagini/primapagina.php");
+	else require("subpagini/primapagina.php");
 
 } else if ($pagina == "logare") {
 
 	if ($js_redir) {
 		header("Content-type: application/javascript");
-		include("subpagini/logare.js");
+		require("subpagini/logare.js");
 	} else if ($post_redir) {
-		include("subpagini/logare.post.php");
-	} else include("subpagini/logare.php");
+		require("subpagini/logare.post.php");
+	} else require("subpagini/logare.php");
 
 } else if ($pagina == "inreg") {
 
 	if ($js_redir) {
 		header("Content-type: application/javascript");
-		include("subpagini/inregistrare.js");
+		require("subpagini/inregistrare.js");
 	} else if ($post_redir) {
-		include("subpagini/inregistrare.post.php");
+		require("subpagini/inregistrare.post.php");
 	} else if ($ajax_redir) {
-		include("subpagini/inregistrare.ajax.php");
-	} else include("subpagini/inregistrare.php");
+		require("subpagini/inregistrare.ajax.php");
+	} else require("subpagini/inregistrare.php");
 
 } else if ($pagina == "panou") {
 
-	include("subpagini/panou.php");
+	require("subpagini/panou.php");
 
 } else if ($pagina == "logout") {
 
-	include("subpagini/logout.php");
+	require("subpagini/logout.php");
 
 } else if ($pagina == "admin") {
 
-	include("subpagini/admin/index.php");
+	require("subpagini/admin/index.php");
 
 } else if ($pagina == "situatia") {
 
 	if ($js_redir) {
 		header("Content-type: application/javascript");
-		include("subpagini/situatia.js");
+		require("subpagini/situatia.js");
 	} else if ($ajax_redir)
-		include("subpagini/situatia.ajax.php");
+		require("subpagini/situatia.ajax.php");
 	else if ($post_redir)
-		include("subpagini/situatia.post.php");
-	else include("subpagini/situatia.php");
+		require("subpagini/situatia.post.php");
+	else require("subpagini/situatia.php");
 
 } else if ($pagina == "topsecret") {
 
@@ -118,24 +118,28 @@ if ($pagina == "" || $pagina == "prima") {
 } else if ($pagina == "clase") {
 
 	if ($post_redir)
-		include("subpagini/clase.post.php");
+		require("subpagini/clase.post.php");
 	else if ($ajax_redir)
-		include("subpagini/clase.ajax.php");
+		require("subpagini/clase.ajax.php");
 	else if ($js_redir) {
 		header("Content-type: application/javascript");
-		include("subpagini/clase." . $_GET["js"] . ".js");
-	} else include("subpagini/clase.php");
+		require("subpagini/clase." . $_GET["js"] . ".js");
+	} else require("subpagini/clase.php");
 
 } else if ($pagina == "citate") {
 
 	if ($post_redir)
-		include("subpagini/citate.post.php");
-	else include("subpagini/citate.php");
+		require("subpagini/citate.post.php");
+	else require("subpagini/citate.php");
+
+} else if ($pagina == "resurse") {
+
+    require("subpagini/resurse/index.php");
 
 } else {
 
 	header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
-	include($_SERVER["DOCUMENT_ROOT"] . "/errors/404.php");
+	require($_SERVER["DOCUMENT_ROOT"] . "/errors/404.php");
 
 }
 

@@ -9,7 +9,8 @@ function utf8_for_xml($string) {
 
 class db_connection {
 
-	private $conn = "";
+    private $conn = "";
+    private $pdo = null;
 
 	function __construct() {
 
@@ -34,7 +35,26 @@ class db_connection {
 		}
 		error_reporting(5);
 		$this->conn->set_charset("utf8");
-		mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        
+        // create PDO connection as well
+        $dsn = "mysql:host=$servername;dbname=$dbname;charset=utf8mb4";
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        try {
+            $this->pdo = new PDO($dsn, $username, $password, $options);
+        } catch (\PDOException $e) {
+
+			header($_SERVER["SERVER_PROTOCOL"] . " 503 Service Unavailable");
+			include($_SERVER["DOCUMENT_ROOT"] . "/errors/503.php");
+			echo("Could not connect to database: " . $this->conn->connect_error);
+			die();
+            //throw new \PDOException($e->getMessage(), (int)$e->getCode());
+
+        }
 
 	}
 
@@ -526,7 +546,7 @@ class db_connection {
 
 	}
 
-	public function calculate_medie_where_utilizator_and_materie_and_semestru($user_id, $materie_id, $semestru) {
+	/*public function calculate_medie_where_utilizator_and_materie_and_semestru($user_id, $materie_id, $semestru) {
 
 		$note = $this->retrieve_note_where_utilizator_and_materie_and_semestru("Nota", $user_id, $materie_id, $semestru);
 		$suma_note = 0;
@@ -545,7 +565,7 @@ class db_connection {
 
 		return $imp;
 
-	}
+	}*/
 
 	public function retrieve_activitate_where_utilizator_and_materie($columns, $user_id, $materie_id) {
 
@@ -767,7 +787,64 @@ class db_connection {
 			return $result->fetch_assoc();
 		}
 
-	}
+    }
+    
+    public function retrieve_resursa_nou($columns, $user_id, $username) {
+
+        $titlu = "nou_" . $username;
+        $stmt = $this->conn->prepare("SELECT $columns FROM resurse WHERE Titlu=?");
+        $stmt->bind_param("s", $titlu);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 0) {
+            // create the new resource
+            $stmt = $this->conn->prepare("INSERT INTO resurse (Titlu,IdProfesor,ContinutHtml) VALUES (?,?,\"\");");
+            $stmt->bind_param("si",
+                $titlu,
+                $user_id);
+            $stmt->execute();
+            return $this->retrieve_resursa_nou($columns, $user_id, $username);
+
+        } else {
+            return $result->fetch_assoc();
+        }
+
+    }
+
+    public function update_resursa_where_id($id, $resursa_data) {
+
+        $stmt = $this->pdo->prepare("UPDATE resurse SET Titlu=:titlu,IdProfesor=:idProf,Nivel=:nivel,Meta=:meta,ContinutHtml=:continut,Adaugat=:adaugat,Modificat=current_timestamp() WHERE Id=:id;");
+        /*$stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":titlu", $resursa_data["Titlu"], PDO::PARAM_STR);
+        $stmt->bindValue(":idProf", $resursa_data["IdProfesor"], PDO::PARAM_INT);
+        $stmt->bindValue(":nivel", $resursa_data["Nivel"], PDO::PARAM_STR);
+        $stmt->bindValue(":meta", $resursa_data["Meta"], PDO::PARAM_STR);
+        $stmt->bindValue(":continut", $resursa_data["ContinutHtml"], PDO::PARAM_STR);
+        $stmt->bindValue(":adaugat", $resursa_data["Adaugat"], PDO::PARAM_STR);*/
+        $stmt->execute([
+            "id" => $id,
+            "titlu" => $resursa_data["Titlu"],
+            "idProf" => $resursa_data["IdProfesor"],
+            "nivel" => $resursa_data["Nivel"],
+            "meta" => $resursa_data["Meta"],
+            "continut" => $resursa_data["ContinutHtml"],
+            "adaugat" => $resursa_data["Adaugat"]
+            // modificat is set from the query to current_timestamp
+        ]);
+
+    }
+
+    public function insert_resursa_file($resursa_file_data) {
+
+        $stmt = $this->pdo->prepare("INSERT INTO resurse_files (ResursaId, Filepath, Meta) VALUES (?, ?, ?);");
+        $stmt->execute([
+            $resursa_file_data["ResursaId"],
+            $resursa_file_data["Filepath"],
+            "{}"
+        ]);
+
+    }
 
 }
 

@@ -1,0 +1,14 @@
+{
+    "name": "laurcons/ltpmsite",
+    "description": "LTPM Site",
+    "type": "project",
+    "require": {
+        "phpseclib/phpseclib": "^2.0"
+    },
+    "authors": [
+        {
+            "name": "Pricop Laurentiu",
+            "email": "laurcons@outlook.com"
+        }
+    ]
+}

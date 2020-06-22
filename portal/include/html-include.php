@@ -15,3 +15,5 @@
 <link rel="stylesheet" type="text/css" href="/portal/css">
 <!-- custom utilities file -->
 <script src="/portal/js"></script>
+<!-- form jquery plugin thing -->
+<script src="http://malsup.github.com/jquery.form.js"></script> 
