@@ -886,7 +886,7 @@ class db_connection {
     public function retrieve_profesori_with_resurse_pdo($columns) {
 
         // returns an additional calculated column "NumResurse"
-        $stmt = $this->pdo->prepare("SELECT $columns,(SELECT COUNT(Id) FROM resurse WHERE resurse.IdProfesor = utilizatori.Id) AS NumResurse ".
+        $stmt = $this->pdo->prepare("SELECT $columns,(SELECT COUNT(Id) FROM resurse WHERE resurse.IdProfesor = utilizatori.Id AND resurse.Titlu NOT REGEXP \"^nou_(.*)\") AS NumResurse ".
             "FROM utilizatori WHERE Id IN (SELECT DISTINCT IdProfesor FROM resurse);");
         $stmt->execute();
         return $stmt;
@@ -895,7 +895,7 @@ class db_connection {
 
     public function retrieve_clase_with_resurse_pdo() {
 
-        $stmt = $this->pdo->prepare("SELECT DISTINCT Nivel,(SELECT COUNT(Id) FROM resurse rs2 WHERE rs2.Nivel = rs1.Nivel) AS NumResurse FROM resurse rs1;");
+        $stmt = $this->pdo->prepare("SELECT DISTINCT Nivel,(SELECT COUNT(Id) FROM resurse rs2 WHERE rs2.Nivel = rs1.Nivel AND rs2.Titlu NOT REGEXP \"^nou_(.*)\") AS NumResurse FROM resurse rs1;");
         $stmt->execute();
         return $stmt;
 
