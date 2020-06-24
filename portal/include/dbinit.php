@@ -837,12 +837,67 @@ class db_connection {
 
     public function insert_resursa_file($resursa_file_data) {
 
-        $stmt = $this->pdo->prepare("INSERT INTO resurse_files (ResursaId, Filepath, Meta) VALUES (?, ?, ?);");
+        $stmt = $this->pdo->prepare("INSERT INTO resurse_files (IdResursa, Filepath, Meta) VALUES (?, ?, ?);");
         $stmt->execute([
-            $resursa_file_data["ResursaId"],
+            $resursa_file_data["IdResursa"],
             $resursa_file_data["Filepath"],
             "{}"
         ]);
+
+    }
+
+    public function retrieve_resursa_files_where_resursa_id($columns, $resursa_id) {
+
+        $stmt = $this->pdo->prepare("SELECT $columns FROM resurse_files WHERE IdResursa=?;");
+        $stmt->execute([
+            $resursa_id
+        ]);
+        return $stmt;
+
+    }
+
+    public function retrieve_resursa_files_count_where_resursa_id($resursa_id) {
+
+        $stmt = $this->pdo->prepare("SELECT COUNT(Id) FROM resurse_files WHERE IdResursa=?;");
+        $stmt->execute([
+            $resursa_id
+        ]);
+        return $stmt->fetch()["COUNT(Id)"];
+
+    }
+
+    public function retrieve_resurse_newest_pdo($columns, $limit = 10) {
+
+        // the regex avoids entries starting with nou_
+        $stmt = $this->pdo->prepare("SELECT $columns FROM resurse WHERE Titlu NOT REGEXP \"^nou_(.*)\" ORDER BY Modificat DESC LIMIT $limit;");
+        $stmt->execute();
+        return $stmt;
+
+    }
+
+    public function retrieve_resursa_where_id($columns, $id) {
+
+        $stmt = $this->pdo->prepare("SELECT $columns FROM resurse WHERE Id=?;");
+        $stmt->execute([$id]);
+        return $stmt->fetch();
+
+    }
+
+    public function retrieve_profesori_with_resurse_pdo($columns) {
+
+        // returns an additional calculated column "NumResurse"
+        $stmt = $this->pdo->prepare("SELECT $columns,(SELECT COUNT(Id) FROM resurse WHERE resurse.IdProfesor = utilizatori.Id) AS NumResurse ".
+            "FROM utilizatori WHERE Id IN (SELECT DISTINCT IdProfesor FROM resurse);");
+        $stmt->execute();
+        return $stmt;
+
+    }
+
+    public function retrieve_clase_with_resurse_pdo() {
+
+        $stmt = $this->pdo->prepare("SELECT DISTINCT Nivel,(SELECT COUNT(Id) FROM resurse rs2 WHERE rs2.Nivel = rs1.Nivel) AS NumResurse FROM resurse rs1;");
+        $stmt->execute();
+        return $stmt;
 
     }
 

@@ -52,7 +52,7 @@ if (isset($_POST["form-id"])) {
                 );
                 // add to db
                 $db->insert_resursa_file([
-                    "ResursaId" => $resursa_id,
+                    "IdResursa" => $resursa_id,
                     "Filepath" => "https://laurcons.ddns.net:444/media/resurse/" . $resursa_id . "/" . $_FILES["file"]["name"][$i]
                 ]);
 
