@@ -1,4 +1,8 @@
 # Liceul Teoretic ”Petru Maior” -> Site + Portal
+See instructions for running locally at the end of this README.
+
+I apologise for this Readme being in Romanian. I didn't know better at the time.
+
 ## Ce e asta
 Păi, pe scurt, un număr de elevi ai LTPM ne-am adunat într-o echipă și dorim să refacem de la zero site-ul liceului nostru, și de asemenea să creem un catalog electronic, de la zero, pentru a fi folosit de elevi și profesori. Portalul (catalogul electronic) are rolul secundar de a crea un element de unitate între elevii liceului.
 ## De ce există așa ceva
@@ -34,4 +38,26 @@ Vei putea, dar nu încă. Doresc să pun la punct modul în care se poate contri
 #### TODO Minore
 * [x] (16.04.2020) Filtrare in portal/admin:clase
 ### Site principal
-@edwardinio18 te rog completează 
+
+## Getting this running on your machine (2024 addition)
+I have created a `docker-compose.yml` file to allow easy local testing of this thing.
+
+Before getting the containers up, create a file at `portal/include/dbconfig.php` with the following content:
+```php
+<?php
+
+return [
+  'hostname' => 'mysql',
+  'username' => 'bubu',
+  'password' => 'bubu',
+  'database' => 'ltpmdb'
+];
+```
+
+Now get the infra up with `docker compose up`.
+
+There is a database export in the project, but it's not quite up to date. I've fixed the db as much as I cared to, so that most features work (except stuff in Resurse idk), and I left you an export in `portal/include/dbschema-2024.sql`. Connect to Adminer on `localhost:8080` and import the SQL there.
+
+You can now open `localhost:8000` in your browser. In the Portal, use `laur` and `1234` to login with an administrator account. There's some trash data already in.
+
+Have fun!
